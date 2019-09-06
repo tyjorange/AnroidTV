@@ -212,7 +212,9 @@ public class MainNewActivity extends AppCompatActivity implements MqttCallback, 
                 //修改ID号
                 toiltId = content.getText().toString();
                 dbDeviceFloorMap = findDevice(code);
-                dbDeviceFloorMap.code = toiltId;
+                if (dbDeviceFloorMap != null) {
+                    dbDeviceFloorMap.code = toiltId;
+                }
                 //List转化为JsonArray
                 JSONArray jsonArray = listToArry();
                 //JsonArray写入文件
@@ -238,7 +240,7 @@ public class MainNewActivity extends AppCompatActivity implements MqttCallback, 
             isChang = true;
             SharedPreferences.Editor editor = sPreferences.edit();
             editor.putBoolean("ischang", isChang);
-            editor.commit();
+            editor.apply();
             Log.i(TAG, "changstate");
         } catch (Exception e) {
             e.printStackTrace();
@@ -269,7 +271,9 @@ public class MainNewActivity extends AppCompatActivity implements MqttCallback, 
                     Log.i("jsonContent", jsonContent);
                     //图标状态改变
                     dbDeviceFloorMap = findDevice(code);
-                    dbDeviceFloorMap.state = state;
+                    if (dbDeviceFloorMap != null) {
+                        dbDeviceFloorMap.state = state;
+                    }
                     updataLog();
                     //发送消息
                     mClient.publish("/datain" + "/" + mqttConfig.dev.fsu_code + "/" + mqttConfig.dev.dev_code, jsonContent);
@@ -444,7 +448,9 @@ public class MainNewActivity extends AppCompatActivity implements MqttCallback, 
         Log.i("接收消息内容 : ", new String(mqttMessage.getPayload()));*/
         if (deviceSignalInfo.signal.equals("6000")) { //蹲位状态变化
             DeviceSignalInfo dbDeviceFloorMap = findDevice(deviceSignalInfo.code);
-            dbDeviceFloorMap.state = deviceSignalInfo.state;
+            if (dbDeviceFloorMap != null) {
+                dbDeviceFloorMap.state = deviceSignalInfo.state;
+            }
             useposition = getUseratio();
             Message message = new Message();
             message.what = 3;

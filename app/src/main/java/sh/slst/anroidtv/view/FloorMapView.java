@@ -110,7 +110,6 @@ public class FloorMapView extends android.support.v7.widget.AppCompatImageView {
         bitmapzuo1 = BitmapFactory.decodeResource(this.getResources(),
                 R.mipmap.zuobianqi1).copy(Bitmap.Config.ARGB_8888, true);
 
-
         canjiren = BitmapFactory.decodeResource(this.getResources(),
                 R.mipmap.canyiren2).copy(Bitmap.Config.ARGB_8888, true);
         canjiren1 = BitmapFactory.decodeResource(this.getResources(),
@@ -143,7 +142,6 @@ public class FloorMapView extends android.support.v7.widget.AppCompatImageView {
         mFloorCanvas.setDrawFilter(new PaintFlagsDrawFilter(0, Paint.ANTI_ALIAS_FLAG | Paint.FILTER_BITMAP_FLAG));
         mFloorCanvas.drawBitmap(mFloorBitmap, 0, 0, paint);
         int colorOn = Color.RED, colorLeave = Color.GREEN;
-
 
         for (DeviceSignalInfo deviceFloorMap : mListDeviceState) {
 
@@ -190,6 +188,13 @@ public class FloorMapView extends android.support.v7.widget.AppCompatImageView {
         canvas.drawBitmap(mFloorCanvasBitmap, rcSrc, rcDraw, paint);
     }
 
+    /**
+     * @param deviceFloorMap
+     * @param bitmap1
+     * @param bitmap2
+     * @param bitmap3
+     * @param paint
+     */
     public void Fillicon(DeviceSignalInfo deviceFloorMap, Bitmap bitmap1, Bitmap bitmap2, Bitmap bitmap3, Paint paint) {
         int destRectWith = 38, destRectHeight = 48;
         if (deviceFloorMap.classs == DeviceSignalInfo.SIT_ON) { //坐便
