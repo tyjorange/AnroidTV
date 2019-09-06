@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="title">30sp</dimen>
+    <dimen name="stitle">26sp</dimen>
+    <dimen name="text">18sp</dimen>
+    <dimen name="text16">16sp</dimen>
+    <dimen name="padding">16dp</dimen>
+    <dimen name="spacing">8dp</dimen>
+    <dimen name="spacing_double">16dp</dimen>
+    <dimen name="margin">16dp</dimen>
+    <dimen name="spacing_half">4dp</dimen>
+    <dimen name="spacing_quarter">2dp</dimen>
+</resources>

@@ -1,0 +1,58 @@
+<resources>
+    <string name="app_name">AnroidTV</string>
+    <string name="title">XXX服务区公共洗手间</string>
+    <string name="tip">XXX服务区公共卫生，从你我他做起</string>
+    <string name="year">年</string>
+    <string name="month">月</string>
+    <string name="day">日</string>
+    <string name="date">星期</string>
+    <string name="people_counting">累计入厕：</string>
+    <string name="people">人</string>
+    <string name="temperature">温度：</string>
+    <string name="wind">风力：</string>
+    <string name="humidity">湿度：</string>
+    <string name="man">男厕</string>
+    <string name="woman">女厕</string>
+    <string name="unit">个</string>
+    <string name="unused">未使用</string>
+    <string name="useing">使用中</string>
+    <string name="position">蹲位</string>
+    <string name="position_use">厕位占用：</string>
+    <string name="env_quality">环境质量：</string>
+    <string name="Aff_company">北京中道博大科技有限公司</string>
+    <string name="cancel">取消</string>
+    <string name="ensure">确定</string>
+
+
+    <string name="titlename">智能导厕系统</string>
+    <string-array name="week">
+        <item>日</item>
+        <item>一</item>
+        <item>二</item>
+        <item>三</item>
+        <item>四</item>
+        <item>五</item>
+        <item>六</item>
+    </string-array>
+    <string-array name="tip">
+        <item>XXX服务区公共卫生，从你我他做起</item>
+        <item>请勿将烟头丢入便池中。</item>
+        <item>爱护公共设施，是你我应尽的责任。</item>
+        <item>来也匆匆，去也冲冲。</item>
+        <item>节约用水从点滴开始。</item>
+        <item>向前一小步，文明一大步。</item>
+        <item>一纸一屑煞文明，一举一动显文明。</item>
+        <item>我给您方便，您还我清洁。</item>
+        <item>保持环境清洁做位可爱的人。</item>
+        <item>水是生命之源，请节约每一滴水。</item>
+        <item>请勿将手纸随波逐流。</item>
+        <item>细微之处见公德，举手之间显文明。</item>
+        <item>注意个人卫生如厕后请洗手。</item>
+        <item>为了大家的方便，避免堵塞--请勿乱扔。</item>
+        <item>你清洁，我卫生，齐齐健身心。</item>
+        <item>同志们……冲啊！</item>
+    </string-array>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+</resources>
