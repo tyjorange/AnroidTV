@@ -82,22 +82,14 @@
                     android:layout_height="wrap_content">
 
                     <ImageView
-                        android:id="@+id/hunan_baoqing_nan_nan_16"
+                        android:id="@+id/hunan_baoqing_nan_nan16"
                         android:layout_width="10dp"
                         android:layout_height="17dp"
                         android:baselineAligned="false"
                         android:src="@mipmap/nan1new" />
 
                     <ImageView
-                        android:id="@+id/hunan_baoqing_nan_nan_17"
-                        android:layout_width="10dp"
-                        android:layout_height="17dp"
-                        android:layout_marginLeft="12dp"
-                        android:baselineAligned="false"
-                        android:src="@mipmap/nan1new" />
-
-                    <ImageView
-                        android:id="@+id/hunan_baoqing_nan_nan_18"
+                        android:id="@+id/hunan_baoqing_nan_nan17"
                         android:layout_width="10dp"
                         android:layout_height="17dp"
                         android:layout_marginLeft="12dp"
@@ -105,7 +97,15 @@
                         android:src="@mipmap/nan1new" />
 
                     <ImageView
-                        android:id="@+id/hunan_baoqing_nan_nan_19"
+                        android:id="@+id/hunan_baoqing_nan_nan18"
+                        android:layout_width="10dp"
+                        android:layout_height="17dp"
+                        android:layout_marginLeft="12dp"
+                        android:baselineAligned="false"
+                        android:src="@mipmap/nan1new" />
+
+                    <ImageView
+                        android:id="@+id/hunan_baoqing_nan_nan19"
                         android:layout_width="10dp"
                         android:layout_height="17dp"
                         android:layout_marginLeft="12dp"
@@ -195,8 +195,8 @@
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="38dp"
-                android:layout_marginLeft="38dp"
+                android:layout_marginStart="36dp"
+                android:layout_marginLeft="36dp"
                 android:layout_marginTop="33dp">
                 <!--男-->
                 <LinearLayout
@@ -204,32 +204,41 @@
                     android:layout_height="wrap_content">
 
                     <ImageView
-                        android:id="@+id/hunan_baoqing_nan_nan_11"
+                        android:id="@+id/hunan_baoqing_nan_nan11"
                         android:layout_width="10dp"
                         android:layout_height="17dp"
                         android:baselineAligned="false"
                         android:src="@mipmap/nan1new" />
 
                     <ImageView
-                        android:id="@+id/hunan_baoqing_nan_nan_12"
+                        android:id="@+id/hunan_baoqing_nan_nan12"
                         android:layout_width="10dp"
                         android:layout_height="17dp"
-                        android:layout_marginLeft="12dp"
+                        android:layout_marginLeft="7dp"
                         android:baselineAligned="false"
                         android:src="@mipmap/nan1new" />
 
                     <ImageView
-                        android:id="@+id/hunan_baoqing_nan_nan_13"
+                        android:id="@+id/hunan_baoqing_nan_nan13"
                         android:layout_width="10dp"
                         android:layout_height="17dp"
-                        android:layout_marginLeft="12dp"
+                        android:layout_marginLeft="8dp"
                         android:baselineAligned="false"
                         android:src="@mipmap/nan1new" />
 
                     <ImageView
+                        android:id="@+id/hunan_baoqing_nan_nan14"
                         android:layout_width="10dp"
                         android:layout_height="17dp"
-                        android:layout_marginLeft="12dp"
+                        android:layout_marginLeft="8dp"
+                        android:baselineAligned="false"
+                        android:src="@mipmap/nan1new" />
+
+                    <ImageView
+                        android:id="@+id/hunan_baoqing_nan_nan15"
+                        android:layout_width="10dp"
+                        android:layout_height="17dp"
+                        android:layout_marginLeft="8dp"
                         android:baselineAligned="false"
                         android:src="@mipmap/nan1new" />
                 </LinearLayout>
@@ -237,7 +246,7 @@
                 <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="177dp">
+                    android:layout_marginLeft="174dp">
 
                     <ImageView
                         android:id="@+id/hunan_baoqing_nan_nv16"
@@ -300,8 +309,8 @@
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="38dp"
-                android:layout_marginLeft="38dp"
+                android:layout_marginStart="36dp"
+                android:layout_marginLeft="36dp"
                 android:layout_marginTop="10dp">
                 <!--男-->
                 <LinearLayout
@@ -309,29 +318,41 @@
                     android:layout_height="wrap_content">
 
                     <ImageView
+                        android:id="@+id/hunan_baoqing_nan_nan06"
                         android:layout_width="10dp"
                         android:layout_height="17dp"
                         android:baselineAligned="false"
                         android:src="@mipmap/nan1new" />
 
                     <ImageView
+                        android:id="@+id/hunan_baoqing_nan_nan07"
                         android:layout_width="10dp"
                         android:layout_height="17dp"
-                        android:layout_marginLeft="12dp"
+                        android:layout_marginLeft="7dp"
                         android:baselineAligned="false"
                         android:src="@mipmap/nan1new" />
 
                     <ImageView
+                        android:id="@+id/hunan_baoqing_nan_nan08"
                         android:layout_width="10dp"
                         android:layout_height="17dp"
-                        android:layout_marginLeft="12dp"
+                        android:layout_marginLeft="8dp"
                         android:baselineAligned="false"
                         android:src="@mipmap/nan1new" />
 
                     <ImageView
+                        android:id="@+id/hunan_baoqing_nan_nan09"
                         android:layout_width="10dp"
                         android:layout_height="17dp"
-                        android:layout_marginLeft="12dp"
+                        android:layout_marginLeft="8dp"
+                        android:baselineAligned="false"
+                        android:src="@mipmap/nan1new" />
+
+                    <ImageView
+                        android:id="@+id/hunan_baoqing_nan_nan10"
+                        android:layout_width="10dp"
+                        android:layout_height="17dp"
+                        android:layout_marginLeft="8dp"
                         android:baselineAligned="false"
                         android:src="@mipmap/nan1new" />
                 </LinearLayout>
@@ -339,7 +360,7 @@
                 <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="177dp">
+                    android:layout_marginLeft="174dp">
 
                     <ImageView
                         android:id="@+id/hunan_baoqing_nan_nv23"
@@ -402,8 +423,8 @@
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="38dp"
-                android:layout_marginLeft="38dp"
+                android:layout_marginStart="36dp"
+                android:layout_marginLeft="36dp"
                 android:layout_marginTop="34dp">
                 <!--男-->
                 <LinearLayout
@@ -411,29 +432,41 @@
                     android:layout_height="wrap_content">
 
                     <ImageView
+                        android:id="@+id/hunan_baoqing_nan_nan01"
                         android:layout_width="10dp"
                         android:layout_height="17dp"
                         android:baselineAligned="false"
                         android:src="@mipmap/nan1new" />
 
                     <ImageView
+                        android:id="@+id/hunan_baoqing_nan_nan02"
                         android:layout_width="10dp"
                         android:layout_height="17dp"
-                        android:layout_marginLeft="12dp"
+                        android:layout_marginLeft="7dp"
                         android:baselineAligned="false"
                         android:src="@mipmap/nan1new" />
 
                     <ImageView
+                        android:id="@+id/hunan_baoqing_nan_nan03"
                         android:layout_width="10dp"
                         android:layout_height="17dp"
-                        android:layout_marginLeft="12dp"
+                        android:layout_marginLeft="8dp"
                         android:baselineAligned="false"
                         android:src="@mipmap/nan1new" />
 
                     <ImageView
+                        android:id="@+id/hunan_baoqing_nan_nan04"
                         android:layout_width="10dp"
                         android:layout_height="17dp"
-                        android:layout_marginLeft="12dp"
+                        android:layout_marginLeft="8dp"
+                        android:baselineAligned="false"
+                        android:src="@mipmap/nan1new" />
+
+                    <ImageView
+                        android:id="@+id/hunan_baoqing_nan_nan05"
+                        android:layout_width="10dp"
+                        android:layout_height="17dp"
+                        android:layout_marginLeft="8dp"
                         android:baselineAligned="false"
                         android:src="@mipmap/nan1new" />
                 </LinearLayout>
@@ -441,7 +474,7 @@
                 <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="177dp">
+                    android:layout_marginLeft="174dp">
 
                     <ImageView
                         android:id="@+id/hunan_baoqing_nan_nv30"
@@ -676,7 +709,7 @@
                         android:id="@+id/hunan_baoqing_nan_nv41"
                         android:layout_width="10dp"
                         android:layout_height="17dp"
-                        android:layout_marginLeft="7.6dp"
+                        android:layout_marginLeft="7.8dp"
                         android:baselineAligned="false"
                         android:src="@mipmap/nv1new" />
 
@@ -684,7 +717,7 @@
                         android:id="@+id/hunan_baoqing_nan_nv40"
                         android:layout_width="10dp"
                         android:layout_height="17dp"
-                        android:layout_marginLeft="7.7dp"
+                        android:layout_marginLeft="7.8dp"
                         android:baselineAligned="false"
                         android:src="@mipmap/nv1new" />
 
@@ -700,7 +733,7 @@
                         android:id="@+id/hunan_baoqing_nan_nv38"
                         android:layout_width="10dp"
                         android:layout_height="17dp"
-                        android:layout_marginLeft="7.9dp"
+                        android:layout_marginLeft="7.7dp"
                         android:baselineAligned="false"
                         android:src="@mipmap/nv1new" />
                 </LinearLayout>
@@ -787,7 +820,7 @@
                         android:id="@+id/hunan_baoqing_nan_nv47"
                         android:layout_width="10dp"
                         android:layout_height="17dp"
-                        android:layout_marginLeft="7.7dp"
+                        android:layout_marginLeft="7.9dp"
                         android:baselineAligned="false"
                         android:src="@mipmap/nv1new" />
 
@@ -803,7 +836,7 @@
                         android:id="@+id/hunan_baoqing_nan_nv45"
                         android:layout_width="10dp"
                         android:layout_height="17dp"
-                        android:layout_marginLeft="7.8dp"
+                        android:layout_marginLeft="7.7dp"
                         android:baselineAligned="false"
                         android:src="@mipmap/nv1new" />
                 </LinearLayout>
