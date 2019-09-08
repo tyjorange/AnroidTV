@@ -161,20 +161,20 @@ public class MainNewActivity extends AppCompatActivity implements MqttCallback, 
         //mAdapter = new DebugMessageAdapter(this, mListDebugInfo);
         // listDebug.setAdapter(mAdapter);
 
-        floorMapView.setOnTouchListener(new View.OnTouchListener() {
-            @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                switch (event.getAction()) {
-                    case MotionEvent.ACTION_DOWN:
-                        float x = event.getX();
-                        float y = event.getY();
-                        Toast.makeText(MainNewActivity.this, "X=" + x + " Y=" + y, Toast.LENGTH_SHORT).show();
-                        JudgmentScope(x, y);
-                        break;
-                }
-                return true;
-            }
-        });
+//        floorMapView.setOnTouchListener(new View.OnTouchListener() {
+//            @Override
+//            public boolean onTouch(View v, MotionEvent event) {
+//                switch (event.getAction()) {
+//                    case MotionEvent.ACTION_DOWN:
+//                        float x = event.getX();
+//                        float y = event.getY();
+//                        Toast.makeText(MainNewActivity.this, "X=" + x + " Y=" + y, Toast.LENGTH_SHORT).show();
+//                        JudgmentScope(x, y);
+//                        break;
+//                }
+//                return true;
+//            }
+//        });
 
         if (mqttConfig != null) {
             mClient = new SubscribeClient(mqttConfig.ip, mqttConfig.port);
