@@ -44,7 +44,7 @@ public class FloorMapView extends android.support.v7.widget.AppCompatImageView {
     private List<DeviceSignalInfo> mListDeviceState = new ArrayList<>();
     private Canvas mFloorCanvas;
     private Bitmap bitmapdun, bitmapdun1, bitmapzuo, bitmapzuo1, repair, clean, canjiren, canjiren1;
-    private Rect srcRED, srcGREEN;
+    //    private Rect srcRED, srcGREEN;
     private String toitleClass;
     private MQTTConfig mqttConfig;
     private RectF dst;
@@ -92,18 +92,18 @@ public class FloorMapView extends android.support.v7.widget.AppCompatImageView {
 
         if (toitleClass.equals("NV")) {
             bitmapdun = BitmapFactory.decodeResource(this.getResources(),
-                    R.mipmap.nvce1).copy(Bitmap.Config.ARGB_8888, true);
+                    R.mipmap.nv1new).copy(Bitmap.Config.ARGB_8888, true);
             bitmapdun1 = BitmapFactory.decodeResource(this.getResources(),
-                    R.mipmap.nvce2).copy(Bitmap.Config.ARGB_8888, true);
+                    R.mipmap.nv2new).copy(Bitmap.Config.ARGB_8888, true);
 
         } else {
             bitmapdun = BitmapFactory.decodeResource(this.getResources(),
-                    R.mipmap.nan1).copy(Bitmap.Config.ARGB_8888, true);
+                    R.mipmap.nan1new).copy(Bitmap.Config.ARGB_8888, true);
             bitmapdun1 = BitmapFactory.decodeResource(this.getResources(),
-                    R.mipmap.nan2).copy(Bitmap.Config.ARGB_8888, true);
+                    R.mipmap.nan2new).copy(Bitmap.Config.ARGB_8888, true);
         }
-        srcRED = new Rect(0, 0, bitmapdun.getWidth(), bitmapdun.getHeight());
-        srcGREEN = new Rect(0, 0, bitmapdun1.getWidth(), bitmapdun1.getHeight());  //  RectF（float left,float top,float right,float bottom）
+//        srcRED = new Rect(0, 0, bitmapdun.getWidth(), bitmapdun.getHeight());
+//        srcGREEN = new Rect(0, 0, bitmapdun1.getWidth(), bitmapdun1.getHeight());  //  RectF（float left,float top,float right,float bottom）
 
         bitmapzuo = BitmapFactory.decodeResource(this.getResources(),
                 R.mipmap.zuobianqi2).copy(Bitmap.Config.ARGB_8888, true);
@@ -148,8 +148,8 @@ public class FloorMapView extends android.support.v7.widget.AppCompatImageView {
             if (deviceFloorMap.state == DeviceSignalInfo.STATE_ON) {
                 paint.setColor(colorOn);
                 Log.i(TAG, "state=STATE_ON");
-                bitmapdun = BitmapFactory.decodeResource(this.getResources(),
-                        R.mipmap.nvce1).copy(Bitmap.Config.ARGB_8888, true);
+//                bitmapdun = BitmapFactory.decodeResource(this.getResources(),
+//                        R.mipmap.nvce1).copy(Bitmap.Config.ARGB_8888, true);
                 Fillicon(deviceFloorMap, bitmapzuo, canjiren, bitmapdun, paint);
 
             } else if (deviceFloorMap.state == DeviceSignalInfo.STATE_LEAVE) {
@@ -208,9 +208,10 @@ public class FloorMapView extends android.support.v7.widget.AppCompatImageView {
         } else if (deviceFloorMap.classs == DeviceSignalInfo.SQUETT_SPECIAL) { //第三卫生间
             mFloorCanvas.drawBitmap(bitmap2, new Rect(0, 0, bitmap2.getWidth(), bitmap2.getHeight()), dst, paint);
         } else if (deviceFloorMap.classs == DeviceSignalInfo.SQUETT_TOILETS) {//蹲便
-
-            int dstFillWidth = bitmap3.getWidth() / 2 > destRectWith ? destRectWith - 8 : bitmap3.getWidth() / 2;
-            int dstFillHeight = bitmap3.getHeight() / 2 > destRectHeight ? destRectHeight - 8 : bitmap3.getHeight() / 2;
+//            int dstFillWidth = bitmap3.getWidth() / 2 > destRectWith ? destRectWith - 8 : bitmap3.getWidth() / 2;
+//            int dstFillHeight = bitmap3.getHeight() / 2 > destRectHeight ? destRectHeight - 8 : bitmap3.getHeight() / 2;
+            int dstFillWidth = bitmap3.getWidth();
+            int dstFillHeight = bitmap3.getHeight();
             dst = new RectF(deviceFloorMap.x - dstFillWidth,
                     deviceFloorMap.y - dstFillHeight,
                     deviceFloorMap.x + dstFillWidth,

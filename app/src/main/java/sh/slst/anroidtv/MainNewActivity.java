@@ -7,9 +7,7 @@ import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.net.Uri;
 import android.os.Bundle;
-import android.os.Environment;
 import android.os.Handler;
 import android.os.Message;
 import android.support.v7.app.AlertDialog;
@@ -18,6 +16,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -38,15 +37,11 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
-import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.io.LineNumberReader;
-import java.io.UnsupportedEncodingException;
 import java.lang.reflect.Type;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -94,7 +89,7 @@ public class MainNewActivity extends AppCompatActivity implements MqttCallback, 
     private String s;
     private Context context;
     private int visitors = 0;
-    private TextView text_useposition;
+    //    private TextView text_useposition;
     private int allcounts = 0;
     private int useposition;
     private AlertDialog alertDialog;
@@ -112,18 +107,19 @@ public class MainNewActivity extends AppCompatActivity implements MqttCallback, 
     private List<String> mListDebugInfo = new ArrayList<>();
     private DebugMessageAdapter mAdapter;
     Timer timer = new Timer();
+
     @SuppressLint("HandlerLeak")
     private Handler handler = new Handler() {
         public void handleMessage(Message msg) {
             switch (msg.what) {
                 case 1:
-                    initTime();
+//                    initTime();
                     break;
                 case 2:
                     //更新累计人数
                     break;
                 case 3:
-                    text_useposition.setText(useposition + "/" + allcounts);
+//                    text_useposition.setText(useposition + "/" + allcounts);
                     break;
             }
             super.handleMessage(msg);
@@ -133,10 +129,12 @@ public class MainNewActivity extends AppCompatActivity implements MqttCallback, 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        getWindow().addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN); //隐藏状态栏
+//        getWindow().clearFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN); //显示状态栏
         setContentView(R.layout.activity_main_news);
 
         sPreferences = MainNewActivity.this.getSharedPreferences("STATE", MODE_PRIVATE);
-        String wmessage = sPreferences.getString("wrongmessage", "");
+//        String wmessage = sPreferences.getString("wrongmessage", "");
 //      updataLog(wmessage);
 
        /* SharedPreferences.Editor editor = sPreferences.edit();
@@ -151,11 +149,11 @@ public class MainNewActivity extends AppCompatActivity implements MqttCallback, 
         tvDay = (TextView) findViewById(R.id.tv_day);
         tvDate = (TextView) findViewById(R.id.tv_date);
         tvTime = (TextView) findViewById(R.id.tv_time);
-        text_useposition = (TextView) findViewById(R.id.text_useposition);
+//        text_useposition = (TextView) findViewById(R.id.text_useposition);
         lay_left = (LinearLayout) findViewById(R.id.lay_left);
         lay_left.setPadding(20, utils.px2dip(this, (float) 80), 0, utils.px2dip(this, (float) 42));
 
-        initTime();
+//        initTime();
 
         floorMapView = (FloorMapView) findViewById(R.id.img_floor);
         txtDebug = (TextView) findViewById(R.id.txt_debug);
@@ -170,7 +168,7 @@ public class MainNewActivity extends AppCompatActivity implements MqttCallback, 
                     case MotionEvent.ACTION_DOWN:
                         float x = event.getX();
                         float y = event.getY();
-//                      Toast.makeText(MainNewActivity.this, "X=" + x + "Y=" + y, Toast.LENGTH_SHORT).show();
+                        Toast.makeText(MainNewActivity.this, "X=" + x + " Y=" + y, Toast.LENGTH_SHORT).show();
                         JudgmentScope(x, y);
                         break;
                 }
@@ -189,10 +187,13 @@ public class MainNewActivity extends AppCompatActivity implements MqttCallback, 
         }
         initFloorBitmap();
         floorMapView.setData(listDeviceFloorMaps, bmpFloor);
-        timer.schedule(task, 0, 10 * 1000);
+        timer.schedule(task1, 0, 10 * 1000);
     }
 
 
+    /**
+     * 修改蹲位ID
+     */
     private void dialogPutId() {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         LayoutInflater inflater = LayoutInflater.from(this);
@@ -324,7 +325,7 @@ public class MainNewActivity extends AppCompatActivity implements MqttCallback, 
         tvTime.setText(sDate.substring(11, 16));
     }
 
-    TimerTask task = new TimerTask() {
+    private TimerTask task1 = new TimerTask() {
         @Override
         public void run() {
             Message message = new Message();
@@ -334,6 +335,9 @@ public class MainNewActivity extends AppCompatActivity implements MqttCallback, 
     };
 
 
+    /**
+     * 加载蹲位布局json
+     */
     private void readDeviceMap() {
         StringBuilder sb = new StringBuilder("");
         boolean changstate = sPreferences.getBoolean("ischang", false);
@@ -359,26 +363,25 @@ public class MainNewActivity extends AppCompatActivity implements MqttCallback, 
             }
         } else {
             try {
-                InputStream inputStream = getClass().getClassLoader().getResourceAsStream("assets/" + "map/mapnvce2.json"); //map1  map
+                InputStream inputStream = getClass().getClassLoader().getResourceAsStream("assets/" + "map/nan_left0.json"); //map1  map
                 Gson gson = new Gson();
                 JsonReader jsonReader = new JsonReader(new InputStreamReader(inputStream));
                 Type type = new TypeToken<List<DeviceSignalInfo>>() {
                 }.getType();
                 listDeviceFloorMaps = gson.fromJson(jsonReader, type);
                 Log.i("canvas1", listDeviceFloorMaps.size() + "");
-            } catch (
-                    Exception e
-            ) {
+            } catch (Exception e) {
                 Log.e(TAG, e.getMessage());
             }
         }
     }
 
     //判断点击的范围
-    public void JudgmentScope(float x, float y) {
+    public void JudgmentScope(float _x_, float _y_) {
         for (DeviceSignalInfo floorMap : listDeviceFloorMaps) {
-            if (floorMap.y + 47 > y && y > floorMap.y - 47 && floorMap.x + 38 > x && x > floorMap.x - 38) { //男厕 x> 660     //女厕X>516
-                Log.i("x y", "floorMapy=" + floorMap.y + "floorMap.x=" + "-------" + floorMap.x + "x=" + floorMap.x + "y=" + y);
+            if (floorMap.y + 47 > _y_ && _y_ > floorMap.y - 47 && floorMap.x + 38 > _x_ && _x_ > floorMap.x - 38) { //男厕 _x_> 660     //女厕X>516
+                Log.i("_x_ _y_", " floorMap._x_=" + floorMap.x + " floorMapy=" + floorMap.y);
+                Log.i("_x_ _y_", " _x_=" + _x_ + " _y_=" + _y_);
                 code = floorMap.code;
                 signal = floorMap.signal;
                 showSingleAlertDialog();
@@ -406,9 +409,13 @@ public class MainNewActivity extends AppCompatActivity implements MqttCallback, 
         return jsonArray;
     }
 
+    /**
+     * 加载地图
+     */
     private void initFloorBitmap() {
         try {
-            InputStream inputStream = getAssets().open("floormap/nvce_right.png");
+//            InputStream inputStream = getAssets().open("floormap/nvce_right.png");
+            InputStream inputStream = getAssets().open("floormap/nan_left.png");
             bmpFloor = BitmapFactory.decodeStream(inputStream);
             inputStream.close();
         } catch (Exception e) {

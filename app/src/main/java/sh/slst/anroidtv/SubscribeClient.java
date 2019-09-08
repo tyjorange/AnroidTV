@@ -101,7 +101,7 @@ public class SubscribeClient {
 
     public void publish(String topic, String msg) {
         try {
-            if (s_client != null) {
+            if (s_client != null && s_client.isConnected()) {
                 MqttMessage message = new MqttMessage();
                 message.setQos(1);
                 message.setRetained(true);
