@@ -43,7 +43,7 @@ public class CrashHandler implements Thread.UncaughtExceptionHandler {
     private DateFormat formatter = new SimpleDateFormat("yyyy-MM-dd-HH-mm-ss");
     // CrashHandler实例
     private static CrashHandler INSTANCE;
-    private  SharedPreferences sPreferences;
+    private SharedPreferences sPreferences;
 
     public void init(Context context) {
         mcontext = context;
@@ -53,22 +53,24 @@ public class CrashHandler implements Thread.UncaughtExceptionHandler {
     }
 
     /**
-             * 自定义错误处理，收集错误信息，发送错误报告等
-             *
-             * @param ex
-             * @return
-             */
-                private boolean handleException(Throwable ex) {
-                    if (ex == null) {
-                        return false;
-                    }
-                    new Thread() {
-                        public void run() {
+     * 自定义错误处理，收集错误信息，发送错误报告等
+     *
+     * @param ex
+     * @return
+     */
+    private boolean handleException(Throwable ex) {
+        if (ex == null) {
+            return false;
+        }
+        new Thread() {
+            public void run() {
                 Looper.prepare();
                 Toast.makeText(mcontext, "很抱歉,程序出现异常", Toast.LENGTH_LONG)
                         .show();
                 Looper.loop();
-            };
+            }
+
+            ;
         }.start();
         collectDeviceInfo(mcontext);
         saveCrashInfo2File(ex);
@@ -83,7 +85,7 @@ public class CrashHandler implements Thread.UncaughtExceptionHandler {
     public void collectDeviceInfo(Context context) {
         PackageManager pm = context.getPackageManager();
         try {
-            PackageInfo pi = pm.getPackageInfo(context.getPackageName(),PackageManager.GET_ACTIVITIES);
+            PackageInfo pi = pm.getPackageInfo(context.getPackageName(), PackageManager.GET_ACTIVITIES);
             if (pi != null) {
                 String versionName = pi.versionName == null ? "null"
                         : pi.versionName;
@@ -109,52 +111,52 @@ public class CrashHandler implements Thread.UncaughtExceptionHandler {
 
     private void saveCrashInfo2File(Throwable ex) {
         StringBuffer sb = new StringBuffer();
-     for (Map.Entry<String, String> entry : infos.entrySet()) {
-     String key = entry.getKey();
-     String value = entry.getValue();
-     sb.append(key + "=" + value + "\n");
-     }
-     Writer writer = new StringWriter();
-     PrintWriter printWriter = new PrintWriter(writer);
-     ex.printStackTrace(printWriter);
-     Throwable cause = ex.getCause();
-     while (cause != null) {
-     cause.printStackTrace(printWriter);
-     cause = cause.getCause();
-     }
-     printWriter.close();
-     // 得到错误信息
-     String result = writer.toString();
-     sb.append(result);
-     Log.i("wrongmess",result);
-     SharedPreferences.Editor editor = sPreferences.edit();
-     //      editor.clear();
-     editor.putString("wrongmessage", result);
-     editor.commit();
-     }
-
-
-     /**
-             * 当uncaught发生时会转入该函数处理
-             */
-            @Override
-            public void uncaughtException(Thread thread, Throwable ex) {
-                if (!handleException(ex) && mDefaultHandler != null) {
-                    // 如果用户没有处理则让系统默认的异常处理器来处理
-                    mDefaultHandler.uncaughtException(thread, ex);
-                } else {
-                    AlarmManager mgr = (AlarmManager) mcontext.getSystemService(Context.ALARM_SERVICE);
-
-                    Intent intent = new Intent(mcontext, MainNewActivity.class);
-                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                    intent.putExtra("crash", true);
-                    PendingIntent restartIntent = PendingIntent.getActivity(mcontext, 0, intent, PendingIntent.FLAG_ONE_SHOT);
-                    mgr.set(AlarmManager.RTC, System.currentTimeMillis() + 1000, restartIntent); // 1秒钟后重启应用
-
-                    android.os.Process.killProcess(android.os.Process.myPid());
-                    System.exit(0);
-                    System.gc();
+        for (Map.Entry<String, String> entry : infos.entrySet()) {
+            String key = entry.getKey();
+            String value = entry.getValue();
+            sb.append(key + "=" + value + "\n");
+        }
+        Writer writer = new StringWriter();
+        PrintWriter printWriter = new PrintWriter(writer);
+        ex.printStackTrace(printWriter);
+        Throwable cause = ex.getCause();
+        while (cause != null) {
+            cause.printStackTrace(printWriter);
+            cause = cause.getCause();
+        }
+        printWriter.close();
+        // 得到错误信息
+        String result = writer.toString();
+        sb.append(result);
+        Log.i("wrongmess", result);
+        SharedPreferences.Editor editor = sPreferences.edit();
+        //      editor.clear();
+        editor.putString("wrongmessage", result);
+        editor.commit();
     }
+
+
+    /**
+     * 当uncaught发生时会转入该函数处理
+     */
+    @Override
+    public void uncaughtException(Thread thread, Throwable ex) {
+        if (!handleException(ex) && mDefaultHandler != null) {
+            // 如果用户没有处理则让系统默认的异常处理器来处理
+            mDefaultHandler.uncaughtException(thread, ex);
+        } else {
+            AlarmManager mgr = (AlarmManager) mcontext.getSystemService(Context.ALARM_SERVICE);
+
+            Intent intent = new Intent(mcontext, MainNewActivity.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            intent.putExtra("crash", true);
+            PendingIntent restartIntent = PendingIntent.getActivity(mcontext, 0, intent, PendingIntent.FLAG_ONE_SHOT);
+            mgr.set(AlarmManager.RTC, System.currentTimeMillis() + 1000, restartIntent); // 1秒钟后重启应用
+
+            android.os.Process.killProcess(android.os.Process.myPid());
+            System.exit(0);
+            System.gc();
+        }
 
     }
 
@@ -170,7 +172,9 @@ public class CrashHandler implements Thread.UncaughtExceptionHandler {
         return cls;
     }
 
-    /** 获取CrashHandler实例 ,单例模式 */
+    /**
+     * 获取CrashHandler实例 ,单例模式
+     */
     public static CrashHandler getInstance() {
         if (INSTANCE == null) {
             return INSTANCE = new CrashHandler();
@@ -179,4 +183,4 @@ public class CrashHandler implements Thread.UncaughtExceptionHandler {
         }
     }
 
-  }
+}

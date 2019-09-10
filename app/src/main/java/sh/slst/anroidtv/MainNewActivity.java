@@ -14,13 +14,12 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 //import com.google.android.gms.appindexing.Action;
 //import com.google.android.gms.appindexing.AppIndex;
@@ -53,6 +52,7 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 import sh.slst.anroidtv.bean.DeviceSignalInfo;
+import sh.slst.anroidtv.bean.DunViewHolder;
 import sh.slst.anroidtv.bean.MQTTConfig;
 import sh.slst.anroidtv.utils.FileUtils;
 import sh.slst.anroidtv.utils.utils;
@@ -89,7 +89,8 @@ public class MainNewActivity extends AppCompatActivity implements MqttCallback, 
     private String s;
     private Context context;
     private int visitors = 0;
-    //    private TextView text_useposition;
+    private TextView text_useposition_left;
+    private TextView text_useposition_right;
     private int allcounts = 0;
     private int useposition;
     private AlertDialog alertDialog;
@@ -108,18 +109,22 @@ public class MainNewActivity extends AppCompatActivity implements MqttCallback, 
     private DebugMessageAdapter mAdapter;
     Timer timer = new Timer();
 
+    private static final int fTime = 1;
+    private static final int fCount = 2;
+    private static final int fUse = 3;
     @SuppressLint("HandlerLeak")
     private Handler handler = new Handler() {
         public void handleMessage(Message msg) {
             switch (msg.what) {
-                case 1:
-//                    initTime();
+                case fTime:
+                    initTime();
                     break;
-                case 2:
+                case fCount:
                     //更新累计人数
                     break;
-                case 3:
-//                    text_useposition.setText(useposition + "/" + allcounts);
+                case fUse:
+                    text_useposition_left.setText(useposition + "/" + allcounts);
+                    text_useposition_right.setText(useposition + "/" + allcounts);
                     break;
             }
             super.handleMessage(msg);
@@ -144,16 +149,17 @@ public class MainNewActivity extends AppCompatActivity implements MqttCallback, 
         initConfig();
 
         weekWords = getResources().getStringArray(R.array.week);
-        tvYear = (TextView) findViewById(R.id.tv_year);
-        tvMonth = (TextView) findViewById(R.id.tv_month);
-        tvDay = (TextView) findViewById(R.id.tv_day);
-        tvDate = (TextView) findViewById(R.id.tv_date);
-        tvTime = (TextView) findViewById(R.id.tv_time);
-//        text_useposition = (TextView) findViewById(R.id.text_useposition);
+//        tvYear = (TextView) findViewById(R.id.tv_year);
+//        tvMonth = (TextView) findViewById(R.id.tv_month);
+//        tvDay = (TextView) findViewById(R.id.tv_day);
+//        tvDate = (TextView) findViewById(R.id.tv_date);
+//        tvTime = (TextView) findViewById(R.id.tv_time);
+        text_useposition_left = (TextView) findViewById(R.id.text_useposition_left);
+        text_useposition_right = (TextView) findViewById(R.id.text_useposition_right);
         lay_left = (LinearLayout) findViewById(R.id.lay_left);
-        lay_left.setPadding(20, utils.px2dip(this, (float) 80), 0, utils.px2dip(this, (float) 42));
+//        lay_left.setPadding(20, utils.px2dip(this, (float) 80), 0, utils.px2dip(this, (float) 42));
 
-//        initTime();
+        initTime();
 
         floorMapView = (FloorMapView) findViewById(R.id.img_floor);
         txtDebug = (TextView) findViewById(R.id.txt_debug);
@@ -185,9 +191,11 @@ public class MainNewActivity extends AppCompatActivity implements MqttCallback, 
         if (listDeviceFloorMaps == null) {
             listDeviceFloorMaps = new ArrayList<>();
         }
-        initFloorBitmap();
-        floorMapView.setData(listDeviceFloorMaps, bmpFloor);
-        timer.schedule(task1, 0, 10 * 1000);
+//        initFloorBitmap();
+//        floorMapView.setData(listDeviceFloorMaps, bmpFloor);
+        timer.schedule(task1, 0, 1000);
+
+        DunViewHolder.init();
     }
 
 
@@ -311,25 +319,26 @@ public class MainNewActivity extends AppCompatActivity implements MqttCallback, 
 
 
     private void initTime() {
-
-        SimpleDateFormat shortDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", new Locale("zh"));
+        SimpleDateFormat shortDateFormat = new SimpleDateFormat("yyyy年MM月dd日-HH:mm:ss", new Locale("zh"));
         String sDate = shortDateFormat.format(new Date(System.currentTimeMillis()));
-        Log.i(TAG, "DATA=" + sDate);
-
+        String[] split = sDate.split("-");
         Calendar calendar = Calendar.getInstance();
-        String date = weekWords[calendar.get(Calendar.DAY_OF_WEEK) - 1];
-        tvYear.setText(sDate.substring(0, 4));
-        tvMonth.setText(sDate.substring(5, 7));
-        tvDay.setText(sDate.substring(8, 10));
-        tvDate.setText(date);
-        tvTime.setText(sDate.substring(11, 16));
+        String date = "     星期" + weekWords[calendar.get(Calendar.DAY_OF_WEEK) - 1] + "   ";
+        String ss = split[0] + date + split[1];
+        TextView tv_date = findViewById(R.id.tv_date);
+        tv_date.setText(ss);
+//        tvYear.setText(sDate.substring(0, 4));
+//        tvMonth.setText(sDate.substring(5, 7));
+//        tvDay.setText(sDate.substring(8, 10));
+//        tvDate.setText(date);
+//        tvTime.setText(sDate.substring(11, 16));
     }
 
     private TimerTask task1 = new TimerTask() {
         @Override
         public void run() {
             Message message = new Message();
-            message.what = 1;
+            message.what = fTime;
             handler.sendMessage(message);
         }
     };
@@ -395,7 +404,7 @@ public class MainNewActivity extends AppCompatActivity implements MqttCallback, 
         for (DeviceSignalInfo floorMap : listDeviceFloorMaps) {
             JSONObject scenes = new JSONObject();
             try {
-//              scenes.put("signal", floorMap.signal);
+                scenes.put("signal", floorMap.signal);
                 scenes.put("code", floorMap.code);
                 scenes.put("x", floorMap.getX());
                 scenes.put("y", floorMap.getY());
@@ -432,7 +441,7 @@ public class MainNewActivity extends AppCompatActivity implements MqttCallback, 
     }
 
     /**
-     * @param s
+     * @param sssssss
      * @param mqttMessage System.out.println("接收消息主题:" + topic + " Qos:" + message.getQos());
      *                    System.out.println("接收消息内容:" + new String(message.getPayload()));
      * @Override public void connectionLost(Throwable throwable) {
@@ -446,7 +455,7 @@ public class MainNewActivity extends AppCompatActivity implements MqttCallback, 
      * {"signal":"6000", "code":"80DFA114004B1200", "state":0} 蹲位状态 实时 1有人 0离开
      */
     @Override
-    public void messageArrived(String s, final MqttMessage mqttMessage) throws Exception {
+    public void messageArrived(String sssssss, final MqttMessage mqttMessage) throws Exception {
         final String msgEntity = new String(mqttMessage.getPayload());
         Gson gson = new Gson();
         DeviceSignalInfo deviceSignalInfo = gson.fromJson(msgEntity, DeviceSignalInfo.class);
@@ -458,18 +467,39 @@ public class MainNewActivity extends AppCompatActivity implements MqttCallback, 
             if (dbDeviceFloorMap != null) {
                 dbDeviceFloorMap.state = deviceSignalInfo.state;
             }
+
+            cccc(deviceSignalInfo);
+
             useposition = getUseratio();
             Message message = new Message();
-            message.what = 3;
+            message.what = fUse;
             handler.sendMessage(message);
         }
         if (deviceSignalInfo.signal.equals("6001")) {
             visitors = deviceSignalInfo.visitors;
             Message message = new Message();
-            message.what = 2;
+            message.what = fCount;
             handler.sendMessage(message);
         }
         updataLog(msgEntity);
+    }
+
+    /**
+     * 改变蹲位状态
+     *
+     * @param deviceSignalInfo
+     */
+    private void cccc(DeviceSignalInfo deviceSignalInfo) {
+        Integer nanDunView = DunViewHolder.getNanDunView(deviceSignalInfo.code);
+        Integer nvDunView = DunViewHolder.getNvDunView(deviceSignalInfo.code);
+        ImageView viewById;
+        if (nanDunView == null) {
+            viewById = findViewById(nvDunView);
+            viewById.setImageDrawable(deviceSignalInfo.state == 1 ? getResources().getDrawable(R.mipmap.nv1new) : getResources().getDrawable(R.mipmap.nv2new));
+        } else {
+            viewById = findViewById(nanDunView);
+            viewById.setImageDrawable(deviceSignalInfo.state == 1 ? getResources().getDrawable(R.mipmap.nan1new) : getResources().getDrawable(R.mipmap.nan2new));
+        }
     }
 
     private String getJsonContent(String signal, String code, String state) {
