@@ -81,8 +81,7 @@ public class SubscribeClient {
             // 订阅消息
         } catch (Exception e) {
             if (subscibeConnectMessage != null) {
-                subscibeConnectMessage.onMessage(e.getCause() + "topic=" + topic + "  clientid=" + clientid
-                        + " host=" + HOST);
+                subscibeConnectMessage.onMessage(e.getCause() + "topic=" + topic + "  clientid=" + clientid + " host=" + HOST);
             }
 //            startReconnect();
         }

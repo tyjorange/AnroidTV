@@ -19,12 +19,9 @@ import android.view.WindowManager;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ListView;
 import android.widget.TextView;
 
-//import com.google.android.gms.appindexing.Action;
-//import com.google.android.gms.appindexing.AppIndex;
-//import com.google.android.gms.appindexing.Thing;
-//import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.google.gson.stream.JsonReader;
@@ -56,12 +53,16 @@ import sh.slst.anroidtv.bean.DunViewHolder;
 import sh.slst.anroidtv.bean.MQTTConfig;
 import sh.slst.anroidtv.utils.FileUtils;
 import sh.slst.anroidtv.utils.utils;
-import sh.slst.anroidtv.view.FloorMapView;
+
+//import com.google.android.gms.appindexing.Action;
+//import com.google.android.gms.appindexing.AppIndex;
+//import com.google.android.gms.appindexing.Thing;
+//import com.google.android.gms.common.api.GoogleApiClient;
 
 public class MainNewActivity extends AppCompatActivity implements MqttCallback, ISubscibeConnectMessage {
 
     private String TAG = "MainNewActivity";
-    private FloorMapView floorMapView;
+//    private FloorMapView floorMapView;
 
     private SubscribeClient mClient;
     private MQTTConfig mqttConfig;
@@ -97,7 +98,7 @@ public class MainNewActivity extends AppCompatActivity implements MqttCallback, 
     private int state;
     private String signal;
     private String code;
-    private MqttMessage message;
+    //    private MqttMessage message;
     private LinearLayout lay_left;
     private String toiltId;
     private DeviceSignalInfo dbDeviceFloorMap;
@@ -161,11 +162,23 @@ public class MainNewActivity extends AppCompatActivity implements MqttCallback, 
 
         initTime();
 
-        floorMapView = (FloorMapView) findViewById(R.id.img_floor);
-        txtDebug = (TextView) findViewById(R.id.txt_debug);
-        //ListView listDebug = (ListView) findViewById(R.id.list_debug);
-        //mAdapter = new DebugMessageAdapter(this, mListDebugInfo);
-        // listDebug.setAdapter(mAdapter);
+//        floorMapView = (FloorMapView) findViewById(R.id.img_floor);
+//        txtDebug = (TextView) findViewById(R.id.txt_debug);
+
+        // Debug 视图
+        final ListView listDebug = (ListView) findViewById(R.id.list_debug);
+        mAdapter = new DebugMessageAdapter(this, mListDebugInfo);
+        listDebug.setAdapter(mAdapter);
+        findViewById(R.id.iv_ad_left).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (listDebug.getVisibility() == View.VISIBLE) {
+                    listDebug.setVisibility(View.GONE);
+                } else {
+                    listDebug.setVisibility(View.VISIBLE);
+                }
+            }
+        });
 
 //        floorMapView.setOnTouchListener(new View.OnTouchListener() {
 //            @Override
@@ -196,6 +209,27 @@ public class MainNewActivity extends AppCompatActivity implements MqttCallback, 
         timer.schedule(task1, 0, 1000);
 
         DunViewHolder.init();
+
+        for (Integer s : DunViewHolder.getAllNan()) {
+            findViewById(s).setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    CharSequence contentDescription = view.getContentDescription();
+//                    Toast.makeText(MainNewActivity.this, "nan " + contentDescription, Toast.LENGTH_SHORT).show();
+                    showSingleAlertDialog(contentDescription.toString());
+                }
+            });
+        }
+        for (Integer s : DunViewHolder.getAllNv()) {
+            findViewById(s).setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    CharSequence contentDescription = view.getContentDescription();
+//                    Toast.makeText(MainNewActivity.this, "nv " + contentDescription, Toast.LENGTH_SHORT).show();
+                    showSingleAlertDialog(contentDescription.toString());
+                }
+            });
+        }
     }
 
 
@@ -256,8 +290,7 @@ public class MainNewActivity extends AppCompatActivity implements MqttCallback, 
         }
     }
 
-    public void showSingleAlertDialog() {
-
+    public void showSingleAlertDialog(final String code) {
         final String[] items = {"无人", "有人", "清扫", "维修", "修改ID"};
         AlertDialog.Builder alertBuilder = new AlertDialog.Builder(this);
         alertBuilder.setTitle("请设置厕所状态");
@@ -277,15 +310,19 @@ public class MainNewActivity extends AppCompatActivity implements MqttCallback, 
                     dialogPutId();
                 } else {
                     String jsonContent = getJsonContent("6000", code, state + "");
+                    String to = mqttConfig.dev.fsu_code + "/" + mqttConfig.dev.dev_code;
+                    Log.i("top", to);
                     Log.i("jsonContent", jsonContent);
                     //图标状态改变
-                    dbDeviceFloorMap = findDevice(code);
-                    if (dbDeviceFloorMap != null) {
-                        dbDeviceFloorMap.state = state;
-                    }
-                    updataLog();
+//                    dbDeviceFloorMap = findDevice(code);
+//                    if (dbDeviceFloorMap != null) {
+//                        dbDeviceFloorMap.state = state;
+//                    }
+//                    updataLog();
+                    mListDebugInfo.add(simpleDateFormat.format(Calendar.getInstance().getTime()) + "| showSingleAlertDialog :" + (to + "#" + jsonContent));
+                    mAdapter.notifyDataSetChanged();
                     //发送消息
-                    mClient.publish("/datain" + "/" + mqttConfig.dev.fsu_code + "/" + mqttConfig.dev.dev_code, jsonContent);
+                    mClient.publish(to, jsonContent);
                 }
             }
         });
@@ -304,6 +341,9 @@ public class MainNewActivity extends AppCompatActivity implements MqttCallback, 
         readDeviceMap();
     }
 
+    /**
+     * 加载配置文件json
+     */
     private void readDeviceConfig() {
         try {
             InputStream inputStream = getClass().getClassLoader().getResourceAsStream("assets/" + "config/mqtt_config.json"); //E1  E2   NV  NAN
@@ -316,33 +356,6 @@ public class MainNewActivity extends AppCompatActivity implements MqttCallback, 
             Log.e(TAG, e.getMessage());
         }
     }
-
-
-    private void initTime() {
-        SimpleDateFormat shortDateFormat = new SimpleDateFormat("yyyy年MM月dd日-HH:mm:ss", new Locale("zh"));
-        String sDate = shortDateFormat.format(new Date(System.currentTimeMillis()));
-        String[] split = sDate.split("-");
-        Calendar calendar = Calendar.getInstance();
-        String date = "     星期" + weekWords[calendar.get(Calendar.DAY_OF_WEEK) - 1] + "   ";
-        String ss = split[0] + date + split[1];
-        TextView tv_date = findViewById(R.id.tv_date);
-        tv_date.setText(ss);
-//        tvYear.setText(sDate.substring(0, 4));
-//        tvMonth.setText(sDate.substring(5, 7));
-//        tvDay.setText(sDate.substring(8, 10));
-//        tvDate.setText(date);
-//        tvTime.setText(sDate.substring(11, 16));
-    }
-
-    private TimerTask task1 = new TimerTask() {
-        @Override
-        public void run() {
-            Message message = new Message();
-            message.what = fTime;
-            handler.sendMessage(message);
-        }
-    };
-
 
     /**
      * 加载蹲位布局json
@@ -385,6 +398,33 @@ public class MainNewActivity extends AppCompatActivity implements MqttCallback, 
         }
     }
 
+
+    private void initTime() {
+        SimpleDateFormat shortDateFormat = new SimpleDateFormat("yyyy年MM月dd日-HH:mm:ss", new Locale("zh"));
+        String sDate = shortDateFormat.format(new Date(System.currentTimeMillis()));
+        String[] split = sDate.split("-");
+        Calendar calendar = Calendar.getInstance();
+        String date = "     星期" + weekWords[calendar.get(Calendar.DAY_OF_WEEK) - 1] + "   ";
+        String ss = split[0] + date + split[1];
+        TextView tv_date = findViewById(R.id.tv_date);
+        tv_date.setText(ss);
+//        tvYear.setText(sDate.substring(0, 4));
+//        tvMonth.setText(sDate.substring(5, 7));
+//        tvDay.setText(sDate.substring(8, 10));
+//        tvDate.setText(date);
+//        tvTime.setText(sDate.substring(11, 16));
+    }
+
+    private TimerTask task1 = new TimerTask() {
+        @Override
+        public void run() {
+            Message message = new Message();
+            message.what = fTime;
+            handler.sendMessage(message);
+        }
+    };
+
+
     //判断点击的范围
     public void JudgmentScope(float _x_, float _y_) {
         for (DeviceSignalInfo floorMap : listDeviceFloorMaps) {
@@ -393,7 +433,7 @@ public class MainNewActivity extends AppCompatActivity implements MqttCallback, 
                 Log.i("_x_ _y_", " _x_=" + _x_ + " _y_=" + _y_);
                 code = floorMap.code;
                 signal = floorMap.signal;
-                showSingleAlertDialog();
+//                showSingleAlertDialog();
             }
         }
     }
@@ -481,6 +521,8 @@ public class MainNewActivity extends AppCompatActivity implements MqttCallback, 
             message.what = fCount;
             handler.sendMessage(message);
         }
+        mListDebugInfo.add(simpleDateFormat.format(Calendar.getInstance().getTime()) + "| messageArrived :" + msgEntity);
+        mAdapter.notifyDataSetChanged();
         updataLog(msgEntity);
     }
 
@@ -516,22 +558,11 @@ public class MainNewActivity extends AppCompatActivity implements MqttCallback, 
     }
 
 
-    public void updataLog(final String message) {
-        runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-             /* mListDebugInfo.add("messageArrived :" + message + simpleDateFormat.format(Calendar.getInstance().getTime()));
-                mAdapter.notifyDataSetChanged();*/
-                floorMapView.updateDeviceState();
-            }
-        });
-    }
-
     public void updataLog() {
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                floorMapView.updateDeviceState();
+//                floorMapView.updateDeviceState();
             }
         });
     }
@@ -563,15 +594,26 @@ public class MainNewActivity extends AppCompatActivity implements MqttCallback, 
         return null;
     }
 
-//    SimpleDateFormat simpleDateFormat = new SimpleDateFormat("HH:mm:ss");
+    public void updataLog(final String message) {
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                mListDebugInfo.add(simpleDateFormat.format(Calendar.getInstance().getTime()) + "| updataLog :" + message);
+                mAdapter.notifyDataSetChanged();
+//                floorMapView.updateDeviceState();
+            }
+        });
+    }
+
+    private SimpleDateFormat simpleDateFormat = new SimpleDateFormat("HH:mm:ss");
 
     @Override
     public void onMessage(final String message) {
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
-//                mListDebugInfo.add(message + "" + simpleDateFormat.format(Calendar.getInstance().getTime()));
-//                mAdapter.notifyDataSetChanged();
+                mListDebugInfo.add(simpleDateFormat.format(Calendar.getInstance().getTime()) + "| onMessage :" + message);
+                mAdapter.notifyDataSetChanged();
             }
         });
     }

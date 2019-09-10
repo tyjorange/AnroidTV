@@ -1,5 +1,6 @@
 package sh.slst.anroidtv.bean;
 
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -98,5 +99,11 @@ public class DunViewHolder {
         return DunViewHolder.nv.get(key);
     }
 
+    public static Collection<Integer> getAllNan() {
+        return nan.values();
+    }
 
+    public static Collection<Integer> getAllNv() {
+        return nv.values();
+    }
 }
