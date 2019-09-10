@@ -1,9 +1,6 @@
 package sh.slst.anroidtv.utils;
 
 import android.content.Context;
-import android.util.Log;
-
-import sh.slst.anroidtv.bean.DeviceSignalInfo;
 
 /**
  * Created by Administrator on 2018/9/18.
@@ -22,7 +19,4 @@ public class utils {
         float scale = context.getResources().getDisplayMetrics().density;
         return (int) (dpValue * scale + 0.5f);
     }
-
-
-
 }

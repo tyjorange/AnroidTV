@@ -61,7 +61,7 @@ import sh.slst.anroidtv.utils.utils;
 //import com.google.android.gms.appindexing.Thing;
 //import com.google.android.gms.common.api.GoogleApiClient;
 
-public class MainNewActivity extends AppCompatActivity implements MqttCallback, ISubscibeConnectMessage {
+public class MainNewNewActivity extends AppCompatActivity implements MqttCallback, ISubscibeConnectMessage {
 
     private String TAG = "MainNewActivity";
 //    private FloorMapView floorMapView;
@@ -120,15 +120,15 @@ public class MainNewActivity extends AppCompatActivity implements MqttCallback, 
     MyHandler handler = new MyHandler(this);
 
     static class MyHandler extends Handler {
-        WeakReference<MainNewActivity> mActivity;
+        WeakReference<MainNewNewActivity> mActivity;
 
-        MyHandler(MainNewActivity activity) {
-            mActivity = new WeakReference<MainNewActivity>(activity);
+        MyHandler(MainNewNewActivity activity) {
+            mActivity = new WeakReference<MainNewNewActivity>(activity);
         }
 
         @Override
         public void handleMessage(Message msg) {
-            final MainNewActivity theActivity = mActivity.get();
+            final MainNewNewActivity theActivity = mActivity.get();
             switch (msg.what) {
                 case fTime:
                     theActivity.initTime();
@@ -157,9 +157,9 @@ public class MainNewActivity extends AppCompatActivity implements MqttCallback, 
         super.onCreate(savedInstanceState);
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN); //隐藏状态栏
 //        getWindow().clearFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN); //显示状态栏
-        setContentView(R.layout.activity_main_news);
+        setContentView(R.layout.activity_main_newss);
 
-        sPreferences = MainNewActivity.this.getSharedPreferences("STATE", MODE_PRIVATE);
+        sPreferences = MainNewNewActivity.this.getSharedPreferences("STATE", MODE_PRIVATE);
 //        String wmessage = sPreferences.getString("wrongmessage", "");
 //      updataLog(wmessage);
 
@@ -202,11 +202,10 @@ public class MainNewActivity extends AppCompatActivity implements MqttCallback, 
         findViewById(R.id.iv_ad_right).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                startActivity(new Intent(MainNewActivity.this, MainNewNewActivity.class));
+                startActivity(new Intent(MainNewNewActivity.this, MainNewActivity.class));
                 finish();
             }
         });
-
 //        floorMapView.setOnTouchListener(new View.OnTouchListener() {
 //            @Override
 //            public boolean onTouch(View v, MotionEvent event) {

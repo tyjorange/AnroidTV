@@ -23,31 +23,31 @@ import java.util.concurrent.ScheduledExecutorService;
 		{"signal":"6000", "code":"80DFA114004B1200", "state":0} 蹲位状态 实时 1有人 0离开
 */
 
-public class SubscribeClient {
+class SubscribeClient {
 
     private String HOST = "tcp://192.168.0.1:1883";  //192.168.0.1
 
     private MqttClient s_client;
     private MqttConnectOptions options;
-    private ScheduledExecutorService scheduler;
-    private MqttTopic topic11;
+//    private ScheduledExecutorService scheduler;
+//    private MqttTopic topic11;
 
     private ISubscibeConnectMessage subscibeConnectMessage;
     private String mTopic;
     private boolean isExit = false;
 
-    public SubscribeClient(String ip, int port) {
+    SubscribeClient(String ip, int port) {
         HOST = "tcp://" + ip + ":" + port;
         Log.i("HOST", HOST);
     }
 
-    public void subscribe(String topic, String clientid, MqttCallback callback, String sendcontent) {
+    void subscribe(String topic, String clientid, MqttCallback callback, String sendcontent) {
         mTopic = topic;
         start(topic, clientid, callback, sendcontent);
     }
 
 
-    public void setMessageNotify(ISubscibeConnectMessage connectMessage) {
+    void setMessageNotify(ISubscibeConnectMessage connectMessage) {
         subscibeConnectMessage = connectMessage;
     }
 
@@ -98,7 +98,7 @@ public class SubscribeClient {
         }
     }
 
-    public void publish(String topic, String msg) {
+    void publish(String topic, String msg) {
         try {
             if (s_client != null && s_client.isConnected()) {
                 MqttMessage message = new MqttMessage();
@@ -117,10 +117,12 @@ public class SubscribeClient {
     /**
      * 断开链接
      */
-    public void disconnect() {
+    void disconnect() {
         try {
-            s_client.disconnect();
-            isExit = true;
+            if (s_client.isConnected()) {
+                s_client.disconnect();
+                isExit = true;
+            }
         } catch (MqttException e) {
             e.printStackTrace();
         }
@@ -129,7 +131,7 @@ public class SubscribeClient {
     /**
      * 重新链接
      */
-    public void startReconnect() {
+    void startReconnect() {
         new Thread() {
             @Override
             public void run() {
