@@ -55,10 +55,9 @@ import sh.slst.anroidtv.bean.MQTTConfig;
 import sh.slst.anroidtv.utils.FileUtils;
 import sh.slst.anroidtv.utils.utils;
 
-public class MainNewActivity extends BaseActivity implements MqttCallback, ISubscibeConnectMessage {
-    private String TAG = this.getClass().getSimpleName();
-//    private FloorMapView floorMapView;
-
+public class MainNanActivity extends BaseActivity implements MqttCallback, ISubscibeConnectMessage {
+    private String TAG = getClass().getSimpleName();
+    //    private FloorMapView floorMapView;
     private SubscribeClient mClient;
     private MQTTConfig mqttConfig;
     private List<DeviceSignalInfo> listDeviceFloorMaps;
@@ -115,15 +114,15 @@ public class MainNewActivity extends BaseActivity implements MqttCallback, ISubs
     MyHandler handler = new MyHandler(this);
 
     static class MyHandler extends Handler {
-        WeakReference<MainNewActivity> activityWeakReference;
+        WeakReference<MainNanActivity> activityWeakReference;
 
-        MyHandler(MainNewActivity activity) {
-            activityWeakReference = new WeakReference<MainNewActivity>(activity);
+        MyHandler(MainNanActivity activity) {
+            activityWeakReference = new WeakReference<MainNanActivity>(activity);
         }
 
         @Override
         public void handleMessage(Message msg) {
-            final MainNewActivity theActivity = activityWeakReference.get();
+            final MainNanActivity theActivity = activityWeakReference.get();
             switch (msg.what) {
                 case fTime:
                     theActivity.initTime();
@@ -153,9 +152,9 @@ public class MainNewActivity extends BaseActivity implements MqttCallback, ISubs
         super.onCreate(savedInstanceState);
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN); //隐藏状态栏
 //        getWindow().clearFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN); //显示状态栏
-        setContentView(R.layout.activity_main_news);
+        setContentView(R.layout.activity_main_nan);
 
-        sPreferences = MainNewActivity.this.getSharedPreferences("STATE", MODE_PRIVATE);
+        sPreferences = MainNanActivity.this.getSharedPreferences("STATE", MODE_PRIVATE);
 //        String wmessage = sPreferences.getString("wrongmessage", "");
 //      updataLog(wmessage);
 
@@ -199,7 +198,7 @@ public class MainNewActivity extends BaseActivity implements MqttCallback, ISubs
         findViewById(R.id.iv_ad_right).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                startActivity(new Intent(MainNewActivity.this, MainNewNewActivity.class));
+                startActivity(new Intent(MainNanActivity.this, MainNvActivity.class));
                 finish();
             }
         });
@@ -211,7 +210,7 @@ public class MainNewActivity extends BaseActivity implements MqttCallback, ISubs
 //                    case MotionEvent.ACTION_DOWN:
 //                        float x = event.getX();
 //                        float y = event.getY();
-//                        Toast.makeText(MainNewActivity.this, "X=" + x + " Y=" + y, Toast.LENGTH_SHORT).show();
+//                        Toast.makeText(MainNanActivity.this, "X=" + x + " Y=" + y, Toast.LENGTH_SHORT).show();
 //                        JudgmentScope(x, y);
 //                        break;
 //                }
@@ -244,7 +243,7 @@ public class MainNewActivity extends BaseActivity implements MqttCallback, ISubs
                 @Override
                 public void onClick(View view) {
                     CharSequence contentDescription = view.getContentDescription();
-//                    Toast.makeText(MainNewActivity.this, "nan " + contentDescription, Toast.LENGTH_SHORT).show();
+//                    Toast.makeText(MainNanActivity.this, "nan " + contentDescription, Toast.LENGTH_SHORT).show();
                     showSingleAlertDialog(contentDescription.toString());
                 }
             });
@@ -264,7 +263,7 @@ public class MainNewActivity extends BaseActivity implements MqttCallback, ISubs
                 @Override
                 public void onClick(View view) {
                     CharSequence contentDescription = view.getContentDescription();
-//                    Toast.makeText(MainNewActivity.this, "nv " + contentDescription, Toast.LENGTH_SHORT).show();
+//                    Toast.makeText(MainNanActivity.this, "nv " + contentDescription, Toast.LENGTH_SHORT).show();
                     showSingleAlertDialog(contentDescription.toString());
                 }
             });

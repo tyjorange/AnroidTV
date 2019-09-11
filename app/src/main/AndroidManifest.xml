@@ -37,14 +37,14 @@
             </intent-filter>
         </receiver>
 
-        <activity android:name=".MainNewActivity">
+        <activity android:name=".MainNanActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".MainNewNewActivity" />
+        <activity android:name=".MainNvActivity" />
     </application>
 
 </manifest>

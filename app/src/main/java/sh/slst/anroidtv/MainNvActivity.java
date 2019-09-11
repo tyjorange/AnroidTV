@@ -11,7 +11,6 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.support.v7.app.AlertDialog;
-import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -56,16 +55,9 @@ import sh.slst.anroidtv.bean.MQTTConfig;
 import sh.slst.anroidtv.utils.FileUtils;
 import sh.slst.anroidtv.utils.utils;
 
-//import com.google.android.gms.appindexing.Action;
-//import com.google.android.gms.appindexing.AppIndex;
-//import com.google.android.gms.appindexing.Thing;
-//import com.google.android.gms.common.api.GoogleApiClient;
-
-public class MainNewNewActivity extends BaseActivity implements MqttCallback, ISubscibeConnectMessage {
-
-    private String TAG = "MainNewNewActivity";
-//    private FloorMapView floorMapView;
-
+public class MainNvActivity extends BaseActivity implements MqttCallback, ISubscibeConnectMessage {
+    private String TAG = getClass().getSimpleName();
+    //    private FloorMapView floorMapView;
     private SubscribeClient mClient;
     private MQTTConfig mqttConfig;
     private List<DeviceSignalInfo> listDeviceFloorMaps;
@@ -94,8 +86,10 @@ public class MainNewNewActivity extends BaseActivity implements MqttCallback, IS
     private int visitors = 0;
     private TextView text_useposition_left;
     private TextView text_useposition_right;
-    private int allcounts = 0;
-    private int useposition;
+    //    private int allcounts_nan;
+//    private int allcounts_nv;
+//    private int useposition_nan;
+//    private int useposition_nv;
     private AlertDialog alertDialog;
     private int state;
     private String signal;
@@ -112,38 +106,34 @@ public class MainNewNewActivity extends BaseActivity implements MqttCallback, IS
     private DebugMessageAdapter mAdapter;
     Timer timer = new Timer();
 
-    private static final int fTime = 1;
-    private static final int fCount = 2;
-    private static final int fUse = 3;
-    private static final int cMqtt = 4;
+    private static final int fTime = 1;//刷新时钟
+    private static final int fCount = 2;//更新累计人数
+    private static final int fUse = 3;//更新蹲位使用情况
+    private static final int cMqtt = 4;//启动时连接MQTT订阅消息
     // 实例化一个MyHandler对象
     MyHandler handler = new MyHandler(this);
 
-    @Override
-    public void postDebug(String tag, String msg) {
-
-    }
-
     static class MyHandler extends Handler {
-        WeakReference<MainNewNewActivity> mActivity;
+        WeakReference<MainNvActivity> activityWeakReference;
 
-        MyHandler(MainNewNewActivity activity) {
-            mActivity = new WeakReference<MainNewNewActivity>(activity);
+        MyHandler(MainNvActivity activity) {
+            activityWeakReference = new WeakReference<MainNvActivity>(activity);
         }
 
         @Override
         public void handleMessage(Message msg) {
-            final MainNewNewActivity theActivity = mActivity.get();
+            final MainNvActivity theActivity = activityWeakReference.get();
             switch (msg.what) {
                 case fTime:
                     theActivity.initTime();
                     break;
                 case fCount:
-                    //更新累计人数
+
                     break;
                 case fUse:
-                    theActivity.text_useposition_left.setText(theActivity.useposition + "/" + theActivity.allcounts);
-                    theActivity.text_useposition_right.setText(theActivity.useposition + "/" + theActivity.allcounts);
+                    theActivity.cccc(theActivity.deviceSignalInfo);
+                    theActivity.text_useposition_left.setText("当前使用：" + DunViewHolder.getNvUse());
+                    theActivity.text_useposition_right.setText("当前使用：" + DunViewHolder.getNanUse());
                     break;
                 case cMqtt:
                     if (theActivity.mqttConfig != null) {
@@ -162,9 +152,9 @@ public class MainNewNewActivity extends BaseActivity implements MqttCallback, IS
         super.onCreate(savedInstanceState);
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN); //隐藏状态栏
 //        getWindow().clearFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN); //显示状态栏
-        setContentView(R.layout.activity_main_newss);
+        setContentView(R.layout.activity_main_nv);
 
-        sPreferences = MainNewNewActivity.this.getSharedPreferences("STATE", MODE_PRIVATE);
+        sPreferences = MainNvActivity.this.getSharedPreferences("STATE", MODE_PRIVATE);
 //        String wmessage = sPreferences.getString("wrongmessage", "");
 //      updataLog(wmessage);
 
@@ -204,13 +194,15 @@ public class MainNewNewActivity extends BaseActivity implements MqttCallback, IS
                 }
             }
         });
+        // 切换地图
         findViewById(R.id.iv_ad_right).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                startActivity(new Intent(MainNewNewActivity.this, MainNewActivity.class));
+                startActivity(new Intent(MainNvActivity.this, MainNanActivity.class));
                 finish();
             }
         });
+
 //        floorMapView.setOnTouchListener(new View.OnTouchListener() {
 //            @Override
 //            public boolean onTouch(View v, MotionEvent event) {
@@ -218,7 +210,7 @@ public class MainNewNewActivity extends BaseActivity implements MqttCallback, IS
 //                    case MotionEvent.ACTION_DOWN:
 //                        float x = event.getX();
 //                        float y = event.getY();
-//                        Toast.makeText(MainNewActivity.this, "X=" + x + " Y=" + y, Toast.LENGTH_SHORT).show();
+//                        Toast.makeText(MainNvActivity.this, "X=" + x + " Y=" + y, Toast.LENGTH_SHORT).show();
 //                        JudgmentScope(x, y);
 //                        break;
 //                }
@@ -236,27 +228,51 @@ public class MainNewNewActivity extends BaseActivity implements MqttCallback, IS
 //        floorMapView.setData(listDeviceFloorMaps, bmpFloor);
         timer.schedule(task1, 0, 1000);
 
-        DunViewHolder.init(this);
 
-        for (Integer s : DunViewHolder.getAllNan()) {
-            findViewById(s).setOnClickListener(new View.OnClickListener() {
+        //初始化蹲位
+        DunViewHolder.init(this);
+        text_useposition_left.setText("当前使用：" + DunViewHolder.getNvUse());
+        text_useposition_right.setText("当前使用：" + DunViewHolder.getNanUse());
+        //初始化蹲位图片 和点击事件
+        List<Integer> allNan = DunViewHolder.getAllNan();
+        JSONArray nanStatusList = DunViewHolder.getNanStatusList();
+        for (int i = 0; i < allNan.size(); i++) {
+            Integer integer = allNan.get(i);
+            ImageView viewById = findViewById(integer);
+            viewById.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
                     CharSequence contentDescription = view.getContentDescription();
-//                    Toast.makeText(MainNewActivity.this, "nan " + contentDescription, Toast.LENGTH_SHORT).show();
+//                    Toast.makeText(MainNvActivity.this, "nan " + contentDescription, Toast.LENGTH_SHORT).show();
                     showSingleAlertDialog(contentDescription.toString());
                 }
             });
+            try {
+                int status = nanStatusList.getInt(i);
+                viewById.setImageDrawable(status == 1 ? getResources().getDrawable(R.mipmap.nan1new) : getResources().getDrawable(R.mipmap.nan2new));
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
         }
-        for (Integer s : DunViewHolder.getAllNv()) {
-            findViewById(s).setOnClickListener(new View.OnClickListener() {
+        List<Integer> allNv = DunViewHolder.getAllNv();
+        JSONArray nvStatusList = DunViewHolder.getNvStatusList();
+        for (int i = 0; i < allNv.size(); i++) {
+            Integer integer = allNv.get(i);
+            ImageView viewById = findViewById(integer);
+            viewById.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
                     CharSequence contentDescription = view.getContentDescription();
-//                    Toast.makeText(MainNewActivity.this, "nv " + contentDescription, Toast.LENGTH_SHORT).show();
+//                    Toast.makeText(MainNvActivity.this, "nv " + contentDescription, Toast.LENGTH_SHORT).show();
                     showSingleAlertDialog(contentDescription.toString());
                 }
             });
+            try {
+                int status = nvStatusList.getInt(i);
+                viewById.setImageDrawable(status == 1 ? getResources().getDrawable(R.mipmap.nv1new) : getResources().getDrawable(R.mipmap.nv2new));
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
         }
     }
 
@@ -337,8 +353,8 @@ public class MainNewNewActivity extends BaseActivity implements MqttCallback, IS
                     alertDialog.dismiss();
                     dialogPutId();
                 } else {
-                    String jsonContent = getJsonContent("6000", code, state + "");
-                    String to = mqttConfig.dev.fsu_code + "/" + mqttConfig.dev.dev_code;
+                    final String jsonContent = getJsonContent("6000", code, state + "");
+                    final String to = "/" + mqttConfig.dev.fsu_code + "/" + mqttConfig.dev.dev_code;
                     Log.i("top", to);
                     Log.i("jsonContent", jsonContent);
                     //图标状态改变
@@ -347,8 +363,7 @@ public class MainNewNewActivity extends BaseActivity implements MqttCallback, IS
 //                        dbDeviceFloorMap.state = state;
 //                    }
 //                    updataLog();
-                    mListDebugInfo.add(simpleDateFormat.format(Calendar.getInstance().getTime()) + "| showSingleAlertDialog :" + (to + "#" + jsonContent));
-                    mAdapter.notifyDataSetChanged();
+                    postDebug("| showSingleAlertDialog :", (to + "#" + jsonContent));
                     //发送消息
                     mClient.publish(to, jsonContent);
                 }
@@ -413,7 +428,7 @@ public class MainNewNewActivity extends BaseActivity implements MqttCallback, IS
             }
         } else {
             try {
-                InputStream inputStream = getClass().getClassLoader().getResourceAsStream("assets/" + "map/nan_left0.json"); //map1  map
+                InputStream inputStream = getClass().getClassLoader().getResourceAsStream("assets/" + "map/nan_left.json"); //map1  map
                 Gson gson = new Gson();
                 JsonReader jsonReader = new JsonReader(new InputStreamReader(inputStream));
                 Type type = new TypeToken<List<DeviceSignalInfo>>() {
@@ -509,8 +524,10 @@ public class MainNewNewActivity extends BaseActivity implements MqttCallback, IS
         mClient.startReconnect();
     }
 
+    DeviceSignalInfo deviceSignalInfo;
+
     /**
-     * @param sssssss
+     * @param topic
      * @param mqttMessage System.out.println("接收消息主题:" + topic + " Qos:" + message.getQos());
      *                    System.out.println("接收消息内容:" + new String(message.getPayload()));
      * @Override public void connectionLost(Throwable throwable) {
@@ -524,22 +541,20 @@ public class MainNewNewActivity extends BaseActivity implements MqttCallback, IS
      * {"signal":"6000", "code":"80DFA114004B1200", "state":0} 蹲位状态 实时 1有人 0离开
      */
     @Override
-    public void messageArrived(String sssssss, final MqttMessage mqttMessage) throws Exception {
+    public void messageArrived(String topic, final MqttMessage mqttMessage) {
         final String msgEntity = new String(mqttMessage.getPayload());
         Gson gson = new Gson();
-        DeviceSignalInfo deviceSignalInfo = gson.fromJson(msgEntity, DeviceSignalInfo.class);
+        deviceSignalInfo = gson.fromJson(msgEntity, DeviceSignalInfo.class);
         /* Log.i("接收消息主题 : ", topic);
         Log.i("接收消息Qos : ", mqttMessage.getQos() + "");
         Log.i("接收消息内容 : ", new String(mqttMessage.getPayload()));*/
         if (deviceSignalInfo.signal.equals("6000")) { //蹲位状态变化
-            DeviceSignalInfo dbDeviceFloorMap = findDevice(deviceSignalInfo.code);
-            if (dbDeviceFloorMap != null) {
-                dbDeviceFloorMap.state = deviceSignalInfo.state;
-            }
-
-            cccc(deviceSignalInfo);
-
-            useposition = getUseratio();
+//            DeviceSignalInfo dbDeviceFloorMap = findDevice(deviceSignalInfo.code);
+//            if (dbDeviceFloorMap != null) {
+//                dbDeviceFloorMap.state = deviceSignalInfo.state;
+//            }
+//            useposition = getUseratio();
+//            useposition = getUseratio();
             Message message = new Message();
             message.what = fUse;
             handler.sendMessage(message);
@@ -550,9 +565,8 @@ public class MainNewNewActivity extends BaseActivity implements MqttCallback, IS
             message.what = fCount;
             handler.sendMessage(message);
         }
-        mListDebugInfo.add(simpleDateFormat.format(Calendar.getInstance().getTime()) + "| messageArrived :" + msgEntity);
-        mAdapter.notifyDataSetChanged();
-        updataLog(msgEntity);
+        postDebug("| messageArrived :", msgEntity);
+//        updataLog(msgEntity);
     }
 
     /**
@@ -561,14 +575,18 @@ public class MainNewNewActivity extends BaseActivity implements MqttCallback, IS
      * @param deviceSignalInfo
      */
     private void cccc(DeviceSignalInfo deviceSignalInfo) {
-        Integer nanDunView = DunViewHolder.getNanDunViewByKey(deviceSignalInfo.code);
-        Integer nvDunView = DunViewHolder.getNvDunViewByKey(deviceSignalInfo.code);
+        Integer nanDunViewId = DunViewHolder.getNanDunViewByKey(deviceSignalInfo.code);
+        Integer nvDunViewId = DunViewHolder.getNvDunViewByKey(deviceSignalInfo.code);
         ImageView viewById;
-        if (nanDunView == null) {
-            viewById = findViewById(nvDunView);
+        if (nanDunViewId == null) {
+            // 改女蹲位
+            viewById = findViewById(nvDunViewId);
+            DunViewHolder.changeNvStatus(nvDunViewId, deviceSignalInfo.state);
             viewById.setImageDrawable(deviceSignalInfo.state == 1 ? getResources().getDrawable(R.mipmap.nv1new) : getResources().getDrawable(R.mipmap.nv2new));
         } else {
-            viewById = findViewById(nanDunView);
+            // 改男蹲位
+            viewById = findViewById(nanDunViewId);
+            DunViewHolder.changeNanStatus(nanDunViewId, deviceSignalInfo.state);
             viewById.setImageDrawable(deviceSignalInfo.state == 1 ? getResources().getDrawable(R.mipmap.nan1new) : getResources().getDrawable(R.mipmap.nan2new));
         }
     }
@@ -603,7 +621,7 @@ public class MainNewNewActivity extends BaseActivity implements MqttCallback, IS
 
     public int getUseratio() {
         int position = 0;
-        allcounts = listDeviceFloorMaps.size();
+//        allcounts = listDeviceFloorMaps.size();
         for (DeviceSignalInfo floorMap : listDeviceFloorMaps) {
             if (floorMap.state == DeviceSignalInfo.STATE_ON) {
                 position++;
@@ -624,27 +642,31 @@ public class MainNewNewActivity extends BaseActivity implements MqttCallback, IS
     }
 
     public void updataLog(final String message) {
-        runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                mListDebugInfo.add(simpleDateFormat.format(Calendar.getInstance().getTime()) + "| updataLog :" + message);
-                mAdapter.notifyDataSetChanged();
-//                floorMapView.updateDeviceState();
-            }
-        });
+        postDebug("| updataLog :", message);
     }
 
     private SimpleDateFormat simpleDateFormat = new SimpleDateFormat("HH:mm:ss");
 
+    /**
+     * 添加到DEBUG视图
+     *
+     * @param tag
+     * @param msg
+     */
     @Override
-    public void onMessage(final String message) {
+    public void postDebug(final String tag, final String msg) {
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                mListDebugInfo.add(simpleDateFormat.format(Calendar.getInstance().getTime()) + "| onMessage :" + message);
+                mListDebugInfo.add(simpleDateFormat.format(Calendar.getInstance().getTime()) + tag + msg);
                 mAdapter.notifyDataSetChanged();
             }
         });
+    }
+
+    @Override
+    public void onMessage(final String message) {
+        postDebug("| onMessage :", message);
     }
 
     @Override

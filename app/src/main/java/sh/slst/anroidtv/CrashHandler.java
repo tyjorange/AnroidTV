@@ -9,22 +9,16 @@ import android.content.SharedPreferences;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.os.Build;
-import android.os.Environment;
 import android.os.Looper;
 import android.util.Log;
 import android.widget.Toast;
 
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.io.Writer;
 import java.lang.reflect.Field;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -147,7 +141,7 @@ public class CrashHandler implements Thread.UncaughtExceptionHandler {
         } else {
             AlarmManager mgr = (AlarmManager) mcontext.getSystemService(Context.ALARM_SERVICE);
 
-            Intent intent = new Intent(mcontext, MainNewActivity.class);
+            Intent intent = new Intent(mcontext, MainNanActivity.class);
             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             intent.putExtra("crash", true);
             PendingIntent restartIntent = PendingIntent.getActivity(mcontext, 0, intent, PendingIntent.FLAG_ONE_SHOT);
