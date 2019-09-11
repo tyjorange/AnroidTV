@@ -15,7 +15,7 @@ android {
     compileSdkVersion 26
     defaultConfig {
         applicationId "sh.slst.anroidtv"
-        minSdkVersion 14
+        minSdkVersion 21
         targetSdkVersion 26
         versionCode 1
         versionName "1.0"
@@ -33,6 +33,9 @@ android {
         debug {
             signingConfig signingConfigs.config
         }
+    }
+    compileOptions {
+        sourceCompatibility = '1.7'
     }
 }
 

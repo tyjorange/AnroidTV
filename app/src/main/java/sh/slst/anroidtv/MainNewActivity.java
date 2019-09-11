@@ -20,7 +20,6 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
@@ -88,10 +87,10 @@ public class MainNewActivity extends BaseActivity implements MqttCallback, ISubs
     private int visitors = 0;
     private TextView text_useposition_left;
     private TextView text_useposition_right;
-    private int allcounts_nan;
-    private int allcounts_nv;
-    private int useposition_nan;
-    private int useposition_nv;
+    //    private int allcounts_nan;
+//    private int allcounts_nv;
+//    private int useposition_nan;
+//    private int useposition_nv;
     private AlertDialog alertDialog;
     private int state;
     private String signal;
@@ -116,15 +115,15 @@ public class MainNewActivity extends BaseActivity implements MqttCallback, ISubs
     MyHandler handler = new MyHandler(this);
 
     static class MyHandler extends Handler {
-        WeakReference<MainNewActivity> mActivity;
+        WeakReference<MainNewActivity> activityWeakReference;
 
         MyHandler(MainNewActivity activity) {
-            mActivity = new WeakReference<MainNewActivity>(activity);
+            activityWeakReference = new WeakReference<MainNewActivity>(activity);
         }
 
         @Override
         public void handleMessage(Message msg) {
-            final MainNewActivity theActivity = mActivity.get();
+            final MainNewActivity theActivity = activityWeakReference.get();
             switch (msg.what) {
                 case fTime:
                     theActivity.initTime();
@@ -134,8 +133,8 @@ public class MainNewActivity extends BaseActivity implements MqttCallback, ISubs
                     break;
                 case fUse:
                     theActivity.cccc(theActivity.deviceSignalInfo);
-                    theActivity.text_useposition_left.setText("当前使用：" + theActivity.useposition_nan + "/" + theActivity.allcounts_nan);
-                    theActivity.text_useposition_right.setText("当前使用：" + theActivity.useposition_nv + "/" + theActivity.allcounts_nv);
+                    theActivity.text_useposition_left.setText("当前使用：" + DunViewHolder.getNanUse());
+                    theActivity.text_useposition_right.setText("当前使用：" + DunViewHolder.getNvUse());
                     break;
                 case cMqtt:
                     if (theActivity.mqttConfig != null) {
@@ -196,6 +195,7 @@ public class MainNewActivity extends BaseActivity implements MqttCallback, ISubs
                 }
             }
         });
+        // 切换地图
         findViewById(R.id.iv_ad_right).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -229,32 +229,52 @@ public class MainNewActivity extends BaseActivity implements MqttCallback, ISubs
 //        floorMapView.setData(listDeviceFloorMaps, bmpFloor);
         timer.schedule(task1, 0, 1000);
 
-        for (Integer s : DunViewHolder.getAllNan()) {
-            findViewById(s).setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    CharSequence contentDescription = view.getContentDescription();
-                    Toast.makeText(MainNewActivity.this, "nan " + contentDescription, Toast.LENGTH_SHORT).show();
-                    showSingleAlertDialog(contentDescription.toString());
-                }
-            });
-        }
-        for (Integer s : DunViewHolder.getAllNv()) {
-            findViewById(s).setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    CharSequence contentDescription = view.getContentDescription();
-                    Toast.makeText(MainNewActivity.this, "nv " + contentDescription, Toast.LENGTH_SHORT).show();
-                    showSingleAlertDialog(contentDescription.toString());
-                }
-            });
-        }
 
-        //
+        //初始化蹲位
         DunViewHolder.init(this);
-
-        allcounts_nan = DunViewHolder.getAllNan().size();
-        allcounts_nv = DunViewHolder.getAllNv().size();
+        text_useposition_left.setText("当前使用：" + DunViewHolder.getNanUse());
+        text_useposition_right.setText("当前使用：" + DunViewHolder.getNvUse());
+        //初始化蹲位图片 和点击事件
+        List<Integer> allNan = DunViewHolder.getAllNan();
+        JSONArray nanStatusList = DunViewHolder.getNanStatusList();
+        for (int i = 0; i < allNan.size(); i++) {
+            Integer integer = allNan.get(i);
+            ImageView viewById = findViewById(integer);
+            viewById.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    CharSequence contentDescription = view.getContentDescription();
+//                    Toast.makeText(MainNewActivity.this, "nan " + contentDescription, Toast.LENGTH_SHORT).show();
+                    showSingleAlertDialog(contentDescription.toString());
+                }
+            });
+            try {
+                int status = nanStatusList.getInt(i);
+                viewById.setImageDrawable(status == 1 ? getResources().getDrawable(R.mipmap.nan1new) : getResources().getDrawable(R.mipmap.nan2new));
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
+        List<Integer> allNv = DunViewHolder.getAllNv();
+        JSONArray nvStatusList = DunViewHolder.getNvStatusList();
+        for (int i = 0; i < allNv.size(); i++) {
+            Integer integer = allNv.get(i);
+            ImageView viewById = findViewById(integer);
+            viewById.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    CharSequence contentDescription = view.getContentDescription();
+//                    Toast.makeText(MainNewActivity.this, "nv " + contentDescription, Toast.LENGTH_SHORT).show();
+                    showSingleAlertDialog(contentDescription.toString());
+                }
+            });
+            try {
+                int status = nvStatusList.getInt(i);
+                viewById.setImageDrawable(status == 1 ? getResources().getDrawable(R.mipmap.nv1new) : getResources().getDrawable(R.mipmap.nv2new));
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
     }
 
 
@@ -556,14 +576,18 @@ public class MainNewActivity extends BaseActivity implements MqttCallback, ISubs
      * @param deviceSignalInfo
      */
     private void cccc(DeviceSignalInfo deviceSignalInfo) {
-        Integer nanDunView = DunViewHolder.getNanDunViewByKey(deviceSignalInfo.code);
-        Integer nvDunView = DunViewHolder.getNvDunViewByKey(deviceSignalInfo.code);
+        Integer nanDunViewId = DunViewHolder.getNanDunViewByKey(deviceSignalInfo.code);
+        Integer nvDunViewId = DunViewHolder.getNvDunViewByKey(deviceSignalInfo.code);
         ImageView viewById;
-        if (nanDunView == null) {
-            viewById = findViewById(nvDunView);
+        if (nanDunViewId == null) {
+            // 改女蹲位
+            viewById = findViewById(nvDunViewId);
+            DunViewHolder.changeNvStatus(nvDunViewId, deviceSignalInfo.state);
             viewById.setImageDrawable(deviceSignalInfo.state == 1 ? getResources().getDrawable(R.mipmap.nv1new) : getResources().getDrawable(R.mipmap.nv2new));
         } else {
-            viewById = findViewById(nanDunView);
+            // 改男蹲位
+            viewById = findViewById(nanDunViewId);
+            DunViewHolder.changeNanStatus(nanDunViewId, deviceSignalInfo.state);
             viewById.setImageDrawable(deviceSignalInfo.state == 1 ? getResources().getDrawable(R.mipmap.nan1new) : getResources().getDrawable(R.mipmap.nan2new));
         }
     }

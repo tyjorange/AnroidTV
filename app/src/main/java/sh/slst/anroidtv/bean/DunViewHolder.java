@@ -25,13 +25,12 @@ public class DunViewHolder {
     private static List<Integer> nvList = new ArrayList<>();
     private static JSONArray nanUseList;
     private static JSONArray nvUseList;
-    private static WeakReference<BaseActivity> activityWeakReference;
     private static BaseActivity activity;
     private static Logger logger;
 
     public static void init(BaseActivity baseActivity) {
         sPreferences = baseActivity.getSharedPreferences("STATE", MODE_PRIVATE);
-        activityWeakReference = new WeakReference<>(baseActivity);
+        WeakReference<BaseActivity> activityWeakReference = new WeakReference<>(baseActivity);
         activity = activityWeakReference.get();
         logger = Logger.getLogger(activity.getClass().getSimpleName());
         //        sPreferences.edit().clear().apply();
@@ -61,6 +60,7 @@ public class DunViewHolder {
      * 初始化男蹲位
      */
     private static void initNan() {
+        nanMap.clear();
         nanMap.put("hunan_baoqing_nan_nan01", R.id.hunan_baoqing_nan_nan01);
         nanMap.put("hunan_baoqing_nan_nan02", R.id.hunan_baoqing_nan_nan02);
         nanMap.put("hunan_baoqing_nan_nan03", R.id.hunan_baoqing_nan_nan03);
@@ -80,6 +80,7 @@ public class DunViewHolder {
         nanMap.put("hunan_baoqing_nan_nan17", R.id.hunan_baoqing_nan_nan17);
         nanMap.put("hunan_baoqing_nan_nan18", R.id.hunan_baoqing_nan_nan18);
         nanMap.put("hunan_baoqing_nan_nan19", R.id.hunan_baoqing_nan_nan19);
+        nanList.clear();
         nanList.add(R.id.hunan_baoqing_nan_nan01);
         nanList.add(R.id.hunan_baoqing_nan_nan02);
         nanList.add(R.id.hunan_baoqing_nan_nan03);
@@ -105,6 +106,7 @@ public class DunViewHolder {
      * 初始化女蹲位
      */
     private static void initNv() {
+        nvMap.clear();
         nvMap.put("hunan_baoqing_nan_nv01", R.id.hunan_baoqing_nan_nv01);
         nvMap.put("hunan_baoqing_nan_nv02", R.id.hunan_baoqing_nan_nv02);
         nvMap.put("hunan_baoqing_nan_nv03", R.id.hunan_baoqing_nan_nv03);
@@ -156,6 +158,7 @@ public class DunViewHolder {
         nvMap.put("hunan_baoqing_nan_nv49", R.id.hunan_baoqing_nan_nv49);
         nvMap.put("hunan_baoqing_nan_nv50", R.id.hunan_baoqing_nan_nv50);
         nvMap.put("hunan_baoqing_nan_nv51", R.id.hunan_baoqing_nan_nv51);
+        nvList.clear();
         nvList.add(R.id.hunan_baoqing_nan_nv01);
         nvList.add(R.id.hunan_baoqing_nan_nv02);
         nvList.add(R.id.hunan_baoqing_nan_nv03);
@@ -272,30 +275,99 @@ public class DunViewHolder {
         return nvList.get(index);
     }
 
-    public static Collection<Integer> getAllNan() {
+    public static List<Integer> getAllNan() {
         return nanList;
     }
 
-    public static Collection<Integer> getAllNv() {
+    public static List<Integer> getAllNv() {
         return nvList;
     }
 
-    public static JSONArray getNanUseList() {
+    public static JSONArray getNanStatusList() {
         return nanUseList;
     }
 
-    public static JSONArray getNvUseList() {
+    public static JSONArray getNvStatusList() {
         return nvUseList;
     }
 
-    public static JSONArray getNanUseCount() throws JSONException {
+    private static int getNanUseCount() {
+        int count = 0;
         for (int i = 0; i < nanUseList.length(); i++) {
-            Object o = nanUseList.get(i);
+            try {
+                Integer o = (Integer) nanUseList.get(i);
+                if (o == DeviceSignalInfo.STATE_ON) {
+                    count++;
+                }
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
         }
-        return nanUseList;
+        return count;
     }
 
-    public static JSONArray getNvUseCount() {
-        return nvUseList;
+    private static int getNvUseCount() {
+        int count = 0;
+        for (int i = 0; i < nvUseList.length(); i++) {
+            try {
+                Integer o = (Integer) nvUseList.get(i);
+                if (o == DeviceSignalInfo.STATE_ON) {
+                    count++;
+                }
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
+        return count;
+    }
+
+    public static String getNanUse() {
+        return getNanUseCount() + "/" + nanList.size();
+    }
+
+    public static String getNvUse() {
+        return getNvUseCount() + "/" + nvList.size();
+    }
+
+    /**
+     * 改变男蹲位状态并持久化
+     *
+     * @param viewId
+     * @param status
+     */
+    public static void changeNanStatus(int viewId, int status) {
+        try {
+            for (int index = 0; index < nanList.size(); index++) {
+                if (nanList.get(index) == (viewId)) {
+                    nanUseList.put(index, status);
+                    SharedPreferences.Editor editor = sPreferences.edit();
+                    editor.putString("nan_use", nanUseList.toString()).apply();
+                    break;
+                }
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * 改变女蹲位状态并持久化
+     *
+     * @param viewId
+     * @param status
+     */
+    public static void changeNvStatus(int viewId, int status) {
+        try {
+            for (int index = 0; index < nvList.size(); index++) {
+                if (nvList.get(index) == (viewId)) {
+                    nvUseList.put(index, status);
+                    SharedPreferences.Editor editor = sPreferences.edit();
+                    editor.putString("nv_use", nvUseList.toString()).apply();
+                    break;
+                }
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
     }
 }
