@@ -54,7 +54,7 @@
                 android:layout_marginTop="25dp"
                 android:layout_marginEnd="25dp"
                 android:layout_marginRight="25dp"
-                android:text="当前使用：06/16"
+                android:text="当前使用：*/*"
                 android:textColor="@color/white" />
         </LinearLayout>
 
@@ -957,7 +957,7 @@
                 android:layout_marginStart="25dp"
                 android:layout_marginLeft="25dp"
                 android:layout_marginTop="25dp"
-                android:text="当前使用：12/51"
+                android:text="当前使用：*/*"
                 android:textColor="@color/white" />
         </LinearLayout>
 

@@ -1,109 +1,301 @@
 package sh.slst.anroidtv.bean;
 
+import android.content.SharedPreferences;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+
+import java.lang.ref.WeakReference;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.logging.Logger;
 
 import sh.slst.anroidtv.R;
 
-public class DunViewHolder {
-    private static Map<String, Integer> nan = new HashMap<>();
-    private static Map<String, Integer> nv = new HashMap<>();
+import static android.content.Context.MODE_PRIVATE;
 
-    public static void init() {
+public class DunViewHolder {
+    private static SharedPreferences sPreferences;
+    private static Map<String, Integer> nanMap = new HashMap<>();
+    private static List<Integer> nanList = new ArrayList<>();
+    private static Map<String, Integer> nvMap = new HashMap<>();
+    private static List<Integer> nvList = new ArrayList<>();
+    private static JSONArray nanUseList;
+    private static JSONArray nvUseList;
+    private static WeakReference<BaseActivity> activityWeakReference;
+    private static BaseActivity activity;
+    private static Logger logger;
+
+    public static void init(BaseActivity baseActivity) {
+        sPreferences = baseActivity.getSharedPreferences("STATE", MODE_PRIVATE);
+        activityWeakReference = new WeakReference<>(baseActivity);
+        activity = activityWeakReference.get();
+        logger = Logger.getLogger(activity.getClass().getSimpleName());
+        //        sPreferences.edit().clear().apply();
         initNan();
         initNv();
+        loadNanUse();
+        loadNvUse();
     }
 
+    private static JSONArray initNanUse() {
+        JSONArray jsonArray = new JSONArray();
+        for (int i = 0; i < nanMap.size(); i++) {
+            jsonArray.put(0);
+        }
+        return jsonArray;
+    }
+
+    private static JSONArray initNvUse() {
+        JSONArray jsonArray = new JSONArray();
+        for (int i = 0; i < nvMap.size(); i++) {
+            jsonArray.put(0);
+        }
+        return jsonArray;
+    }
+
+    /**
+     * 初始化男蹲位
+     */
     private static void initNan() {
-        nan.put("hunan_baoqing_nan_nan01", R.id.hunan_baoqing_nan_nan01);
-        nan.put("hunan_baoqing_nan_nan02", R.id.hunan_baoqing_nan_nan02);
-        nan.put("hunan_baoqing_nan_nan03", R.id.hunan_baoqing_nan_nan03);
-        nan.put("hunan_baoqing_nan_nan04", R.id.hunan_baoqing_nan_nan04);
-        nan.put("hunan_baoqing_nan_nan05", R.id.hunan_baoqing_nan_nan05);
-        nan.put("hunan_baoqing_nan_nan06", R.id.hunan_baoqing_nan_nan06);
-        nan.put("hunan_baoqing_nan_nan07", R.id.hunan_baoqing_nan_nan07);
-        nan.put("hunan_baoqing_nan_nan08", R.id.hunan_baoqing_nan_nan08);
-        nan.put("hunan_baoqing_nan_nan09", R.id.hunan_baoqing_nan_nan09);
-        nan.put("hunan_baoqing_nan_nan10", R.id.hunan_baoqing_nan_nan10);
-        nan.put("hunan_baoqing_nan_nan11", R.id.hunan_baoqing_nan_nan11);
-        nan.put("hunan_baoqing_nan_nan12", R.id.hunan_baoqing_nan_nan12);
-        nan.put("hunan_baoqing_nan_nan13", R.id.hunan_baoqing_nan_nan13);
-        nan.put("hunan_baoqing_nan_nan14", R.id.hunan_baoqing_nan_nan14);
-        nan.put("hunan_baoqing_nan_nan15", R.id.hunan_baoqing_nan_nan15);
-        nan.put("hunan_baoqing_nan_nan16", R.id.hunan_baoqing_nan_nan16);
-        nan.put("hunan_baoqing_nan_nan17", R.id.hunan_baoqing_nan_nan17);
-        nan.put("hunan_baoqing_nan_nan18", R.id.hunan_baoqing_nan_nan18);
-        nan.put("hunan_baoqing_nan_nan19", R.id.hunan_baoqing_nan_nan19);
+        nanMap.put("hunan_baoqing_nan_nan01", R.id.hunan_baoqing_nan_nan01);
+        nanMap.put("hunan_baoqing_nan_nan02", R.id.hunan_baoqing_nan_nan02);
+        nanMap.put("hunan_baoqing_nan_nan03", R.id.hunan_baoqing_nan_nan03);
+        nanMap.put("hunan_baoqing_nan_nan04", R.id.hunan_baoqing_nan_nan04);
+        nanMap.put("hunan_baoqing_nan_nan05", R.id.hunan_baoqing_nan_nan05);
+        nanMap.put("hunan_baoqing_nan_nan06", R.id.hunan_baoqing_nan_nan06);
+        nanMap.put("hunan_baoqing_nan_nan07", R.id.hunan_baoqing_nan_nan07);
+        nanMap.put("hunan_baoqing_nan_nan08", R.id.hunan_baoqing_nan_nan08);
+        nanMap.put("hunan_baoqing_nan_nan09", R.id.hunan_baoqing_nan_nan09);
+        nanMap.put("hunan_baoqing_nan_nan10", R.id.hunan_baoqing_nan_nan10);
+        nanMap.put("hunan_baoqing_nan_nan11", R.id.hunan_baoqing_nan_nan11);
+        nanMap.put("hunan_baoqing_nan_nan12", R.id.hunan_baoqing_nan_nan12);
+        nanMap.put("hunan_baoqing_nan_nan13", R.id.hunan_baoqing_nan_nan13);
+        nanMap.put("hunan_baoqing_nan_nan14", R.id.hunan_baoqing_nan_nan14);
+        nanMap.put("hunan_baoqing_nan_nan15", R.id.hunan_baoqing_nan_nan15);
+        nanMap.put("hunan_baoqing_nan_nan16", R.id.hunan_baoqing_nan_nan16);
+        nanMap.put("hunan_baoqing_nan_nan17", R.id.hunan_baoqing_nan_nan17);
+        nanMap.put("hunan_baoqing_nan_nan18", R.id.hunan_baoqing_nan_nan18);
+        nanMap.put("hunan_baoqing_nan_nan19", R.id.hunan_baoqing_nan_nan19);
+        nanList.add(R.id.hunan_baoqing_nan_nan01);
+        nanList.add(R.id.hunan_baoqing_nan_nan02);
+        nanList.add(R.id.hunan_baoqing_nan_nan03);
+        nanList.add(R.id.hunan_baoqing_nan_nan04);
+        nanList.add(R.id.hunan_baoqing_nan_nan05);
+        nanList.add(R.id.hunan_baoqing_nan_nan06);
+        nanList.add(R.id.hunan_baoqing_nan_nan07);
+        nanList.add(R.id.hunan_baoqing_nan_nan08);
+        nanList.add(R.id.hunan_baoqing_nan_nan09);
+        nanList.add(R.id.hunan_baoqing_nan_nan10);
+        nanList.add(R.id.hunan_baoqing_nan_nan11);
+        nanList.add(R.id.hunan_baoqing_nan_nan12);
+        nanList.add(R.id.hunan_baoqing_nan_nan13);
+        nanList.add(R.id.hunan_baoqing_nan_nan14);
+        nanList.add(R.id.hunan_baoqing_nan_nan15);
+        nanList.add(R.id.hunan_baoqing_nan_nan16);
+        nanList.add(R.id.hunan_baoqing_nan_nan17);
+        nanList.add(R.id.hunan_baoqing_nan_nan18);
+        nanList.add(R.id.hunan_baoqing_nan_nan19);
     }
 
+    /**
+     * 初始化女蹲位
+     */
     private static void initNv() {
-        nv.put("hunan_baoqing_nan_nv01", R.id.hunan_baoqing_nan_nv01);
-        nv.put("hunan_baoqing_nan_nv02", R.id.hunan_baoqing_nan_nv02);
-        nv.put("hunan_baoqing_nan_nv03", R.id.hunan_baoqing_nan_nv03);
-        nv.put("hunan_baoqing_nan_nv04", R.id.hunan_baoqing_nan_nv04);
-        nv.put("hunan_baoqing_nan_nv05", R.id.hunan_baoqing_nan_nv05);
-        nv.put("hunan_baoqing_nan_nv06", R.id.hunan_baoqing_nan_nv06);
-        nv.put("hunan_baoqing_nan_nv07", R.id.hunan_baoqing_nan_nv07);
-        nv.put("hunan_baoqing_nan_nv08", R.id.hunan_baoqing_nan_nv08);
-        nv.put("hunan_baoqing_nan_nv09", R.id.hunan_baoqing_nan_nv09);
-        nv.put("hunan_baoqing_nan_nv10", R.id.hunan_baoqing_nan_nv10);
-        nv.put("hunan_baoqing_nan_nv11", R.id.hunan_baoqing_nan_nv11);
-        nv.put("hunan_baoqing_nan_nv12", R.id.hunan_baoqing_nan_nv12);
-        nv.put("hunan_baoqing_nan_nv13", R.id.hunan_baoqing_nan_nv13);
-        nv.put("hunan_baoqing_nan_nv14", R.id.hunan_baoqing_nan_nv14);
-        nv.put("hunan_baoqing_nan_nv15", R.id.hunan_baoqing_nan_nv15);
-        nv.put("hunan_baoqing_nan_nv16", R.id.hunan_baoqing_nan_nv16);
-        nv.put("hunan_baoqing_nan_nv17", R.id.hunan_baoqing_nan_nv17);
-        nv.put("hunan_baoqing_nan_nv18", R.id.hunan_baoqing_nan_nv18);
-        nv.put("hunan_baoqing_nan_nv19", R.id.hunan_baoqing_nan_nv19);
-        nv.put("hunan_baoqing_nan_nv20", R.id.hunan_baoqing_nan_nv20);
-        nv.put("hunan_baoqing_nan_nv21", R.id.hunan_baoqing_nan_nv21);
-        nv.put("hunan_baoqing_nan_nv22", R.id.hunan_baoqing_nan_nv22);
-        nv.put("hunan_baoqing_nan_nv23", R.id.hunan_baoqing_nan_nv23);
-        nv.put("hunan_baoqing_nan_nv24", R.id.hunan_baoqing_nan_nv24);
-        nv.put("hunan_baoqing_nan_nv25", R.id.hunan_baoqing_nan_nv25);
-        nv.put("hunan_baoqing_nan_nv26", R.id.hunan_baoqing_nan_nv26);
-        nv.put("hunan_baoqing_nan_nv27", R.id.hunan_baoqing_nan_nv27);
-        nv.put("hunan_baoqing_nan_nv28", R.id.hunan_baoqing_nan_nv28);
-        nv.put("hunan_baoqing_nan_nv29", R.id.hunan_baoqing_nan_nv29);
-        nv.put("hunan_baoqing_nan_nv30", R.id.hunan_baoqing_nan_nv30);
-        nv.put("hunan_baoqing_nan_nv31", R.id.hunan_baoqing_nan_nv31);
-        nv.put("hunan_baoqing_nan_nv32", R.id.hunan_baoqing_nan_nv32);
-        nv.put("hunan_baoqing_nan_nv33", R.id.hunan_baoqing_nan_nv33);
-        nv.put("hunan_baoqing_nan_nv34", R.id.hunan_baoqing_nan_nv34);
-        nv.put("hunan_baoqing_nan_nv35", R.id.hunan_baoqing_nan_nv35);
-        nv.put("hunan_baoqing_nan_nv36", R.id.hunan_baoqing_nan_nv36);
-        nv.put("hunan_baoqing_nan_nv37", R.id.hunan_baoqing_nan_nv37);
-        nv.put("hunan_baoqing_nan_nv38", R.id.hunan_baoqing_nan_nv38);
-        nv.put("hunan_baoqing_nan_nv39", R.id.hunan_baoqing_nan_nv39);
-        nv.put("hunan_baoqing_nan_nv40", R.id.hunan_baoqing_nan_nv40);
-        nv.put("hunan_baoqing_nan_nv41", R.id.hunan_baoqing_nan_nv41);
-        nv.put("hunan_baoqing_nan_nv42", R.id.hunan_baoqing_nan_nv42);
-        nv.put("hunan_baoqing_nan_nv43", R.id.hunan_baoqing_nan_nv43);
-        nv.put("hunan_baoqing_nan_nv44", R.id.hunan_baoqing_nan_nv44);
-        nv.put("hunan_baoqing_nan_nv45", R.id.hunan_baoqing_nan_nv45);
-        nv.put("hunan_baoqing_nan_nv46", R.id.hunan_baoqing_nan_nv46);
-        nv.put("hunan_baoqing_nan_nv47", R.id.hunan_baoqing_nan_nv47);
-        nv.put("hunan_baoqing_nan_nv48", R.id.hunan_baoqing_nan_nv48);
-        nv.put("hunan_baoqing_nan_nv49", R.id.hunan_baoqing_nan_nv49);
-        nv.put("hunan_baoqing_nan_nv50", R.id.hunan_baoqing_nan_nv50);
-        nv.put("hunan_baoqing_nan_nv51", R.id.hunan_baoqing_nan_nv51);
+        nvMap.put("hunan_baoqing_nan_nv01", R.id.hunan_baoqing_nan_nv01);
+        nvMap.put("hunan_baoqing_nan_nv02", R.id.hunan_baoqing_nan_nv02);
+        nvMap.put("hunan_baoqing_nan_nv03", R.id.hunan_baoqing_nan_nv03);
+        nvMap.put("hunan_baoqing_nan_nv04", R.id.hunan_baoqing_nan_nv04);
+        nvMap.put("hunan_baoqing_nan_nv05", R.id.hunan_baoqing_nan_nv05);
+        nvMap.put("hunan_baoqing_nan_nv06", R.id.hunan_baoqing_nan_nv06);
+        nvMap.put("hunan_baoqing_nan_nv07", R.id.hunan_baoqing_nan_nv07);
+        nvMap.put("hunan_baoqing_nan_nv08", R.id.hunan_baoqing_nan_nv08);
+        nvMap.put("hunan_baoqing_nan_nv09", R.id.hunan_baoqing_nan_nv09);
+        nvMap.put("hunan_baoqing_nan_nv10", R.id.hunan_baoqing_nan_nv10);
+        nvMap.put("hunan_baoqing_nan_nv11", R.id.hunan_baoqing_nan_nv11);
+        nvMap.put("hunan_baoqing_nan_nv12", R.id.hunan_baoqing_nan_nv12);
+        nvMap.put("hunan_baoqing_nan_nv13", R.id.hunan_baoqing_nan_nv13);
+        nvMap.put("hunan_baoqing_nan_nv14", R.id.hunan_baoqing_nan_nv14);
+        nvMap.put("hunan_baoqing_nan_nv15", R.id.hunan_baoqing_nan_nv15);
+        nvMap.put("hunan_baoqing_nan_nv16", R.id.hunan_baoqing_nan_nv16);
+        nvMap.put("hunan_baoqing_nan_nv17", R.id.hunan_baoqing_nan_nv17);
+        nvMap.put("hunan_baoqing_nan_nv18", R.id.hunan_baoqing_nan_nv18);
+        nvMap.put("hunan_baoqing_nan_nv19", R.id.hunan_baoqing_nan_nv19);
+        nvMap.put("hunan_baoqing_nan_nv20", R.id.hunan_baoqing_nan_nv20);
+        nvMap.put("hunan_baoqing_nan_nv21", R.id.hunan_baoqing_nan_nv21);
+        nvMap.put("hunan_baoqing_nan_nv22", R.id.hunan_baoqing_nan_nv22);
+        nvMap.put("hunan_baoqing_nan_nv23", R.id.hunan_baoqing_nan_nv23);
+        nvMap.put("hunan_baoqing_nan_nv24", R.id.hunan_baoqing_nan_nv24);
+        nvMap.put("hunan_baoqing_nan_nv25", R.id.hunan_baoqing_nan_nv25);
+        nvMap.put("hunan_baoqing_nan_nv26", R.id.hunan_baoqing_nan_nv26);
+        nvMap.put("hunan_baoqing_nan_nv27", R.id.hunan_baoqing_nan_nv27);
+        nvMap.put("hunan_baoqing_nan_nv28", R.id.hunan_baoqing_nan_nv28);
+        nvMap.put("hunan_baoqing_nan_nv29", R.id.hunan_baoqing_nan_nv29);
+        nvMap.put("hunan_baoqing_nan_nv30", R.id.hunan_baoqing_nan_nv30);
+        nvMap.put("hunan_baoqing_nan_nv31", R.id.hunan_baoqing_nan_nv31);
+        nvMap.put("hunan_baoqing_nan_nv32", R.id.hunan_baoqing_nan_nv32);
+        nvMap.put("hunan_baoqing_nan_nv33", R.id.hunan_baoqing_nan_nv33);
+        nvMap.put("hunan_baoqing_nan_nv34", R.id.hunan_baoqing_nan_nv34);
+        nvMap.put("hunan_baoqing_nan_nv35", R.id.hunan_baoqing_nan_nv35);
+        nvMap.put("hunan_baoqing_nan_nv36", R.id.hunan_baoqing_nan_nv36);
+        nvMap.put("hunan_baoqing_nan_nv37", R.id.hunan_baoqing_nan_nv37);
+        nvMap.put("hunan_baoqing_nan_nv38", R.id.hunan_baoqing_nan_nv38);
+        nvMap.put("hunan_baoqing_nan_nv39", R.id.hunan_baoqing_nan_nv39);
+        nvMap.put("hunan_baoqing_nan_nv40", R.id.hunan_baoqing_nan_nv40);
+        nvMap.put("hunan_baoqing_nan_nv41", R.id.hunan_baoqing_nan_nv41);
+        nvMap.put("hunan_baoqing_nan_nv42", R.id.hunan_baoqing_nan_nv42);
+        nvMap.put("hunan_baoqing_nan_nv43", R.id.hunan_baoqing_nan_nv43);
+        nvMap.put("hunan_baoqing_nan_nv44", R.id.hunan_baoqing_nan_nv44);
+        nvMap.put("hunan_baoqing_nan_nv45", R.id.hunan_baoqing_nan_nv45);
+        nvMap.put("hunan_baoqing_nan_nv46", R.id.hunan_baoqing_nan_nv46);
+        nvMap.put("hunan_baoqing_nan_nv47", R.id.hunan_baoqing_nan_nv47);
+        nvMap.put("hunan_baoqing_nan_nv48", R.id.hunan_baoqing_nan_nv48);
+        nvMap.put("hunan_baoqing_nan_nv49", R.id.hunan_baoqing_nan_nv49);
+        nvMap.put("hunan_baoqing_nan_nv50", R.id.hunan_baoqing_nan_nv50);
+        nvMap.put("hunan_baoqing_nan_nv51", R.id.hunan_baoqing_nan_nv51);
+        nvList.add(R.id.hunan_baoqing_nan_nv01);
+        nvList.add(R.id.hunan_baoqing_nan_nv02);
+        nvList.add(R.id.hunan_baoqing_nan_nv03);
+        nvList.add(R.id.hunan_baoqing_nan_nv04);
+        nvList.add(R.id.hunan_baoqing_nan_nv05);
+        nvList.add(R.id.hunan_baoqing_nan_nv06);
+        nvList.add(R.id.hunan_baoqing_nan_nv07);
+        nvList.add(R.id.hunan_baoqing_nan_nv08);
+        nvList.add(R.id.hunan_baoqing_nan_nv09);
+        nvList.add(R.id.hunan_baoqing_nan_nv10);
+        nvList.add(R.id.hunan_baoqing_nan_nv11);
+        nvList.add(R.id.hunan_baoqing_nan_nv12);
+        nvList.add(R.id.hunan_baoqing_nan_nv13);
+        nvList.add(R.id.hunan_baoqing_nan_nv14);
+        nvList.add(R.id.hunan_baoqing_nan_nv15);
+        nvList.add(R.id.hunan_baoqing_nan_nv16);
+        nvList.add(R.id.hunan_baoqing_nan_nv17);
+        nvList.add(R.id.hunan_baoqing_nan_nv18);
+        nvList.add(R.id.hunan_baoqing_nan_nv19);
+        nvList.add(R.id.hunan_baoqing_nan_nv20);
+        nvList.add(R.id.hunan_baoqing_nan_nv21);
+        nvList.add(R.id.hunan_baoqing_nan_nv22);
+        nvList.add(R.id.hunan_baoqing_nan_nv23);
+        nvList.add(R.id.hunan_baoqing_nan_nv24);
+        nvList.add(R.id.hunan_baoqing_nan_nv25);
+        nvList.add(R.id.hunan_baoqing_nan_nv26);
+        nvList.add(R.id.hunan_baoqing_nan_nv27);
+        nvList.add(R.id.hunan_baoqing_nan_nv28);
+        nvList.add(R.id.hunan_baoqing_nan_nv29);
+        nvList.add(R.id.hunan_baoqing_nan_nv30);
+        nvList.add(R.id.hunan_baoqing_nan_nv31);
+        nvList.add(R.id.hunan_baoqing_nan_nv32);
+        nvList.add(R.id.hunan_baoqing_nan_nv33);
+        nvList.add(R.id.hunan_baoqing_nan_nv34);
+        nvList.add(R.id.hunan_baoqing_nan_nv35);
+        nvList.add(R.id.hunan_baoqing_nan_nv36);
+        nvList.add(R.id.hunan_baoqing_nan_nv37);
+        nvList.add(R.id.hunan_baoqing_nan_nv38);
+        nvList.add(R.id.hunan_baoqing_nan_nv39);
+        nvList.add(R.id.hunan_baoqing_nan_nv40);
+        nvList.add(R.id.hunan_baoqing_nan_nv41);
+        nvList.add(R.id.hunan_baoqing_nan_nv42);
+        nvList.add(R.id.hunan_baoqing_nan_nv43);
+        nvList.add(R.id.hunan_baoqing_nan_nv44);
+        nvList.add(R.id.hunan_baoqing_nan_nv45);
+        nvList.add(R.id.hunan_baoqing_nan_nv46);
+        nvList.add(R.id.hunan_baoqing_nan_nv47);
+        nvList.add(R.id.hunan_baoqing_nan_nv48);
+        nvList.add(R.id.hunan_baoqing_nan_nv49);
+        nvList.add(R.id.hunan_baoqing_nan_nv50);
+        nvList.add(R.id.hunan_baoqing_nan_nv51);
     }
 
-    public static Integer getNanDunView(String key) {
-        return DunViewHolder.nan.get(key);
+    /**
+     * 从文件加载男蹲使用情况
+     */
+    private static void loadNanUse() {
+        // 加载男使用情况
+        String nan_use = sPreferences.getString("nan_use", "");
+
+        if (nan_use.equals("")) {
+            nanUseList = initNanUse();
+            SharedPreferences.Editor editor = sPreferences.edit();
+            editor.putString("nan_use", nanUseList.toString()).apply();
+            activity.postDebug("| init nan_use :", nanUseList.length() + nanUseList.toString());
+            logger.info((nanUseList.length() + " init nan_use " + nanUseList.toString()));
+        } else {
+            try {
+                nanUseList = new JSONArray(nan_use);
+                activity.postDebug("| load nan_use :", nanUseList.length() + nanUseList.toString());
+                logger.info(nanUseList.length() + " load nan_use " + nanUseList.toString());
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
     }
 
-    public static Integer getNvDunView(String key) {
-        return DunViewHolder.nv.get(key);
+    /**
+     * 从文件加载女蹲使用情况
+     */
+    private static void loadNvUse() {
+        //加载女使用情况
+        String nv_use = sPreferences.getString("nv_use", "");
+        if (nv_use.equals("")) {
+            nvUseList = DunViewHolder.initNvUse();
+            SharedPreferences.Editor editor = sPreferences.edit();
+            editor.putString("nv_use", nvUseList.toString()).apply();
+            activity.postDebug("| init nv_use :", nvUseList.length() + nvUseList.toString());
+            logger.info(nvUseList.length() + " init nv_use " + nvUseList.toString());
+        } else {
+            try {
+                nvUseList = new JSONArray(nv_use);
+                activity.postDebug("| load nv_use :", nvUseList.length() + nvUseList.toString());
+                logger.info(nvUseList.length() + " load nv_use " + nvUseList.toString());
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    public static Integer getNanDunViewByKey(String key) {
+        return nanMap.get(key);
+    }
+
+    public static Integer getNanDunViewByIndex(int index) {
+        return nanList.get(index);
+    }
+
+    public static Integer getNvDunViewByKey(String key) {
+        return nvMap.get(key);
+    }
+
+    public static Integer getNvDunViewByIndex(int index) {
+        return nvList.get(index);
     }
 
     public static Collection<Integer> getAllNan() {
-        return nan.values();
+        return nanList;
     }
 
     public static Collection<Integer> getAllNv() {
-        return nv.values();
+        return nvList;
+    }
+
+    public static JSONArray getNanUseList() {
+        return nanUseList;
+    }
+
+    public static JSONArray getNvUseList() {
+        return nvUseList;
+    }
+
+    public static JSONArray getNanUseCount() throws JSONException {
+        for (int i = 0; i < nanUseList.length(); i++) {
+            Object o = nanUseList.get(i);
+        }
+        return nanUseList;
+    }
+
+    public static JSONArray getNvUseCount() {
+        return nvUseList;
     }
 }

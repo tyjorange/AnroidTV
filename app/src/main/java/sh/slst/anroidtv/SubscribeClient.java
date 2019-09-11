@@ -14,6 +14,7 @@ import org.eclipse.paho.client.mqttv3.MqttTopic;
 import org.eclipse.paho.client.mqttv3.persist.MemoryPersistence;
 
 import java.util.concurrent.ScheduledExecutorService;
+import java.util.logging.Logger;
 
 /*
         订阅  /0101002/E1  FSU号+设备号
@@ -38,7 +39,6 @@ class SubscribeClient {
 
     SubscribeClient(String ip, int port) {
         HOST = "tcp://" + ip + ":" + port;
-        Log.i("HOST", HOST);
     }
 
     void subscribe(String topic, String clientid, MqttCallback callback, String sendcontent) {
@@ -77,6 +77,9 @@ class SubscribeClient {
             // setWill方法，如果项目中需要知道客户端是否掉线可以调用该方法。设置最终端口的通知消息
             // options.setWill(mtopic, "client close".getBytes(), 0, true);
             s_client.connect(options);
+            if (s_client.isConnected()) {
+                Log.i("isConnected to host", HOST);
+            }
             subscribe();
             // 订阅消息
         } catch (Exception e) {
@@ -91,6 +94,7 @@ class SubscribeClient {
     private void subscribe() {
         try {
             String[] arr = {mTopic};
+            Logger.getLogger(this.getClass().getSimpleName()).info(mTopic);
             s_client.subscribe(arr);
         } catch (MqttException e) {
             e.printStackTrace();
@@ -102,8 +106,8 @@ class SubscribeClient {
         try {
             if (s_client != null && s_client.isConnected()) {
                 MqttMessage message = new MqttMessage();
-                message.setQos(1);
-                message.setRetained(true);
+                message.setQos(0);
+                message.setRetained(false);
                 message.setPayload(msg.getBytes());
                 s_client.publish(topic, message);
             }

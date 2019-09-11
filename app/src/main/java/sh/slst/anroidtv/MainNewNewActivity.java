@@ -1,6 +1,5 @@
 package sh.slst.anroidtv;
 
-import android.annotation.SuppressLint;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -50,6 +49,7 @@ import java.util.Locale;
 import java.util.Timer;
 import java.util.TimerTask;
 
+import sh.slst.anroidtv.bean.BaseActivity;
 import sh.slst.anroidtv.bean.DeviceSignalInfo;
 import sh.slst.anroidtv.bean.DunViewHolder;
 import sh.slst.anroidtv.bean.MQTTConfig;
@@ -61,9 +61,9 @@ import sh.slst.anroidtv.utils.utils;
 //import com.google.android.gms.appindexing.Thing;
 //import com.google.android.gms.common.api.GoogleApiClient;
 
-public class MainNewNewActivity extends AppCompatActivity implements MqttCallback, ISubscibeConnectMessage {
+public class MainNewNewActivity extends BaseActivity implements MqttCallback, ISubscibeConnectMessage {
 
-    private String TAG = "MainNewActivity";
+    private String TAG = "MainNewNewActivity";
 //    private FloorMapView floorMapView;
 
     private SubscribeClient mClient;
@@ -118,6 +118,11 @@ public class MainNewNewActivity extends AppCompatActivity implements MqttCallbac
     private static final int cMqtt = 4;
     // 实例化一个MyHandler对象
     MyHandler handler = new MyHandler(this);
+
+    @Override
+    public void postDebug(String tag, String msg) {
+
+    }
 
     static class MyHandler extends Handler {
         WeakReference<MainNewNewActivity> mActivity;
@@ -231,7 +236,7 @@ public class MainNewNewActivity extends AppCompatActivity implements MqttCallbac
 //        floorMapView.setData(listDeviceFloorMaps, bmpFloor);
         timer.schedule(task1, 0, 1000);
 
-        DunViewHolder.init();
+        DunViewHolder.init(this);
 
         for (Integer s : DunViewHolder.getAllNan()) {
             findViewById(s).setOnClickListener(new View.OnClickListener() {
@@ -497,9 +502,10 @@ public class MainNewNewActivity extends AppCompatActivity implements MqttCallbac
 
     @Override
     public void connectionLost(Throwable throwable) {
+        throwable.printStackTrace();
         //失去连接
         Log.e(TAG, "connectionLost " + throwable.getMessage());
-        onMessage("connectionLost" + throwable.getCause());
+        onMessage("connectionLost " + throwable.getCause());
         mClient.startReconnect();
     }
 
@@ -555,8 +561,8 @@ public class MainNewNewActivity extends AppCompatActivity implements MqttCallbac
      * @param deviceSignalInfo
      */
     private void cccc(DeviceSignalInfo deviceSignalInfo) {
-        Integer nanDunView = DunViewHolder.getNanDunView(deviceSignalInfo.code);
-        Integer nvDunView = DunViewHolder.getNvDunView(deviceSignalInfo.code);
+        Integer nanDunView = DunViewHolder.getNanDunViewByKey(deviceSignalInfo.code);
+        Integer nvDunView = DunViewHolder.getNvDunViewByKey(deviceSignalInfo.code);
         ImageView viewById;
         if (nanDunView == null) {
             viewById = findViewById(nvDunView);
@@ -639,6 +645,18 @@ public class MainNewNewActivity extends AppCompatActivity implements MqttCallbac
                 mAdapter.notifyDataSetChanged();
             }
         });
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        if (mClient != null) {
+            mClient.disconnect();
+        }
+        if (timer != null) {
+            timer.cancel();
+            timer = null;
+        }
     }
 
     @Override
