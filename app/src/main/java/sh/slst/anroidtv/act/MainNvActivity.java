@@ -6,6 +6,7 @@ import sh.slst.anroidtv.R;
 import sh.slst.anroidtv.utils.DunViewHelper;
 
 public class MainNvActivity extends BaseActivity {
+
     @Override
     public int getContentViewID() {
         return R.layout.activity_main_nv;
@@ -13,12 +14,12 @@ public class MainNvActivity extends BaseActivity {
 
     @Override
     public String getLeft() {
-        return DunViewHelper.getNvUse();
+        return dunViewHelper.getNvUse();
     }
 
     @Override
     public String getRight() {
-        return DunViewHelper.getNanUse();
+        return dunViewHelper.getNanUse();
     }
 
     @Override

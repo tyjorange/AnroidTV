@@ -1,5 +1,7 @@
 package sh.slst.anroidtv.utils;
 
+import android.annotation.SuppressLint;
+import android.content.Context;
 import android.content.SharedPreferences;
 
 import org.json.JSONArray;
@@ -16,29 +18,39 @@ import sh.slst.anroidtv.R;
 import sh.slst.anroidtv.act.BaseActivity;
 import sh.slst.anroidtv.bean.DeviceSignalInfo;
 
-import static android.content.Context.MODE_PRIVATE;
-
 public class DunViewHelper {
-    private static SharedPreferences sPreferences;
-    private static Map<String, Integer> nanMap = new HashMap<>();
-    private static List<Integer> nanList = new ArrayList<>();
-    private static Map<String, Integer> nvMap = new HashMap<>();
-    private static List<Integer> nvList = new ArrayList<>();
-    private static JSONArray nanUseList;
-    private static JSONArray nvUseList;
-    private static BaseActivity activity;
-    private static Logger logger;
+    private static DunViewHelper instance;
+    private Logger logger;
+    private SharedPreferences sPreferences;
+    private Map<String, Integer> nanMap = new HashMap<>();
+    private List<Integer> nanList = new ArrayList<>();
+    private Map<String, Integer> nvMap = new HashMap<>();
+    private List<Integer> nvList = new ArrayList<>();
+    private JSONArray nanUseList;
+    private JSONArray nvUseList;
+    private BaseActivity activity;
 
-    public static void init(BaseActivity baseActivity) {
-        sPreferences = baseActivity.getSharedPreferences("STATE", MODE_PRIVATE);
+    private DunViewHelper() {
+
+    }
+
+    private DunViewHelper(BaseActivity baseActivity) {
+        sPreferences = baseActivity.getSharedPreferences("STATE", Context.MODE_PRIVATE);
+        // sPreferences.edit().clear().apply();
         WeakReference<BaseActivity> activityWeakReference = new WeakReference<>(baseActivity);
         activity = activityWeakReference.get();
         logger = Logger.getLogger(activity.getClass().getSimpleName());
-        //        sPreferences.edit().clear().apply();
         initNanViewIds();
         initNvViewIds();
         loadNanUse();
         loadNvUse();
+    }
+
+    public static DunViewHelper getInstance(BaseActivity baseActivity) {
+        if (instance == null) {
+            instance = new DunViewHelper(baseActivity);
+        }
+        return instance;
     }
 
     /**
@@ -46,7 +58,7 @@ public class DunViewHelper {
      *
      * @return
      */
-    private static JSONArray initNanUseZero() {
+    private JSONArray initNanUseZero() {
         JSONArray jsonArray = new JSONArray();
         for (int i = 0; i < nanMap.size(); i++) {
             jsonArray.put(0);
@@ -59,7 +71,7 @@ public class DunViewHelper {
      *
      * @return
      */
-    private static JSONArray initNvUseZero() {
+    private JSONArray initNvUseZero() {
         JSONArray jsonArray = new JSONArray();
         for (int i = 0; i < nvMap.size(); i++) {
             jsonArray.put(0);
@@ -70,7 +82,7 @@ public class DunViewHelper {
     /**
      * 初始化男蹲位id
      */
-    private static void initNanViewIds() {
+    private void initNanViewIds() {
         nanMap.clear();
         nanMap.put("hunan_baoqing_nan_nan01", R.id.hunan_baoqing_nan_nan01);
         nanMap.put("hunan_baoqing_nan_nan02", R.id.hunan_baoqing_nan_nan02);
@@ -116,7 +128,7 @@ public class DunViewHelper {
     /**
      * 初始化女蹲位id
      */
-    private static void initNvViewIds() {
+    private void initNvViewIds() {
         nvMap.clear();
         nvMap.put("hunan_baoqing_nan_nv01", R.id.hunan_baoqing_nan_nv01);
         nvMap.put("hunan_baoqing_nan_nv02", R.id.hunan_baoqing_nan_nv02);
@@ -226,7 +238,7 @@ public class DunViewHelper {
     /**
      * 从文件加载男蹲使用情况
      */
-    private static void loadNanUse() {
+    private void loadNanUse() {
         // 加载男使用情况
         String nan_use = sPreferences.getString("nan_use", "");
 
@@ -250,11 +262,11 @@ public class DunViewHelper {
     /**
      * 从文件加载女蹲使用情况
      */
-    private static void loadNvUse() {
+    private void loadNvUse() {
         //加载女使用情况
         String nv_use = sPreferences.getString("nv_use", "");
         if (nv_use.equals("")) {
-            nvUseList = DunViewHelper.initNvUseZero();
+            nvUseList = initNvUseZero();
             SharedPreferences.Editor editor = sPreferences.edit();
             editor.putString("nv_use", nvUseList.toString()).apply();
             activity.postDebug("| init nv_use :", nvUseList.length() + nvUseList.toString());
@@ -275,7 +287,7 @@ public class DunViewHelper {
      *
      * @return
      */
-    public static List<Integer> getAllNan() {
+    public List<Integer> getAllNan() {
         return nanList;
     }
 
@@ -284,7 +296,7 @@ public class DunViewHelper {
      *
      * @return
      */
-    public static List<Integer> getAllNv() {
+    public List<Integer> getAllNv() {
         return nvList;
     }
 
@@ -293,7 +305,7 @@ public class DunViewHelper {
      *
      * @return
      */
-    public static JSONArray getNanStatusList() {
+    public JSONArray getNanStatusList() {
         return nanUseList;
     }
 
@@ -302,7 +314,7 @@ public class DunViewHelper {
      *
      * @return
      */
-    public static JSONArray getNvStatusList() {
+    public JSONArray getNvStatusList() {
         return nvUseList;
     }
 
@@ -311,7 +323,7 @@ public class DunViewHelper {
      *
      * @return
      */
-    private static int getNanUseCount() {
+    private int getNanUseCount() {
         int count = 0;
         for (int i = 0; i < nanUseList.length(); i++) {
             try {
@@ -331,7 +343,7 @@ public class DunViewHelper {
      *
      * @return
      */
-    private static int getNvUseCount() {
+    private int getNvUseCount() {
         int count = 0;
         for (int i = 0; i < nvUseList.length(); i++) {
             try {
@@ -352,7 +364,7 @@ public class DunViewHelper {
      * @param viewId
      * @param status
      */
-    public static void changeNanStatus(int viewId, int status) {
+    public void changeNanStatus(int viewId, int status) {
         try {
             for (int index = 0; index < nanList.size(); index++) {
                 if (nanList.get(index) == (viewId)) {
@@ -373,7 +385,7 @@ public class DunViewHelper {
      * @param viewId
      * @param status
      */
-    public static void changeNvStatus(int viewId, int status) {
+    public void changeNvStatus(int viewId, int status) {
         try {
             for (int index = 0; index < nvList.size(); index++) {
                 if (nvList.get(index) == (viewId)) {
@@ -388,27 +400,27 @@ public class DunViewHelper {
         }
     }
 
-    public static Integer getNanDunViewByKey(String key) {
+    public Integer getNanDunViewByKey(String key) {
         return nanMap.get(key);
     }
 
-    public static Integer getNanDunViewByIndex(int index) {
+    public Integer getNanDunViewByIndex(int index) {
         return nanList.get(index);
     }
 
-    public static Integer getNvDunViewByKey(String key) {
+    public Integer getNvDunViewByKey(String key) {
         return nvMap.get(key);
     }
 
-    public static Integer getNvDunViewByIndex(int index) {
+    public Integer getNvDunViewByIndex(int index) {
         return nvList.get(index);
     }
 
-    public static String getNanUse() {
+    public String getNanUse() {
         return getNanUseCount() + "/" + nanList.size();
     }
 
-    public static String getNvUse() {
+    public String getNvUse() {
         return getNvUseCount() + "/" + nvList.size();
     }
 }

@@ -14,12 +14,12 @@ public class MainNanActivity extends BaseActivity {
 
     @Override
     public String getLeft() {
-        return DunViewHelper.getNanUse();
+        return dunViewHelper.getNanUse();
     }
 
     @Override
     public String getRight() {
-        return DunViewHelper.getNvUse();
+        return dunViewHelper.getNvUse();
     }
 
     @Override

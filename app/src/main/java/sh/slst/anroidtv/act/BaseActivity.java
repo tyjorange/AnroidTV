@@ -100,23 +100,26 @@ public abstract class BaseActivity extends AppCompatActivity implements MqttCall
     //    private MqttMessage message;
     private LinearLayout lay_left;
     private String toiltId;
-    private DeviceSignalInfo dbDeviceFloorMap;
+    //    private DeviceSignalInfo dbDeviceFloorMap;
+    private DeviceSignalInfo deviceSignalInfo;
     private String Filename = "map";
     private boolean isChang = false;
     private SharedPreferences sPreferences;
-
+    protected DunViewHelper dunViewHelper;
+    //debug
     private List<String> mListDebugInfo = new ArrayList<>();
     private DebugMessageAdapter mAdapter;
-    Timer timer = new Timer();
+    //timer
+    private Timer timer = new Timer();
 
     private static final int fTime = 1;//刷新时钟
     private static final int fCount = 2;//更新累计人数
     private static final int fUse = 3;//更新蹲位使用情况
     private static final int cMqtt = 4;//启动时连接MQTT订阅消息
     // 实例化一个MyHandler对象
-    BaseActivity.MyHandler handler = new BaseActivity.MyHandler(this);
+    private BaseActivity.MyHandler handler = new BaseActivity.MyHandler(this);
 
-    static class MyHandler extends Handler {
+    private static class MyHandler extends Handler {
         WeakReference<BaseActivity> activityWeakReference;
 
         MyHandler(BaseActivity activity) {
@@ -234,12 +237,12 @@ public abstract class BaseActivity extends AppCompatActivity implements MqttCall
 
 
         //初始化蹲位
-        DunViewHelper.init(this);
+        dunViewHelper = DunViewHelper.getInstance(this);
         text_useposition_left.setText("当前使用：" + getLeft());
         text_useposition_right.setText("当前使用：" + getRight());
         //初始化蹲位图片 和点击事件
-        List<Integer> allNan = DunViewHelper.getAllNan();
-        JSONArray nanStatusList = DunViewHelper.getNanStatusList();
+        List<Integer> allNan = dunViewHelper.getAllNan();
+        JSONArray nanStatusList = dunViewHelper.getNanStatusList();
         for (int i = 0; i < allNan.size(); i++) {
             Integer integer = allNan.get(i);
             ImageView viewById = findViewById(integer);
@@ -258,8 +261,8 @@ public abstract class BaseActivity extends AppCompatActivity implements MqttCall
                 e.printStackTrace();
             }
         }
-        List<Integer> allNv = DunViewHelper.getAllNv();
-        JSONArray nvStatusList = DunViewHelper.getNvStatusList();
+        List<Integer> allNv = dunViewHelper.getAllNv();
+        JSONArray nvStatusList = dunViewHelper.getNvStatusList();
         for (int i = 0; i < allNv.size(); i++) {
             Integer integer = allNv.get(i);
             ImageView viewById = findViewById(integer);
@@ -302,10 +305,10 @@ public abstract class BaseActivity extends AppCompatActivity implements MqttCall
                 dialog.dismiss();
                 //修改ID号
                 toiltId = content.getText().toString();
-                dbDeviceFloorMap = findDevice(code);
-                if (dbDeviceFloorMap != null) {
-                    dbDeviceFloorMap.code = toiltId;
-                }
+//                dbDeviceFloorMap = findDevice(code);
+//                if (dbDeviceFloorMap != null) {
+//                    dbDeviceFloorMap.code = toiltId;
+//                }
                 //List转化为JsonArray
                 JSONArray jsonArray = listToArry();
                 //JsonArray写入文件
@@ -528,8 +531,6 @@ public abstract class BaseActivity extends AppCompatActivity implements MqttCall
         mClient.startReconnect();
     }
 
-    DeviceSignalInfo deviceSignalInfo;
-
     /**
      * @param topic
      * @param mqttMessage System.out.println("接收消息主题:" + topic + " Qos:" + message.getQos());
@@ -584,19 +585,19 @@ public abstract class BaseActivity extends AppCompatActivity implements MqttCall
      * @param deviceSignalInfo
      */
     private void cccc(DeviceSignalInfo deviceSignalInfo) {
-        Integer nvDunViewId = DunViewHelper.getNvDunViewByKey(deviceSignalInfo.code);
+        Integer nvDunViewId = dunViewHelper.getNvDunViewByKey(deviceSignalInfo.code);
         ImageView viewById;
         if (nvDunViewId != null) {
             // 改女蹲位
             viewById = findViewById(nvDunViewId);
-            DunViewHelper.changeNvStatus(nvDunViewId, deviceSignalInfo.state);
+            dunViewHelper.changeNvStatus(nvDunViewId, deviceSignalInfo.state);
             viewById.setImageDrawable(deviceSignalInfo.state == 1 ? getResources().getDrawable(R.mipmap.nv1new) : getResources().getDrawable(R.mipmap.nv2new));
         }
-        Integer nanDunViewId = DunViewHelper.getNanDunViewByKey(deviceSignalInfo.code);
+        Integer nanDunViewId = dunViewHelper.getNanDunViewByKey(deviceSignalInfo.code);
         if (nanDunViewId != null) {
             // 改男蹲位
             viewById = findViewById(nanDunViewId);
-            DunViewHelper.changeNanStatus(nanDunViewId, deviceSignalInfo.state);
+            dunViewHelper.changeNanStatus(nanDunViewId, deviceSignalInfo.state);
             viewById.setImageDrawable(deviceSignalInfo.state == 1 ? getResources().getDrawable(R.mipmap.nan1new) : getResources().getDrawable(R.mipmap.nan2new));
         }
     }
