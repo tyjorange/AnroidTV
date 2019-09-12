@@ -20,7 +20,22 @@ import java.util.logging.Logger;
 
 		{"signal":"6000", "code":"80DFA114004B1200", "state":0} 蹲位状态 实时 1有人 0离开
 */
-
+//    /**
+//     * 订阅示例
+//     *
+//     * @param args
+//     * @throws MqttException
+//     */
+//    public static void main(String[] args) throws MqttException {
+//		SubscribeClient client_1 = new SubscribeClient();
+//		String topic1 = "RFID/SET";
+//		String clientid1 = "RFIDPub01";
+//		client_1.start(topic1, clientid1);
+//		SubscribeClient client_2 = new SubscribeClient();
+//		String topic2 = "GNSS/LOC";
+//		String clientid2 = "GnssPub01";
+//		client_2.start(topic2, clientid2);
+//	}
 public class SubscribeClient {
 
     private String HOST = "tcp://192.168.0.1:1883";  //192.168.0.1
@@ -176,22 +191,5 @@ public class SubscribeClient {
             }
         }.start();
     }
-
-//    /**
-//     * 订阅示例
-//     *
-//     * @param args
-//     * @throws MqttException
-//     */
-//    public static void main(String[] args) throws MqttException {
-//		SubscribeClient client_1 = new SubscribeClient();
-//		String topic1 = "RFID/SET";
-//		String clientid1 = "RFIDPub01";
-//		client_1.start(topic1, clientid1);
-//		SubscribeClient client_2 = new SubscribeClient();
-//		String topic2 = "GNSS/LOC";
-//		String clientid2 = "GnssPub01";
-//		client_2.start(topic2, clientid2);
-//	}
 
 }

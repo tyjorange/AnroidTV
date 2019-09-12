@@ -55,6 +55,7 @@ import sh.slst.anroidtv.R;
 import sh.slst.anroidtv.SubscribeClient;
 import sh.slst.anroidtv.bean.DeviceSignalInfo;
 import sh.slst.anroidtv.bean.MQTTConfig;
+import sh.slst.anroidtv.bean.MessageBean;
 import sh.slst.anroidtv.utils.DunViewHelper;
 import sh.slst.anroidtv.utils.FileUtils;
 import sh.slst.anroidtv.utils.utils;
@@ -86,7 +87,7 @@ public abstract class BaseActivity extends AppCompatActivity implements MqttCall
             tvTip;//标语
     private String[] weekWords;
     private Context context;
-    private int visitors = 0;
+    //    private int visitors = 0;
     private TextView text_useposition_left;
     private TextView text_useposition_right;
     //    private int allcounts_nan;
@@ -101,7 +102,7 @@ public abstract class BaseActivity extends AppCompatActivity implements MqttCall
     private LinearLayout lay_left;
     private String toiltId;
     //    private DeviceSignalInfo dbDeviceFloorMap;
-    private DeviceSignalInfo deviceSignalInfo;
+//    private DeviceSignalInfo deviceSignalInfo;
     private String Filename = "map";
     private boolean isChang = false;
     private SharedPreferences sPreferences;
@@ -448,7 +449,7 @@ public abstract class BaseActivity extends AppCompatActivity implements MqttCall
                     alertDialog.dismiss();
                     dialogPutId();
                 } else {
-                    final String jsonContent = getJsonContent("6000", code, state + "");
+                    final String jsonContent = getJsonContent(code, String.valueOf(state), System.currentTimeMillis() + "");
 //                    final String topic = "/" + mqttConfig.dev.fsu_code + "/" + mqttConfig.dev.dev_code;
                     final String topic = mqttTopic;
                     Log.i("topic", topic);
@@ -620,6 +621,9 @@ public abstract class BaseActivity extends AppCompatActivity implements MqttCall
         mClient.startReconnect();
     }
 
+    private List<MessageBean.Closet> mCloset;
+    private MessageBean.Traffic mTraffic;
+
     /**
      * @param topic
      * @param mqttMessage System.out.println("接收消息主题:" + topic + " Qos:" + message.getQos());
@@ -639,11 +643,21 @@ public abstract class BaseActivity extends AppCompatActivity implements MqttCall
         final String msgEntity = new String(mqttMessage.getPayload());
         if (msgEntity.startsWith("{") & msgEntity.endsWith("}")) {
             Gson gson = new Gson();
-            deviceSignalInfo = gson.fromJson(msgEntity, DeviceSignalInfo.class);
-        /* Log.i("接收消息主题 : ", topic);
-        Log.i("接收消息Qos : ", mqttMessage.getQos() + "");
-        Log.i("接收消息内容 : ", new String(mqttMessage.getPayload()));*/
-            String signal = deviceSignalInfo.signal;
+            MessageBean messageBean = gson.fromJson(msgEntity, MessageBean.class);
+            List<MessageBean.Closet> closet = messageBean.closet;
+            if (closet != null) { //蹲位状态变化
+                mCloset = closet;
+                Message message = new Message();
+                message.what = fUse;
+                handler.sendMessage(message);
+            }
+            MessageBean.Traffic traffic = messageBean.traffic;
+            if (traffic != null) {// 人流统计消息
+                mTraffic = traffic;
+                Message message = new Message();
+                message.what = fCount;
+                handler.sendMessage(message);
+            }
             if (signal != null) {
                 if (signal.equals("6000")) { //蹲位状态变化
 //            DeviceSignalInfo dbDeviceFloorMap = findDevice(deviceSignalInfo.code);
@@ -657,7 +671,7 @@ public abstract class BaseActivity extends AppCompatActivity implements MqttCall
                     handler.sendMessage(message);
                 }
                 if (signal.equals("6001")) {
-                    visitors = deviceSignalInfo.visitors;
+//                    visitors = deviceSignalInfo.visitors;
                     Message message = new Message();
                     message.what = fCount;
                     handler.sendMessage(message);
@@ -672,30 +686,36 @@ public abstract class BaseActivity extends AppCompatActivity implements MqttCall
      * 改变蹲位状态
      */
     private void changeDun() {
-        Integer nvDunViewId = dunViewHelper.getNvDunViewByKey(deviceSignalInfo.code);
-        ImageView viewById;
-        if (nvDunViewId != null) {
-            // 改女蹲位
-            viewById = findViewById(nvDunViewId);
-            dunViewHelper.changeNvStatus(nvDunViewId, deviceSignalInfo.state);
-            viewById.setImageDrawable(deviceSignalInfo.state == 1 ? getResources().getDrawable(R.mipmap.nv1new) : getResources().getDrawable(R.mipmap.nv2new));
-        }
-        Integer nanDunViewId = dunViewHelper.getNanDunViewByKey(deviceSignalInfo.code);
-        if (nanDunViewId != null) {
-            // 改男蹲位
-            viewById = findViewById(nanDunViewId);
-            dunViewHelper.changeNanStatus(nanDunViewId, deviceSignalInfo.state);
-            viewById.setImageDrawable(deviceSignalInfo.state == 1 ? getResources().getDrawable(R.mipmap.nan1new) : getResources().getDrawable(R.mipmap.nan2new));
+        for (MessageBean.Closet c : mCloset) {
+            Integer nvDunViewId = dunViewHelper.getNvDunViewByKey(c.closet_id);
+            ImageView viewById;
+            if (nvDunViewId != null) {
+                // 改女蹲位
+                viewById = findViewById(nvDunViewId);
+                dunViewHelper.changeNvStatus(nvDunViewId, c.state);
+                viewById.setImageDrawable(c.state == 1 ? getResources().getDrawable(R.mipmap.nv1new) : getResources().getDrawable(R.mipmap.nv2new));
+            }
+            Integer nanDunViewId = dunViewHelper.getNanDunViewByKey(c.closet_id);
+            if (nanDunViewId != null) {
+                // 改男蹲位
+                viewById = findViewById(nanDunViewId);
+                dunViewHelper.changeNanStatus(nanDunViewId, c.state);
+                viewById.setImageDrawable(c.state == 1 ? getResources().getDrawable(R.mipmap.nan1new) : getResources().getDrawable(R.mipmap.nan2new));
+            }
         }
     }
 
-    private String getJsonContent(String signal, String code, String state) {
+    private String getJsonContent(String closet_id, String state, String time) {
         try {
-            JSONObject scenes = new JSONObject();
-            scenes.put("signal", signal);
-            scenes.put("code", code);
-            scenes.put("state", state);
-            return scenes.toString();
+            JSONObject outer = new JSONObject();
+            JSONArray array = new JSONArray();
+            JSONObject inner = new JSONObject();
+            inner.put("closet_id", closet_id);
+            inner.put("state", state);
+            inner.put("time", time);
+            array.put(inner);
+            outer.put("closet", array);
+            return outer.toString();
         } catch (JSONException e) {
             e.printStackTrace();
         }
