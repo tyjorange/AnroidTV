@@ -1,4 +1,4 @@
-package sh.slst.anroidtv.bean;
+package sh.slst.anroidtv.act;
 
 import android.app.Dialog;
 import android.content.Context;
@@ -52,6 +52,9 @@ import sh.slst.anroidtv.DebugMessageAdapter;
 import sh.slst.anroidtv.ISubscibeConnectMessage;
 import sh.slst.anroidtv.R;
 import sh.slst.anroidtv.SubscribeClient;
+import sh.slst.anroidtv.bean.DeviceSignalInfo;
+import sh.slst.anroidtv.bean.MQTTConfig;
+import sh.slst.anroidtv.utils.DunViewHelper;
 import sh.slst.anroidtv.utils.FileUtils;
 import sh.slst.anroidtv.utils.utils;
 
@@ -231,12 +234,12 @@ public abstract class BaseActivity extends AppCompatActivity implements MqttCall
 
 
         //初始化蹲位
-        DunViewHolder.init(this);
+        DunViewHelper.init(this);
         text_useposition_left.setText("当前使用：" + getLeft());
         text_useposition_right.setText("当前使用：" + getRight());
         //初始化蹲位图片 和点击事件
-        List<Integer> allNan = DunViewHolder.getAllNan();
-        JSONArray nanStatusList = DunViewHolder.getNanStatusList();
+        List<Integer> allNan = DunViewHelper.getAllNan();
+        JSONArray nanStatusList = DunViewHelper.getNanStatusList();
         for (int i = 0; i < allNan.size(); i++) {
             Integer integer = allNan.get(i);
             ImageView viewById = findViewById(integer);
@@ -255,8 +258,8 @@ public abstract class BaseActivity extends AppCompatActivity implements MqttCall
                 e.printStackTrace();
             }
         }
-        List<Integer> allNv = DunViewHolder.getAllNv();
-        JSONArray nvStatusList = DunViewHolder.getNvStatusList();
+        List<Integer> allNv = DunViewHelper.getAllNv();
+        JSONArray nvStatusList = DunViewHelper.getNvStatusList();
         for (int i = 0; i < allNv.size(); i++) {
             Integer integer = allNv.get(i);
             ImageView viewById = findViewById(integer);
@@ -581,18 +584,19 @@ public abstract class BaseActivity extends AppCompatActivity implements MqttCall
      * @param deviceSignalInfo
      */
     private void cccc(DeviceSignalInfo deviceSignalInfo) {
-        Integer nanDunViewId = DunViewHolder.getNanDunViewByKey(deviceSignalInfo.code);
-        Integer nvDunViewId = DunViewHolder.getNvDunViewByKey(deviceSignalInfo.code);
+        Integer nvDunViewId = DunViewHelper.getNvDunViewByKey(deviceSignalInfo.code);
         ImageView viewById;
-        if (nanDunViewId == null) {
+        if (nvDunViewId != null) {
             // 改女蹲位
             viewById = findViewById(nvDunViewId);
-            DunViewHolder.changeNvStatus(nvDunViewId, deviceSignalInfo.state);
+            DunViewHelper.changeNvStatus(nvDunViewId, deviceSignalInfo.state);
             viewById.setImageDrawable(deviceSignalInfo.state == 1 ? getResources().getDrawable(R.mipmap.nv1new) : getResources().getDrawable(R.mipmap.nv2new));
-        } else {
+        }
+        Integer nanDunViewId = DunViewHelper.getNanDunViewByKey(deviceSignalInfo.code);
+        if (nanDunViewId != null) {
             // 改男蹲位
             viewById = findViewById(nanDunViewId);
-            DunViewHolder.changeNanStatus(nanDunViewId, deviceSignalInfo.state);
+            DunViewHelper.changeNanStatus(nanDunViewId, deviceSignalInfo.state);
             viewById.setImageDrawable(deviceSignalInfo.state == 1 ? getResources().getDrawable(R.mipmap.nan1new) : getResources().getDrawable(R.mipmap.nan2new));
         }
     }

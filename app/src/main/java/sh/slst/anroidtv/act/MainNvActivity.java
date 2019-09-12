@@ -1,9 +1,9 @@
-package sh.slst.anroidtv;
+package sh.slst.anroidtv.act;
 
 import android.content.Intent;
 
-import sh.slst.anroidtv.bean.BaseActivity;
-import sh.slst.anroidtv.bean.DunViewHolder;
+import sh.slst.anroidtv.R;
+import sh.slst.anroidtv.utils.DunViewHelper;
 
 public class MainNvActivity extends BaseActivity {
     @Override
@@ -13,12 +13,12 @@ public class MainNvActivity extends BaseActivity {
 
     @Override
     public String getLeft() {
-        return DunViewHolder.getNvUse();
+        return DunViewHelper.getNvUse();
     }
 
     @Override
     public String getRight() {
-        return DunViewHolder.getNanUse();
+        return DunViewHelper.getNanUse();
     }
 
     @Override

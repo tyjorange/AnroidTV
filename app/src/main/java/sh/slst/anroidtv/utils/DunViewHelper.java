@@ -1,4 +1,4 @@
-package sh.slst.anroidtv.bean;
+package sh.slst.anroidtv.utils;
 
 import android.content.SharedPreferences;
 
@@ -13,10 +13,12 @@ import java.util.Map;
 import java.util.logging.Logger;
 
 import sh.slst.anroidtv.R;
+import sh.slst.anroidtv.act.BaseActivity;
+import sh.slst.anroidtv.bean.DeviceSignalInfo;
 
 import static android.content.Context.MODE_PRIVATE;
 
-public class DunViewHolder {
+public class DunViewHelper {
     private static SharedPreferences sPreferences;
     private static Map<String, Integer> nanMap = new HashMap<>();
     private static List<Integer> nanList = new ArrayList<>();
@@ -33,8 +35,8 @@ public class DunViewHolder {
         activity = activityWeakReference.get();
         logger = Logger.getLogger(activity.getClass().getSimpleName());
         //        sPreferences.edit().clear().apply();
-        initNan();
-        initNv();
+        initNanViewIds();
+        initNvViewIds();
         loadNanUse();
         loadNvUse();
     }
@@ -66,9 +68,9 @@ public class DunViewHolder {
     }
 
     /**
-     * 初始化男蹲位
+     * 初始化男蹲位id
      */
-    private static void initNan() {
+    private static void initNanViewIds() {
         nanMap.clear();
         nanMap.put("hunan_baoqing_nan_nan01", R.id.hunan_baoqing_nan_nan01);
         nanMap.put("hunan_baoqing_nan_nan02", R.id.hunan_baoqing_nan_nan02);
@@ -112,9 +114,9 @@ public class DunViewHolder {
     }
 
     /**
-     * 初始化女蹲位
+     * 初始化女蹲位id
      */
-    private static void initNv() {
+    private static void initNvViewIds() {
         nvMap.clear();
         nvMap.put("hunan_baoqing_nan_nv01", R.id.hunan_baoqing_nan_nv01);
         nvMap.put("hunan_baoqing_nan_nv02", R.id.hunan_baoqing_nan_nv02);
@@ -252,7 +254,7 @@ public class DunViewHolder {
         //加载女使用情况
         String nv_use = sPreferences.getString("nv_use", "");
         if (nv_use.equals("")) {
-            nvUseList = DunViewHolder.initNvUseZero();
+            nvUseList = DunViewHelper.initNvUseZero();
             SharedPreferences.Editor editor = sPreferences.edit();
             editor.putString("nv_use", nvUseList.toString()).apply();
             activity.postDebug("| init nv_use :", nvUseList.length() + nvUseList.toString());

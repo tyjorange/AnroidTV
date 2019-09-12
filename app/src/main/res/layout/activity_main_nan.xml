@@ -6,7 +6,7 @@
     android:background="@drawable/nan_left"
     android:gravity="center"
     android:orientation="horizontal"
-    tools:context=".MainNanActivity">
+    tools:context=".act.MainNanActivity">
 
     <!--<sh.slst.anroidtv.view.FloorMapView-->
     <!--android:id="@+id/img_floor"-->

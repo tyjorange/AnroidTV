@@ -22,6 +22,8 @@ import java.text.SimpleDateFormat;
 import java.util.HashMap;
 import java.util.Map;
 
+import sh.slst.anroidtv.act.MainNanActivity;
+
 /**
  * Created by Administrator on 2018/7/9.
  */
