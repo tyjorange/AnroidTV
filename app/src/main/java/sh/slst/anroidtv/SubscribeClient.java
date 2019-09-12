@@ -5,15 +5,12 @@ import android.util.Log;
 import org.eclipse.paho.client.mqttv3.MqttCallback;
 import org.eclipse.paho.client.mqttv3.MqttClient;
 import org.eclipse.paho.client.mqttv3.MqttConnectOptions;
-import org.eclipse.paho.client.mqttv3.MqttDeliveryToken;
 import org.eclipse.paho.client.mqttv3.MqttException;
 import org.eclipse.paho.client.mqttv3.MqttMessage;
 import org.eclipse.paho.client.mqttv3.MqttPersistenceException;
 import org.eclipse.paho.client.mqttv3.MqttSecurityException;
-import org.eclipse.paho.client.mqttv3.MqttTopic;
 import org.eclipse.paho.client.mqttv3.persist.MemoryPersistence;
 
-import java.util.concurrent.ScheduledExecutorService;
 import java.util.logging.Logger;
 
 /*
@@ -24,7 +21,7 @@ import java.util.logging.Logger;
 		{"signal":"6000", "code":"80DFA114004B1200", "state":0} 蹲位状态 实时 1有人 0离开
 */
 
-class SubscribeClient {
+public class SubscribeClient {
 
     private String HOST = "tcp://192.168.0.1:1883";  //192.168.0.1
 
@@ -33,22 +30,22 @@ class SubscribeClient {
 //    private ScheduledExecutorService scheduler;
 //    private MqttTopic topic11;
 
-    private ISubscibeConnectMessage subscibeConnectMessage;
+    private ISubscibeConnectMessage iSubscibeConnectMessage;
     private String mTopic;
     private boolean isExit = false;
 
-    SubscribeClient(String ip, int port) {
+    public SubscribeClient(String ip, int port) {
         HOST = "tcp://" + ip + ":" + port;
     }
 
-    void subscribe(String topic, String clientid, MqttCallback callback, String sendcontent) {
+    public void subscribe(String topic, String clientid, MqttCallback callback, String sendcontent) {
         mTopic = topic;
         start(topic, clientid, callback, sendcontent);
     }
 
 
-    void setMessageNotify(ISubscibeConnectMessage connectMessage) {
-        subscibeConnectMessage = connectMessage;
+    public void setMessageNotify(ISubscibeConnectMessage connectMessage) {
+        iSubscibeConnectMessage = connectMessage;
     }
 
     /**
@@ -79,12 +76,13 @@ class SubscribeClient {
             s_client.connect(options);
             if (s_client.isConnected()) {
                 Log.i("isConnected to host", HOST);
+                iSubscibeConnectMessage.onMessage("isConnected to host " + HOST);
             }
             subscribe();
             // 订阅消息
         } catch (Exception e) {
-            if (subscibeConnectMessage != null) {
-                subscibeConnectMessage.onMessage(e.getCause() + "topic=" + topic + "  clientid=" + clientid + " host=" + HOST);
+            if (iSubscibeConnectMessage != null) {
+                iSubscibeConnectMessage.onMessage(e.getCause() + "topic=" + topic + "  clientid=" + clientid + " host=" + HOST);
             }
 //            startReconnect();
         }
@@ -94,15 +92,16 @@ class SubscribeClient {
     private void subscribe() {
         try {
             String[] arr = {mTopic};
-            Logger.getLogger(this.getClass().getSimpleName()).info(mTopic);
             s_client.subscribe(arr);
+            Log.i("subscribe Topic ", mTopic);
+            iSubscibeConnectMessage.onMessage("subscribe Topic " + mTopic);
         } catch (MqttException e) {
             e.printStackTrace();
 //            startReconnect();
         }
     }
 
-    void publish(String topic, String msg) {
+    public void publish(String topic, String msg) {
         try {
             if (s_client != null && s_client.isConnected()) {
                 MqttMessage message = new MqttMessage();
@@ -121,7 +120,7 @@ class SubscribeClient {
     /**
      * 断开链接
      */
-    void disconnect() {
+    public void disconnect() {
         try {
             if (s_client.isConnected()) {
                 s_client.disconnect();
@@ -135,34 +134,34 @@ class SubscribeClient {
     /**
      * 重新链接
      */
-    void startReconnect() {
+    public void startReconnect() {
         new Thread() {
             @Override
             public void run() {
                 super.run();
                 do {
-                    if (subscibeConnectMessage != null) {
-                        subscibeConnectMessage.onMessage("开始重连");
+                    if (iSubscibeConnectMessage != null) {
+                        iSubscibeConnectMessage.onMessage("开始重连");
                     }
                     if (!s_client.isConnected() && !isExit) {
                         try {
-                            if (subscibeConnectMessage != null) {
-                                subscibeConnectMessage.onMessage("重连中。。。");
+                            if (iSubscibeConnectMessage != null) {
+                                iSubscibeConnectMessage.onMessage("重连中。。。");
                             }
                             s_client.connect(options);
-                            if (subscibeConnectMessage != null) {
-                                subscibeConnectMessage.onMessage("重连成功");
+                            if (iSubscibeConnectMessage != null) {
+                                iSubscibeConnectMessage.onMessage("重连成功");
                             }
                             subscribe();
                             break;
                         } catch (MqttSecurityException e) {
                             e.printStackTrace();
-                            if (subscibeConnectMessage != null) {
-                                subscibeConnectMessage.onMessage("重连失败  " + e.getCause());
+                            if (iSubscibeConnectMessage != null) {
+                                iSubscibeConnectMessage.onMessage("重连失败  " + e.getCause());
                             }
                         } catch (MqttException e) {
-                            if (subscibeConnectMessage != null) {
-                                subscibeConnectMessage.onMessage("重连失败 " + e.getCause());
+                            if (iSubscibeConnectMessage != null) {
+                                iSubscibeConnectMessage.onMessage("重连失败 " + e.getCause());
                             }
                             e.printStackTrace();
                         }

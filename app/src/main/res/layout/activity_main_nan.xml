@@ -976,5 +976,7 @@
         android:layout_width="match_parent"
         android:layout_height="200dp"
         android:layout_gravity="bottom"
-        android:background="#90111111" />
+        android:background="#90111111"
+        android:stackFromBottom="true"
+        android:transcriptMode="alwaysScroll" />
 </FrameLayout>
