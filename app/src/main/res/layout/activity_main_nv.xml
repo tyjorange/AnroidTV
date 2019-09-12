@@ -912,7 +912,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="110dp"
                     android:layout_marginLeft="110dp"
-                    android:layout_marginTop="110dp"
+                    android:layout_marginTop="45dp"
                     android:text="2019年09月08日     星期日   14:08:31"
                     android:textColor="@color/white" />
             </LinearLayout>

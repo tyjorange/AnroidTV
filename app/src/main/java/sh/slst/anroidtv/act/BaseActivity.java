@@ -20,6 +20,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
@@ -62,7 +63,7 @@ public abstract class BaseActivity extends AppCompatActivity implements MqttCall
     private String TAG = getClass().getSimpleName();
     //    private FloorMapView floorMapView;
     private SubscribeClient mClient;
-    private MQTTConfig mqttConfig;
+    //    private MQTTConfig mqttConfig;
     private List<DeviceSignalInfo> listDeviceFloorMaps;
 
     private String topic;
@@ -84,7 +85,6 @@ public abstract class BaseActivity extends AppCompatActivity implements MqttCall
             tvHumidity,//湿度
             tvTip;//标语
     private String[] weekWords;
-    private String s;
     private Context context;
     private int visitors = 0;
     private TextView text_useposition_left;
@@ -108,6 +108,7 @@ public abstract class BaseActivity extends AppCompatActivity implements MqttCall
     protected DunViewHelper dunViewHelper;
     //debug
     private List<String> mListDebugInfo = new ArrayList<>();
+    private ListView listDebug;
     private DebugMessageAdapter mAdapter;
     //timer
     private Timer timer = new Timer();
@@ -115,7 +116,10 @@ public abstract class BaseActivity extends AppCompatActivity implements MqttCall
     private static final int fTime = 1;//刷新时钟
     private static final int fCount = 2;//更新累计人数
     private static final int fUse = 3;//更新蹲位使用情况
-    private static final int cMqtt = 4;//启动时连接MQTT订阅消息
+    private static final int cMqtt = 4;//启动时连接MQTT & 订阅消息
+    private String mqttIP;
+    private Integer mqttPort;
+    private String mqttTopic;
     // 实例化一个MyHandler对象
     private BaseActivity.MyHandler handler = new BaseActivity.MyHandler(this);
 
@@ -134,41 +138,56 @@ public abstract class BaseActivity extends AppCompatActivity implements MqttCall
                     theActivity.initTime();
                     break;
                 case fCount:
-
                     break;
                 case fUse:
-                    theActivity.cccc(theActivity.deviceSignalInfo);
-                    theActivity.text_useposition_left.setText("当前使用：" + theActivity.getLeft());
-                    theActivity.text_useposition_right.setText("当前使用：" + theActivity.getRight());
+                    theActivity.changeDun();
+                    theActivity.flushStatus();
                     break;
                 case cMqtt:
-                    if (theActivity.mqttConfig != null) {
-                        theActivity.mClient = new SubscribeClient(theActivity.mqttConfig.ip, theActivity.mqttConfig.port);
-                        theActivity.mClient.setMessageNotify(theActivity);
-                        theActivity.topic = "/" + theActivity.mqttConfig.dev.fsu_code + "/" + theActivity.mqttConfig.dev.dev_code;
-                        theActivity.mClient.subscribe(theActivity.topic, theActivity.topic + "*_*", theActivity, null);
-                    }
+                    theActivity.initMqtt();
                     break;
             }
         }
     }
 
+    private void initMqtt() {
+        if (mClient == null) {
+            doConnect();
+        } else {
+            if (mClient.isConnected()) {
+                mClient.disconnect();
+            }
+            doConnect();
+        }
+        listDebug.setVisibility(View.VISIBLE);
+    }
+
+    private void doConnect() {
+        mClient = new SubscribeClient(mqttIP, mqttPort);
+        mClient.setMessageNotify(this);
+//        theActivity.topic = "/" + theActivity.mqttConfig.dev.fsu_code + "/" + theActivity.mqttConfig.dev.dev_code;
+        mClient.subscribe(mqttTopic, mqttTopic + "*_*", this, null);
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        context = this;
         super.onCreate(savedInstanceState);
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN); //隐藏状态栏
 //        getWindow().clearFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN); //显示状态栏
         setContentView(getContentViewID());
 
         sPreferences = BaseActivity.this.getSharedPreferences("STATE", MODE_PRIVATE);
-//        String wmessage = sPreferences.getString("wrongmessage", "");
+        mqttIP = sPreferences.getString("mqttIP", "192.168.0.1");
+        mqttPort = sPreferences.getInt("mqttPort", 1883);
+        mqttTopic = sPreferences.getString("mqttTopic", "/TOILET");
 //      updataLog(wmessage);
 
        /* SharedPreferences.Editor editor = sPreferences.edit();
         editor.putBoolean("ischang", isChang);
         editor.commit();*/
 
-        initConfig();
+//        initConfig();
 
         weekWords = getResources().getStringArray(R.array.week);
 //        tvYear = (TextView) findViewById(R.id.tv_year);
@@ -187,7 +206,7 @@ public abstract class BaseActivity extends AppCompatActivity implements MqttCall
 //        txtDebug = (TextView) findViewById(R.id.txt_debug);
 
         // Debug 视图
-        final ListView listDebug = (ListView) findViewById(R.id.list_debug);
+        listDebug = (ListView) findViewById(R.id.list_debug);
         mAdapter = new DebugMessageAdapter(this, mListDebugInfo);
         listDebug.setAdapter(mAdapter);
         findViewById(R.id.iv_ad_left).setOnClickListener(new View.OnClickListener() {
@@ -209,7 +228,13 @@ public abstract class BaseActivity extends AppCompatActivity implements MqttCall
 //                finish();
             }
         });
-
+        // 修改配置
+        findViewById(R.id.tv_date).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                dialogConfig();
+            }
+        });
 //        floorMapView.setOnTouchListener(new View.OnTouchListener() {
 //            @Override
 //            public boolean onTouch(View v, MotionEvent event) {
@@ -238,8 +263,7 @@ public abstract class BaseActivity extends AppCompatActivity implements MqttCall
 
         //初始化蹲位
         dunViewHelper = DunViewHelper.getInstance(this);
-        text_useposition_left.setText("当前使用：" + getLeft());
-        text_useposition_right.setText("当前使用：" + getRight());
+        flushStatus();
         //初始化蹲位图片 和点击事件
         List<Integer> allNan = dunViewHelper.getAllNan();
         JSONArray nanStatusList = dunViewHelper.getNanStatusList();
@@ -250,7 +274,6 @@ public abstract class BaseActivity extends AppCompatActivity implements MqttCall
                 @Override
                 public void onClick(View view) {
                     CharSequence contentDescription = view.getContentDescription();
-//                    Toast.makeText(MainNanActivity.this, "nan " + contentDescription, Toast.LENGTH_SHORT).show();
                     showSingleAlertDialog(contentDescription.toString());
                 }
             });
@@ -270,7 +293,6 @@ public abstract class BaseActivity extends AppCompatActivity implements MqttCall
                 @Override
                 public void onClick(View view) {
                     CharSequence contentDescription = view.getContentDescription();
-//                    Toast.makeText(MainNanActivity.this, "nv " + contentDescription, Toast.LENGTH_SHORT).show();
                     showSingleAlertDialog(contentDescription.toString());
                 }
             });
@@ -283,6 +305,13 @@ public abstract class BaseActivity extends AppCompatActivity implements MqttCall
         }
     }
 
+    /**
+     * 刷新左右统计状态
+     */
+    private void flushStatus() {
+        text_useposition_left.setText("当前使用：" + getLeft());
+        text_useposition_right.setText("当前使用：" + getRight());
+    }
 
     /**
      * 修改蹲位ID
@@ -324,6 +353,64 @@ public abstract class BaseActivity extends AppCompatActivity implements MqttCall
         });
     }
 
+    /**
+     * 修改配置
+     */
+    private void dialogConfig() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        LayoutInflater inflater = LayoutInflater.from(this);
+        View v = inflater.inflate(R.layout.dialog_config, null);
+        final EditText et_ip = (EditText) v.findViewById(R.id.txt_tip_ip);
+        final EditText et_port = (EditText) v.findViewById(R.id.txt_tip_port);
+        final EditText et_topic = (EditText) v.findViewById(R.id.txt_tip_topic);
+        et_ip.setText(mqttIP);
+        et_port.setText(String.valueOf(mqttPort));
+        et_topic.setText(mqttTopic);
+        TextView btn_sure = (TextView) v.findViewById(R.id.txt_ok);
+        TextView btn_cancel = (TextView) v.findViewById(R.id.txt_cancel);
+        final Dialog dialog = builder.create();
+        dialog.show();
+        dialog.getWindow().setLayout(utils.dp2px(getApplicationContext(), 300), LinearLayout.LayoutParams.WRAP_CONTENT);
+        dialog.getWindow().setContentView(v);
+        //dialog.getWindow().setGravity(Gravity.CENTER);
+        btn_sure.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String str_ip = et_ip.getText().toString();
+                if (utils.isIP(str_ip)) {
+                    mqttIP = str_ip;
+                } else {
+                    Toast.makeText(context, "IP格式不正确", Toast.LENGTH_LONG).show();
+                    return;
+                }
+                String str_port = et_port.getText().toString();
+                if (utils.isPort(str_port)) {
+                    mqttPort = Integer.valueOf(str_port);
+                } else {
+                    Toast.makeText(context, "端口格式不正确", Toast.LENGTH_LONG).show();
+                    return;
+                }
+                mqttTopic = et_topic.getText().toString();
+                SharedPreferences.Editor editor = sPreferences.edit();
+                editor.putString("mqttIP", mqttIP.toString()).apply();
+                editor.putInt("mqttPort", mqttPort).apply();
+                editor.putString("mqttTopic", mqttTopic.toString()).apply();
+
+//                Toast.makeText(context, "修改配置成功", Toast.LENGTH_LONG).show();
+                Message message = new Message();
+                message.what = cMqtt;
+                handler.sendMessage(message);
+                dialog.dismiss();
+            }
+        });
+        btn_cancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View arg0) {
+                dialog.dismiss();
+            }
+        });
+    }
+
     private void saveDataToFile(String data, String fileName) {
 
         FileOutputStream outputStream;
@@ -342,9 +429,10 @@ public abstract class BaseActivity extends AppCompatActivity implements MqttCall
     }
 
     public void showSingleAlertDialog(final String code) {
-        final String[] items = {"无人", "有人", "清扫", "维修", "修改ID"};
+//        final String[] items = {"无人", "有人", "清扫", "维修", "修改ID"};
+        final String[] items = {"无人", "有人", "清扫", "维修"};
         AlertDialog.Builder alertBuilder = new AlertDialog.Builder(this);
-        alertBuilder.setTitle("请设置厕所状态");
+        alertBuilder.setTitle("请设置厕所状态:" + code);
         state = 0;
         alertBuilder.setSingleChoiceItems(items, 0, new DialogInterface.OnClickListener() {
             @Override
@@ -361,8 +449,9 @@ public abstract class BaseActivity extends AppCompatActivity implements MqttCall
                     dialogPutId();
                 } else {
                     final String jsonContent = getJsonContent("6000", code, state + "");
-                    final String to = "/" + mqttConfig.dev.fsu_code + "/" + mqttConfig.dev.dev_code;
-                    Log.i("top", to);
+//                    final String topic = "/" + mqttConfig.dev.fsu_code + "/" + mqttConfig.dev.dev_code;
+                    final String topic = mqttTopic;
+                    Log.i("topic", topic);
                     Log.i("jsonContent", jsonContent);
                     //图标状态改变
 //                    dbDeviceFloorMap = findDevice(code);
@@ -370,9 +459,9 @@ public abstract class BaseActivity extends AppCompatActivity implements MqttCall
 //                        dbDeviceFloorMap.state = state;
 //                    }
 //                    updataLog();
-                    postDebug("| showSingleAlertDialog :", (to + "#" + jsonContent));
+                    postDebug(" AlertDialog :", (topic + "#" + jsonContent));
                     //发送消息
-                    mClient.publish(to, jsonContent);
+                    mClient.publish(topic, jsonContent);
                 }
             }
         });
@@ -401,7 +490,7 @@ public abstract class BaseActivity extends AppCompatActivity implements MqttCall
             JsonReader jsonReader = new JsonReader(new InputStreamReader(inputStream));
             Type type = new TypeToken<MQTTConfig>() {
             }.getType();
-            mqttConfig = gson.fromJson(jsonReader, type);
+//            mqttConfig = gson.fromJson(jsonReader, type);
         } catch (Exception e) {
             Log.e(TAG, e.getMessage());
         }
@@ -575,16 +664,14 @@ public abstract class BaseActivity extends AppCompatActivity implements MqttCall
                 }
             }
         }
-        postDebug("| messageArrived :", msgEntity);
+        postDebug(" messageArrived :", msgEntity);
 //        updataLog(msgEntity);
     }
 
     /**
      * 改变蹲位状态
-     *
-     * @param deviceSignalInfo
      */
-    private void cccc(DeviceSignalInfo deviceSignalInfo) {
+    private void changeDun() {
         Integer nvDunViewId = dunViewHelper.getNvDunViewByKey(deviceSignalInfo.code);
         ImageView viewById;
         if (nvDunViewId != null) {
@@ -653,10 +740,10 @@ public abstract class BaseActivity extends AppCompatActivity implements MqttCall
     }
 
     public void updataLog(final String message) {
-        postDebug("| updataLog :", message);
+        postDebug(" updataLog :", message);
     }
 
-    private SimpleDateFormat simpleDateFormat = new SimpleDateFormat("HH:mm:ss", Locale.CHINA);
+    private SimpleDateFormat simpleDateFormat = new SimpleDateFormat("[HH:mm:ss]", Locale.CHINA);
 
 //    @Override
 //    public void postDebug(final String tag, final String msg) {
@@ -671,7 +758,7 @@ public abstract class BaseActivity extends AppCompatActivity implements MqttCall
 
     @Override
     public void onMessage(final String message) {
-        postDebug("| onMessage :", message);
+        postDebug(" onMessage :", message);
     }
 
     @Override

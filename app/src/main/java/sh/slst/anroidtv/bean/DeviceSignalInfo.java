@@ -24,15 +24,15 @@ public class DeviceSignalInfo {
     public DeviceSignalInfo() {
     }
 
-    public DeviceSignalInfo(String signal, int visitors, String code, float x, float y, int state, int classs) {
-        this.signal = signal;
-        this.visitors = visitors;
-        this.code = code;
-        this.x = x;
-        this.y = y;
-        this.state = state;
-        this.classs = classs;
-    }
+//    public DeviceSignalInfo(String signal, int visitors, String code, float x, float y, int state, int classs) {
+//        this.signal = signal;
+//        this.visitors = visitors;
+//        this.code = code;
+//        this.x = x;
+//        this.y = y;
+//        this.state = state;
+//        this.classs = classs;
+//    }
 
     public String getSignal() {
         return signal;

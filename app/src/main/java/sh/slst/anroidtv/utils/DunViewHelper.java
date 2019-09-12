@@ -246,12 +246,12 @@ public class DunViewHelper {
             nanUseList = initNanUseZero();
             SharedPreferences.Editor editor = sPreferences.edit();
             editor.putString("nan_use", nanUseList.toString()).apply();
-            activity.postDebug("| init nan_use :", nanUseList.length() + nanUseList.toString());
+            activity.postDebug(" init nan_use :", nanUseList.length() + nanUseList.toString());
             logger.info((nanUseList.length() + " init nan_use " + nanUseList.toString()));
         } else {
             try {
                 nanUseList = new JSONArray(nan_use);
-                activity.postDebug("| load nan_use :", nanUseList.length() + nanUseList.toString());
+                activity.postDebug(" load nan_use :", nanUseList.length() + nanUseList.toString());
                 logger.info(nanUseList.length() + " load nan_use " + nanUseList.toString());
             } catch (JSONException e) {
                 e.printStackTrace();
@@ -269,12 +269,12 @@ public class DunViewHelper {
             nvUseList = initNvUseZero();
             SharedPreferences.Editor editor = sPreferences.edit();
             editor.putString("nv_use", nvUseList.toString()).apply();
-            activity.postDebug("| init nv_use :", nvUseList.length() + nvUseList.toString());
+            activity.postDebug(" init nv_use :", nvUseList.length() + nvUseList.toString());
             logger.info(nvUseList.length() + " init nv_use " + nvUseList.toString());
         } else {
             try {
                 nvUseList = new JSONArray(nv_use);
-                activity.postDebug("| load nv_use :", nvUseList.length() + nvUseList.toString());
+                activity.postDebug(" load nv_use :", nvUseList.length() + nvUseList.toString());
                 logger.info(nvUseList.length() + " load nv_use " + nvUseList.toString());
             } catch (JSONException e) {
                 e.printStackTrace();
@@ -404,17 +404,17 @@ public class DunViewHelper {
         return nanMap.get(key);
     }
 
-    public Integer getNanDunViewByIndex(int index) {
-        return nanList.get(index);
-    }
+//    public Integer getNanDunViewByIndex(int index) {
+//        return nanList.get(index);
+//    }
 
     public Integer getNvDunViewByKey(String key) {
         return nvMap.get(key);
     }
 
-    public Integer getNvDunViewByIndex(int index) {
-        return nvList.get(index);
-    }
+//    public Integer getNvDunViewByIndex(int index) {
+//        return nvList.get(index);
+//    }
 
     public String getNanUse() {
         return getNanUseCount() + "/" + nanList.size();

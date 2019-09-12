@@ -13,9 +13,9 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        android:padding="5dp"
         android:gravity="center"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        android:padding="5dp">
 
         <View
             android:id="@+id/v_dot1"
@@ -37,19 +37,19 @@
             android:layout_marginLeft="5dp"
             android:background="@color/white" />
 
-     <!--   <View
-            android:id="@+id/v_dot4"
-            android:layout_width="8dp"
-            android:layout_height="8dp"
-            android:layout_marginLeft="5dp"
-            android:background="@color/white" />
+        <!--   <View
+               android:id="@+id/v_dot4"
+               android:layout_width="8dp"
+               android:layout_height="8dp"
+               android:layout_marginLeft="5dp"
+               android:background="@color/white" />
 
-        <View
-            android:id="@+id/v_dot5"
-            android:layout_width="8dp"
-            android:layout_height="8dp"
-            android:layout_marginLeft="5dp"
-            android:background="@color/white" />
--->
+           <View
+               android:id="@+id/v_dot5"
+               android:layout_width="8dp"
+               android:layout_height="8dp"
+               android:layout_marginLeft="5dp"
+               android:background="@color/white" />
+   -->
     </LinearLayout>
 </RelativeLayout>

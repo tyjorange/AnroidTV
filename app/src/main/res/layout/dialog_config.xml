@@ -11,18 +11,38 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
         android:layout_marginTop="16dp"
-        android:text="修改厕所ID"
+        android:text="连接配置"
         android:textColor="@color/text_base_color_333"
         android:textSize="18sp" />
 
     <EditText
-        android:id="@+id/txt_tip_desc"
+        android:id="@+id/txt_tip_ip"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
-        android:layout_marginTop="16dp"
-        android:layout_marginBottom="16dp"
-        android:hint="请输入新的ID"
+        android:hint="请输入IP"
+        android:paddingLeft="16dp"
+        android:paddingRight="16dp"
+        android:textColor="@color/text_base_color_666"
+        android:textSize="16sp" />
+
+    <EditText
+        android:id="@+id/txt_tip_port"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:hint="请输入端口"
+        android:paddingLeft="16dp"
+        android:paddingRight="16dp"
+        android:textColor="@color/text_base_color_666"
+        android:textSize="16sp" />
+
+    <EditText
+        android:id="@+id/txt_tip_topic"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:hint="请输入TOPIC"
         android:paddingLeft="16dp"
         android:paddingRight="16dp"
         android:textColor="@color/text_base_color_666"

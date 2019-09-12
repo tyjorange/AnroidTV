@@ -82,7 +82,7 @@ public class SubscribeClient {
             // 订阅消息
         } catch (Exception e) {
             if (iSubscibeConnectMessage != null) {
-                iSubscibeConnectMessage.onMessage(e.getCause() + "topic=" + topic + "  clientid=" + clientid + " host=" + HOST);
+                iSubscibeConnectMessage.onMessage(e.getCause() + " |topic=" + topic + " |clientid=" + clientid + " |host=" + HOST);
             }
 //            startReconnect();
         }
@@ -109,6 +109,8 @@ public class SubscribeClient {
                 message.setRetained(false);
                 message.setPayload(msg.getBytes());
                 s_client.publish(topic, message);
+            } else {
+                iSubscibeConnectMessage.onMessage("no connected publish failed");
             }
         } catch (MqttPersistenceException e) {
             e.printStackTrace();
@@ -129,6 +131,10 @@ public class SubscribeClient {
         } catch (MqttException e) {
             e.printStackTrace();
         }
+    }
+
+    public boolean isConnected() {
+        return s_client.isConnected();
     }
 
     /**
