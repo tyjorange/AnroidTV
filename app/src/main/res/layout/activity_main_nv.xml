@@ -63,809 +63,42 @@
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:orientation="vertical">
-            <!--第1排-->
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="75dp"
-                android:layout_marginLeft="75dp"
-                android:layout_marginTop="58dp">
-                <!--男-->
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content">
-
-                    <ImageView
-                        android:id="@+id/hunan_baoqing_nan_nan16"
-                        android:layout_width="10dp"
-                        android:layout_height="17dp"
-                        android:baselineAligned="false"
-                        android:contentDescription="hunan_baoqing_nan_nan16"
-                        android:src="@mipmap/nan2new" />
-
-                    <ImageView
-                        android:id="@+id/hunan_baoqing_nan_nan17"
-                        android:layout_width="10dp"
-                        android:layout_height="17dp"
-                        android:layout_marginLeft="12dp"
-                        android:baselineAligned="false"
-                        android:contentDescription="hunan_baoqing_nan_nan17"
-                        android:src="@mipmap/nan2new" />
-
-                    <ImageView
-                        android:id="@+id/hunan_baoqing_nan_nan18"
-                        android:layout_width="10dp"
-                        android:layout_height="17dp"
-                        android:layout_marginLeft="12dp"
-                        android:baselineAligned="false"
-                        android:contentDescription="hunan_baoqing_nan_nan18"
-                        android:src="@mipmap/nan2new" />
-
-                    <ImageView
-                        android:id="@+id/hunan_baoqing_nan_nan19"
-                        android:layout_width="10dp"
-                        android:layout_height="17dp"
-                        android:layout_marginLeft="12dp"
-                        android:baselineAligned="false"
-                        android:contentDescription="hunan_baoqing_nan_nan19"
-                        android:src="@mipmap/nan2new" />
-                </LinearLayout>
-                <!--女-->
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="105dp">
-
-                    <ImageView
-                        android:id="@+id/hunan_baoqing_nan_nv09"
-                        android:layout_width="10dp"
-                        android:layout_height="17dp"
-                        android:baselineAligned="false"
-                        android:contentDescription="hunan_baoqing_nan_nv09"
-                        android:src="@mipmap/nv2new" />
-
-                    <ImageView
-                        android:id="@+id/hunan_baoqing_nan_nv08"
-                        android:layout_width="10dp"
-                        android:layout_height="17dp"
-                        android:layout_marginLeft="7.9dp"
-                        android:baselineAligned="false"
-                        android:contentDescription="hunan_baoqing_nan_nv08"
-                        android:src="@mipmap/nv2new" />
-
-                    <ImageView
-                        android:id="@+id/hunan_baoqing_nan_nv07"
-                        android:layout_width="10dp"
-                        android:layout_height="17dp"
-                        android:layout_marginLeft="7.9dp"
-                        android:baselineAligned="false"
-                        android:contentDescription="hunan_baoqing_nan_nv07"
-                        android:src="@mipmap/nv2new" />
-
-                    <ImageView
-                        android:id="@+id/hunan_baoqing_nan_nv06"
-                        android:layout_width="10dp"
-                        android:layout_height="17dp"
-                        android:layout_marginLeft="7.7dp"
-                        android:baselineAligned="false"
-                        android:contentDescription="hunan_baoqing_nan_nv06"
-                        android:src="@mipmap/nv2new" />
-
-                    <ImageView
-                        android:id="@+id/hunan_baoqing_nan_nv05"
-                        android:layout_width="10dp"
-                        android:layout_height="17dp"
-                        android:layout_marginLeft="7.7dp"
-                        android:baselineAligned="false"
-                        android:contentDescription="hunan_baoqing_nan_nv05"
-                        android:src="@mipmap/nv2new" />
-
-                    <ImageView
-                        android:id="@+id/hunan_baoqing_nan_nv04"
-                        android:layout_width="10dp"
-                        android:layout_height="17dp"
-                        android:layout_marginLeft="7.8dp"
-                        android:baselineAligned="false"
-                        android:contentDescription="hunan_baoqing_nan_nv04"
-                        android:src="@mipmap/nv2new" />
-
-                    <ImageView
-                        android:id="@+id/hunan_baoqing_nan_nv03"
-                        android:layout_width="10dp"
-                        android:layout_height="17dp"
-                        android:layout_marginLeft="7.8dp"
-                        android:baselineAligned="false"
-                        android:contentDescription="hunan_baoqing_nan_nv03"
-                        android:src="@mipmap/nv2new" />
-
-                    <ImageView
-                        android:id="@+id/hunan_baoqing_nan_nv02"
-                        android:layout_width="10dp"
-                        android:layout_height="17dp"
-                        android:layout_marginLeft="7.3dp"
-                        android:baselineAligned="false"
-                        android:contentDescription="hunan_baoqing_nan_nv02"
-                        android:src="@mipmap/nv2new" />
-
-                    <ImageView
-                        android:id="@+id/hunan_baoqing_nan_nv01"
-                        android:layout_width="10dp"
-                        android:layout_height="17dp"
-                        android:layout_marginLeft="7.3dp"
-                        android:baselineAligned="false"
-                        android:contentDescription="hunan_baoqing_nan_nv01"
-                        android:src="@mipmap/nv2new" />
-                </LinearLayout>
-            </LinearLayout>
-
-            <!--第2排-->
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="36dp"
-                android:layout_marginLeft="36dp"
-                android:layout_marginTop="33dp">
-                <!--男-->
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content">
-
-                    <ImageView
-                        android:id="@+id/hunan_baoqing_nan_nan11"
-                        android:layout_width="10dp"
-                        android:layout_height="17dp"
-                        android:baselineAligned="false"
-                        android:contentDescription="hunan_baoqing_nan_nan11"
-                        android:src="@mipmap/nan2new" />
-
-                    <ImageView
-                        android:id="@+id/hunan_baoqing_nan_nan12"
-                        android:layout_width="10dp"
-                        android:layout_height="17dp"
-                        android:layout_marginLeft="7dp"
-                        android:baselineAligned="false"
-                        android:contentDescription="hunan_baoqing_nan_nan12"
-                        android:src="@mipmap/nan2new" />
-
-                    <ImageView
-                        android:id="@+id/hunan_baoqing_nan_nan13"
-                        android:layout_width="10dp"
-                        android:layout_height="17dp"
-                        android:layout_marginLeft="8dp"
-                        android:baselineAligned="false"
-                        android:contentDescription="hunan_baoqing_nan_nan13"
-                        android:src="@mipmap/nan2new" />
-
-                    <ImageView
-                        android:id="@+id/hunan_baoqing_nan_nan14"
-                        android:layout_width="10dp"
-                        android:layout_height="17dp"
-                        android:layout_marginLeft="8dp"
-                        android:baselineAligned="false"
-                        android:contentDescription="hunan_baoqing_nan_nan14"
-                        android:src="@mipmap/nan2new" />
-
-                    <ImageView
-                        android:id="@+id/hunan_baoqing_nan_nan15"
-                        android:layout_width="10dp"
-                        android:layout_height="17dp"
-                        android:layout_marginLeft="8dp"
-                        android:baselineAligned="false"
-                        android:contentDescription="hunan_baoqing_nan_nan15"
-                        android:src="@mipmap/nan2new" />
-                </LinearLayout>
-                <!--女-->
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="174dp">
-
-                    <ImageView
-                        android:id="@+id/hunan_baoqing_nan_nv16"
-                        android:layout_width="10dp"
-                        android:layout_height="17dp"
-                        android:baselineAligned="false"
-                        android:contentDescription="hunan_baoqing_nan_nv16"
-                        android:src="@mipmap/nv2new" />
-
-                    <ImageView
-                        android:id="@+id/hunan_baoqing_nan_nv15"
-                        android:layout_width="10dp"
-                        android:layout_height="17dp"
-                        android:layout_marginLeft="7.9dp"
-                        android:baselineAligned="false"
-                        android:contentDescription="hunan_baoqing_nan_nv15"
-                        android:src="@mipmap/nv2new" />
-
-                    <ImageView
-                        android:id="@+id/hunan_baoqing_nan_nv14"
-                        android:layout_width="10dp"
-                        android:layout_height="17dp"
-                        android:layout_marginLeft="7.9dp"
-                        android:baselineAligned="false"
-                        android:contentDescription="hunan_baoqing_nan_nv14"
-                        android:src="@mipmap/nv2new" />
-
-                    <ImageView
-                        android:id="@+id/hunan_baoqing_nan_nv13"
-                        android:layout_width="10dp"
-                        android:layout_height="17dp"
-                        android:layout_marginLeft="7.7dp"
-                        android:baselineAligned="false"
-                        android:contentDescription="hunan_baoqing_nan_nv13"
-                        android:src="@mipmap/nv2new" />
-
-                    <ImageView
-                        android:id="@+id/hunan_baoqing_nan_nv12"
-                        android:layout_width="10dp"
-                        android:layout_height="17dp"
-                        android:layout_marginLeft="7.7dp"
-                        android:baselineAligned="false"
-                        android:contentDescription="hunan_baoqing_nan_nv12"
-                        android:src="@mipmap/nv2new" />
-
-                    <ImageView
-                        android:id="@+id/hunan_baoqing_nan_nv11"
-                        android:layout_width="10dp"
-                        android:layout_height="17dp"
-                        android:layout_marginLeft="7.8dp"
-                        android:baselineAligned="false"
-                        android:contentDescription="hunan_baoqing_nan_nv11"
-                        android:src="@mipmap/nv2new" />
-
-                    <ImageView
-                        android:id="@+id/hunan_baoqing_nan_nv10"
-                        android:layout_width="10dp"
-                        android:layout_height="17dp"
-                        android:layout_marginLeft="7.8dp"
-                        android:baselineAligned="false"
-                        android:contentDescription="hunan_baoqing_nan_nv10"
-                        android:src="@mipmap/nv2new" />
-                </LinearLayout>
-            </LinearLayout>
-
-            <!--第3排-->
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="36dp"
-                android:layout_marginLeft="36dp"
-                android:layout_marginTop="10dp">
-                <!--男-->
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content">
-
-                    <ImageView
-                        android:id="@+id/hunan_baoqing_nan_nan06"
-                        android:layout_width="10dp"
-                        android:layout_height="17dp"
-                        android:baselineAligned="false"
-                        android:contentDescription="hunan_baoqing_nan_nan06"
-                        android:src="@mipmap/nan2new" />
-
-                    <ImageView
-                        android:id="@+id/hunan_baoqing_nan_nan07"
-                        android:layout_width="10dp"
-                        android:layout_height="17dp"
-                        android:layout_marginLeft="7dp"
-                        android:baselineAligned="false"
-                        android:contentDescription="hunan_baoqing_nan_nan07"
-                        android:src="@mipmap/nan2new" />
-
-                    <ImageView
-                        android:id="@+id/hunan_baoqing_nan_nan08"
-                        android:layout_width="10dp"
-                        android:layout_height="17dp"
-                        android:layout_marginLeft="8dp"
-                        android:baselineAligned="false"
-                        android:contentDescription="hunan_baoqing_nan_nan08"
-                        android:src="@mipmap/nan2new" />
-
-                    <ImageView
-                        android:id="@+id/hunan_baoqing_nan_nan09"
-                        android:layout_width="10dp"
-                        android:layout_height="17dp"
-                        android:layout_marginLeft="8dp"
-                        android:baselineAligned="false"
-                        android:contentDescription="hunan_baoqing_nan_nan09"
-                        android:src="@mipmap/nan2new" />
-
-                    <ImageView
-                        android:id="@+id/hunan_baoqing_nan_nan10"
-                        android:layout_width="10dp"
-                        android:layout_height="17dp"
-                        android:layout_marginLeft="8dp"
-                        android:baselineAligned="false"
-                        android:contentDescription="hunan_baoqing_nan_nan10"
-                        android:src="@mipmap/nan2new" />
-                </LinearLayout>
-                <!--女-->
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="174dp">
-
-                    <ImageView
-                        android:id="@+id/hunan_baoqing_nan_nv23"
-                        android:layout_width="10dp"
-                        android:layout_height="17dp"
-                        android:baselineAligned="false"
-                        android:contentDescription="hunan_baoqing_nan_nv23"
-                        android:src="@mipmap/nv2new" />
-
-                    <ImageView
-                        android:id="@+id/hunan_baoqing_nan_nv22"
-                        android:layout_width="10dp"
-                        android:layout_height="17dp"
-                        android:layout_marginLeft="7.9dp"
-                        android:baselineAligned="false"
-                        android:contentDescription="hunan_baoqing_nan_nv22"
-                        android:src="@mipmap/nv2new" />
-
-                    <ImageView
-                        android:id="@+id/hunan_baoqing_nan_nv21"
-                        android:layout_width="10dp"
-                        android:layout_height="17dp"
-                        android:layout_marginLeft="7.9dp"
-                        android:baselineAligned="false"
-                        android:contentDescription="hunan_baoqing_nan_nv21"
-                        android:src="@mipmap/nv2new" />
-
-                    <ImageView
-                        android:id="@+id/hunan_baoqing_nan_nv20"
-                        android:layout_width="10dp"
-                        android:layout_height="17dp"
-                        android:layout_marginLeft="7.7dp"
-                        android:baselineAligned="false"
-                        android:contentDescription="hunan_baoqing_nan_nv20"
-                        android:src="@mipmap/nv2new" />
-
-                    <ImageView
-                        android:id="@+id/hunan_baoqing_nan_nv19"
-                        android:layout_width="10dp"
-                        android:layout_height="17dp"
-                        android:layout_marginLeft="7.7dp"
-                        android:baselineAligned="false"
-                        android:contentDescription="hunan_baoqing_nan_nv19"
-                        android:src="@mipmap/nv2new" />
-
-                    <ImageView
-                        android:id="@+id/hunan_baoqing_nan_nv18"
-                        android:layout_width="10dp"
-                        android:layout_height="17dp"
-                        android:layout_marginLeft="7.8dp"
-                        android:baselineAligned="false"
-                        android:contentDescription="hunan_baoqing_nan_nv18"
-                        android:src="@mipmap/nv2new" />
-
-                    <ImageView
-                        android:id="@+id/hunan_baoqing_nan_nv17"
-                        android:layout_width="10dp"
-                        android:layout_height="17dp"
-                        android:layout_marginLeft="7.8dp"
-                        android:baselineAligned="false"
-                        android:contentDescription="hunan_baoqing_nan_nv17"
-                        android:src="@mipmap/nv2new" />
-                </LinearLayout>
-            </LinearLayout>
-
-            <!--第4排-->
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="36dp"
-                android:layout_marginLeft="36dp"
-                android:layout_marginTop="34dp">
-                <!--男-->
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content">
-
-                    <ImageView
-                        android:id="@+id/hunan_baoqing_nan_nan01"
-                        android:layout_width="10dp"
-                        android:layout_height="17dp"
-                        android:baselineAligned="false"
-                        android:contentDescription="hunan_baoqing_nan_nan01"
-                        android:src="@mipmap/nan2new" />
-
-                    <ImageView
-                        android:id="@+id/hunan_baoqing_nan_nan02"
-                        android:layout_width="10dp"
-                        android:layout_height="17dp"
-                        android:layout_marginLeft="7dp"
-                        android:baselineAligned="false"
-                        android:contentDescription="hunan_baoqing_nan_nan02"
-                        android:src="@mipmap/nan2new" />
-
-                    <ImageView
-                        android:id="@+id/hunan_baoqing_nan_nan03"
-                        android:layout_width="10dp"
-                        android:layout_height="17dp"
-                        android:layout_marginLeft="8dp"
-                        android:baselineAligned="false"
-                        android:contentDescription="hunan_baoqing_nan_nan03"
-                        android:src="@mipmap/nan2new" />
-
-                    <ImageView
-                        android:id="@+id/hunan_baoqing_nan_nan04"
-                        android:layout_width="10dp"
-                        android:layout_height="17dp"
-                        android:layout_marginLeft="8dp"
-                        android:baselineAligned="false"
-                        android:contentDescription="hunan_baoqing_nan_nan04"
-                        android:src="@mipmap/nan2new" />
-
-                    <ImageView
-                        android:id="@+id/hunan_baoqing_nan_nan05"
-                        android:layout_width="10dp"
-                        android:layout_height="17dp"
-                        android:layout_marginLeft="8dp"
-                        android:baselineAligned="false"
-                        android:contentDescription="hunan_baoqing_nan_nan05"
-                        android:src="@mipmap/nan2new" />
-                </LinearLayout>
-                <!--女-->
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="174dp">
-
-                    <ImageView
-                        android:id="@+id/hunan_baoqing_nan_nv30"
-                        android:layout_width="10dp"
-                        android:layout_height="17dp"
-                        android:baselineAligned="false"
-                        android:contentDescription="hunan_baoqing_nan_nv30"
-                        android:src="@mipmap/nv2new" />
-
-                    <ImageView
-                        android:id="@+id/hunan_baoqing_nan_nv29"
-                        android:layout_width="10dp"
-                        android:layout_height="17dp"
-                        android:layout_marginLeft="7.9dp"
-                        android:baselineAligned="false"
-                        android:contentDescription="hunan_baoqing_nan_nv29"
-                        android:src="@mipmap/nv2new" />
-
-                    <ImageView
-                        android:id="@+id/hunan_baoqing_nan_nv28"
-                        android:layout_width="10dp"
-                        android:layout_height="17dp"
-                        android:layout_marginLeft="7.9dp"
-                        android:baselineAligned="false"
-                        android:contentDescription="hunan_baoqing_nan_nv28"
-                        android:src="@mipmap/nv2new" />
-
-                    <ImageView
-                        android:id="@+id/hunan_baoqing_nan_nv27"
-                        android:layout_width="10dp"
-                        android:layout_height="17dp"
-                        android:layout_marginLeft="7.7dp"
-                        android:baselineAligned="false"
-                        android:contentDescription="hunan_baoqing_nan_nv27"
-                        android:src="@mipmap/nv2new" />
-
-                    <ImageView
-                        android:id="@+id/hunan_baoqing_nan_nv26"
-                        android:layout_width="10dp"
-                        android:layout_height="17dp"
-                        android:layout_marginLeft="7.7dp"
-                        android:baselineAligned="false"
-                        android:contentDescription="hunan_baoqing_nan_nv26"
-                        android:src="@mipmap/nv2new" />
-
-                    <ImageView
-                        android:id="@+id/hunan_baoqing_nan_nv25"
-                        android:layout_width="10dp"
-                        android:layout_height="17dp"
-                        android:layout_marginLeft="7.8dp"
-                        android:baselineAligned="false"
-                        android:contentDescription="hunan_baoqing_nan_nv25"
-                        android:src="@mipmap/nv2new" />
-
-                    <ImageView
-                        android:id="@+id/hunan_baoqing_nan_nv24"
-                        android:layout_width="10dp"
-                        android:layout_height="17dp"
-                        android:layout_marginLeft="7.8dp"
-                        android:baselineAligned="false"
-                        android:contentDescription="hunan_baoqing_nan_nv24"
-                        android:src="@mipmap/nv2new" />
-                </LinearLayout>
-            </LinearLayout>
-
-            <!--第5排-->
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="38dp"
-                android:layout_marginLeft="38dp"
-                android:layout_marginTop="10dp">
-                <!--男 占空位-->
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:visibility="invisible">
-
-                    <ImageView
-                        android:layout_width="10dp"
-                        android:layout_height="17dp"
-                        android:baselineAligned="false"
-                        android:src="@mipmap/nan2new" />
-
-                    <ImageView
-                        android:layout_width="10dp"
-                        android:layout_height="17dp"
-                        android:layout_marginLeft="12dp"
-                        android:baselineAligned="false"
-                        android:src="@mipmap/nan2new" />
-
-                    <ImageView
-                        android:layout_width="10dp"
-                        android:layout_height="17dp"
-                        android:layout_marginLeft="12dp"
-                        android:baselineAligned="false"
-                        android:src="@mipmap/nan2new" />
-
-                    <ImageView
-                        android:layout_width="10dp"
-                        android:layout_height="17dp"
-                        android:layout_marginLeft="12dp"
-                        android:baselineAligned="false"
-                        android:src="@mipmap/nan2new" />
-                </LinearLayout>
-                <!--女-->
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="177dp">
-
-                    <ImageView
-                        android:id="@+id/hunan_baoqing_nan_nv37"
-                        android:layout_width="10dp"
-                        android:layout_height="17dp"
-                        android:baselineAligned="false"
-                        android:contentDescription="hunan_baoqing_nan_nv37"
-                        android:src="@mipmap/nv2new" />
-
-                    <ImageView
-                        android:id="@+id/hunan_baoqing_nan_nv36"
-                        android:layout_width="10dp"
-                        android:layout_height="17dp"
-                        android:layout_marginLeft="7.9dp"
-                        android:baselineAligned="false"
-                        android:contentDescription="hunan_baoqing_nan_nv36"
-                        android:src="@mipmap/nv2new" />
-
-                    <ImageView
-                        android:id="@+id/hunan_baoqing_nan_nv35"
-                        android:layout_width="10dp"
-                        android:layout_height="17dp"
-                        android:layout_marginLeft="7.9dp"
-                        android:baselineAligned="false"
-                        android:contentDescription="hunan_baoqing_nan_nv35"
-                        android:src="@mipmap/nv2new" />
-
-                    <ImageView
-                        android:id="@+id/hunan_baoqing_nan_nv34"
-                        android:layout_width="10dp"
-                        android:layout_height="17dp"
-                        android:layout_marginLeft="7.7dp"
-                        android:baselineAligned="false"
-                        android:contentDescription="hunan_baoqing_nan_nv34"
-                        android:src="@mipmap/nv2new" />
-
-                    <ImageView
-                        android:id="@+id/hunan_baoqing_nan_nv33"
-                        android:layout_width="10dp"
-                        android:layout_height="17dp"
-                        android:layout_marginLeft="7.7dp"
-                        android:baselineAligned="false"
-                        android:contentDescription="hunan_baoqing_nan_nv33"
-                        android:src="@mipmap/nv2new" />
-
-                    <ImageView
-                        android:id="@+id/hunan_baoqing_nan_nv32"
-                        android:layout_width="10dp"
-                        android:layout_height="17dp"
-                        android:layout_marginLeft="7.8dp"
-                        android:baselineAligned="false"
-                        android:contentDescription="hunan_baoqing_nan_nv32"
-                        android:src="@mipmap/nv2new" />
-
-                    <ImageView
-                        android:id="@+id/hunan_baoqing_nan_nv31"
-                        android:layout_width="10dp"
-                        android:layout_height="17dp"
-                        android:layout_marginLeft="7.8dp"
-                        android:baselineAligned="false"
-                        android:contentDescription="hunan_baoqing_nan_nv31"
-                        android:src="@mipmap/nv2new" />
-                </LinearLayout>
-            </LinearLayout>
-
-            <!--第6排-->
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="38dp"
-                android:layout_marginLeft="38dp"
-                android:layout_marginTop="35dp">
-                <!--男 占空位-->
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:visibility="invisible">
-
-                    <ImageView
-                        android:layout_width="10dp"
-                        android:layout_height="17dp"
-                        android:baselineAligned="false"
-                        android:src="@mipmap/nan2new" />
-
-                    <ImageView
-                        android:layout_width="10dp"
-                        android:layout_height="17dp"
-                        android:layout_marginLeft="12dp"
-                        android:baselineAligned="false"
-                        android:src="@mipmap/nan2new" />
-
-                    <ImageView
-                        android:layout_width="10dp"
-                        android:layout_height="17dp"
-                        android:layout_marginLeft="12dp"
-                        android:baselineAligned="false"
-                        android:src="@mipmap/nan2new" />
-
-                    <ImageView
-                        android:layout_width="10dp"
-                        android:layout_height="17dp"
-                        android:layout_marginLeft="12dp"
-                        android:baselineAligned="false"
-                        android:src="@mipmap/nan2new" />
-                </LinearLayout>
-                <!--女-->
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="177dp">
-
-                    <ImageView
-                        android:id="@+id/hunan_baoqing_nan_nv44"
-                        android:layout_width="10dp"
-                        android:layout_height="17dp"
-                        android:baselineAligned="false"
-                        android:contentDescription="hunan_baoqing_nan_nv44"
-                        android:src="@mipmap/nv2new" />
-
-                    <ImageView
-                        android:id="@+id/hunan_baoqing_nan_nv43"
-                        android:layout_width="10dp"
-                        android:layout_height="17dp"
-                        android:layout_marginLeft="7.9dp"
-                        android:baselineAligned="false"
-                        android:contentDescription="hunan_baoqing_nan_nv43"
-                        android:src="@mipmap/nv2new" />
-
-                    <ImageView
-                        android:id="@+id/hunan_baoqing_nan_nv42"
-                        android:layout_width="10dp"
-                        android:layout_height="17dp"
-                        android:layout_marginLeft="7.5dp"
-                        android:baselineAligned="false"
-                        android:contentDescription="hunan_baoqing_nan_nv42"
-                        android:src="@mipmap/nv2new" />
-
-                    <ImageView
-                        android:id="@+id/hunan_baoqing_nan_nv41"
-                        android:layout_width="10dp"
-                        android:layout_height="17dp"
-                        android:layout_marginLeft="7.8dp"
-                        android:baselineAligned="false"
-                        android:contentDescription="hunan_baoqing_nan_nv41"
-                        android:src="@mipmap/nv2new" />
-
-                    <ImageView
-                        android:id="@+id/hunan_baoqing_nan_nv40"
-                        android:layout_width="10dp"
-                        android:layout_height="17dp"
-                        android:layout_marginLeft="7.8dp"
-                        android:baselineAligned="false"
-                        android:contentDescription="hunan_baoqing_nan_nv40"
-                        android:src="@mipmap/nv2new" />
-
-                    <ImageView
-                        android:id="@+id/hunan_baoqing_nan_nv39"
-                        android:layout_width="10dp"
-                        android:layout_height="17dp"
-                        android:layout_marginLeft="7.8dp"
-                        android:baselineAligned="false"
-                        android:contentDescription="hunan_baoqing_nan_nv39"
-                        android:src="@mipmap/nv2new" />
-
-                    <ImageView
-                        android:id="@+id/hunan_baoqing_nan_nv38"
-                        android:layout_width="10dp"
-                        android:layout_height="17dp"
-                        android:layout_marginLeft="7.7dp"
-                        android:baselineAligned="false"
-                        android:contentDescription="hunan_baoqing_nan_nv38"
-                        android:src="@mipmap/nv2new" />
-                </LinearLayout>
-            </LinearLayout>
-
             <!--第7排-->
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="38dp"
-                android:layout_marginLeft="38dp"
-                android:layout_marginTop="10dp">
-                <!--男 占空位-->
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:visibility="invisible">
-
-                    <ImageView
-                        android:layout_width="10dp"
-                        android:layout_height="17dp"
-                        android:baselineAligned="false"
-                        android:src="@mipmap/nan2new" />
-
-                    <ImageView
-                        android:layout_width="10dp"
-                        android:layout_height="17dp"
-                        android:layout_marginLeft="12dp"
-                        android:baselineAligned="false"
-                        android:src="@mipmap/nan2new" />
-
-                    <ImageView
-                        android:layout_width="10dp"
-                        android:layout_height="17dp"
-                        android:layout_marginLeft="12dp"
-                        android:baselineAligned="false"
-                        android:src="@mipmap/nan2new" />
-
-                    <ImageView
-                        android:layout_width="10dp"
-                        android:layout_height="17dp"
-                        android:layout_marginLeft="12dp"
-                        android:baselineAligned="false"
-                        android:src="@mipmap/nan2new" />
-                </LinearLayout>
+                android:layout_marginStart="35dp"
+                android:layout_marginLeft="35dp"
+                android:layout_marginTop="120dp">
                 <!--女-->
                 <LinearLayout
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="177dp">
+                    android:layout_height="wrap_content">
 
                     <ImageView
-                        android:id="@+id/hunan_baoqing_nan_nv51"
+                        android:id="@+id/hunan_baoqing_nan_nv45"
                         android:layout_width="10dp"
                         android:layout_height="17dp"
                         android:baselineAligned="false"
-                        android:contentDescription="hunan_baoqing_nan_nv51"
+                        android:contentDescription="hunan_baoqing_nan_nv45"
                         android:src="@mipmap/nv2new" />
 
                     <ImageView
-                        android:id="@+id/hunan_baoqing_nan_nv50"
+                        android:id="@+id/hunan_baoqing_nan_nv46"
                         android:layout_width="10dp"
                         android:layout_height="17dp"
                         android:layout_marginLeft="7.9dp"
                         android:baselineAligned="false"
-                        android:contentDescription="hunan_baoqing_nan_nv50"
+                        android:contentDescription="hunan_baoqing_nan_nv46"
                         android:src="@mipmap/nv2new" />
 
                     <ImageView
-                        android:id="@+id/hunan_baoqing_nan_nv49"
+                        android:id="@+id/hunan_baoqing_nan_nv47"
                         android:layout_width="10dp"
                         android:layout_height="17dp"
                         android:layout_marginLeft="7.5dp"
                         android:baselineAligned="false"
-                        android:contentDescription="hunan_baoqing_nan_nv49"
+                        android:contentDescription="hunan_baoqing_nan_nv47"
                         android:src="@mipmap/nv2new" />
 
                     <ImageView
@@ -878,34 +111,796 @@
                         android:src="@mipmap/nv2new" />
 
                     <ImageView
-                        android:id="@+id/hunan_baoqing_nan_nv47"
+                        android:id="@+id/hunan_baoqing_nan_nv49"
                         android:layout_width="10dp"
                         android:layout_height="17dp"
                         android:layout_marginLeft="7.9dp"
                         android:baselineAligned="false"
-                        android:contentDescription="hunan_baoqing_nan_nv47"
+                        android:contentDescription="hunan_baoqing_nan_nv49"
                         android:src="@mipmap/nv2new" />
 
                     <ImageView
-                        android:id="@+id/hunan_baoqing_nan_nv46"
+                        android:id="@+id/hunan_baoqing_nan_nv50"
                         android:layout_width="10dp"
                         android:layout_height="17dp"
                         android:layout_marginLeft="7.8dp"
                         android:baselineAligned="false"
-                        android:contentDescription="hunan_baoqing_nan_nv46"
+                        android:contentDescription="hunan_baoqing_nan_nv50"
                         android:src="@mipmap/nv2new" />
 
                     <ImageView
-                        android:id="@+id/hunan_baoqing_nan_nv45"
+                        android:id="@+id/hunan_baoqing_nan_nv51"
                         android:layout_width="10dp"
                         android:layout_height="17dp"
                         android:layout_marginLeft="7.7dp"
                         android:baselineAligned="false"
-                        android:contentDescription="hunan_baoqing_nan_nv45"
+                        android:contentDescription="hunan_baoqing_nan_nv51"
                         android:src="@mipmap/nv2new" />
                 </LinearLayout>
-            </LinearLayout>
+                <!--男 占空位-->
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:visibility="invisible">
 
+                    <ImageView
+                        android:layout_width="10dp"
+                        android:layout_height="17dp"
+                        android:baselineAligned="false"
+                        android:src="@mipmap/nan2new" />
+
+                    <ImageView
+                        android:layout_width="10dp"
+                        android:layout_height="17dp"
+                        android:layout_marginLeft="12dp"
+                        android:baselineAligned="false"
+                        android:src="@mipmap/nan2new" />
+
+                    <ImageView
+                        android:layout_width="10dp"
+                        android:layout_height="17dp"
+                        android:layout_marginLeft="12dp"
+                        android:baselineAligned="false"
+                        android:src="@mipmap/nan2new" />
+
+                    <ImageView
+                        android:layout_width="10dp"
+                        android:layout_height="17dp"
+                        android:layout_marginLeft="12dp"
+                        android:baselineAligned="false"
+                        android:src="@mipmap/nan2new" />
+                </LinearLayout>
+            </LinearLayout>
+            <!--第6排-->
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="35dp"
+                android:layout_marginLeft="35dp"
+                android:layout_marginTop="10dp">
+                <!--女-->
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content">
+
+                    <ImageView
+                        android:id="@+id/hunan_baoqing_nan_nv38"
+                        android:layout_width="10dp"
+                        android:layout_height="17dp"
+                        android:baselineAligned="false"
+                        android:contentDescription="hunan_baoqing_nan_nv38"
+                        android:src="@mipmap/nv2new" />
+
+                    <ImageView
+                        android:id="@+id/hunan_baoqing_nan_nv39"
+                        android:layout_width="10dp"
+                        android:layout_height="17dp"
+                        android:layout_marginLeft="7.9dp"
+                        android:baselineAligned="false"
+                        android:contentDescription="hunan_baoqing_nan_nv39"
+                        android:src="@mipmap/nv2new" />
+
+                    <ImageView
+                        android:id="@+id/hunan_baoqing_nan_nv40"
+                        android:layout_width="10dp"
+                        android:layout_height="17dp"
+                        android:layout_marginLeft="7.5dp"
+                        android:baselineAligned="false"
+                        android:contentDescription="hunan_baoqing_nan_nv40"
+                        android:src="@mipmap/nv2new" />
+
+                    <ImageView
+                        android:id="@+id/hunan_baoqing_nan_nv41"
+                        android:layout_width="10dp"
+                        android:layout_height="17dp"
+                        android:layout_marginLeft="7.8dp"
+                        android:baselineAligned="false"
+                        android:contentDescription="hunan_baoqing_nan_nv41"
+                        android:src="@mipmap/nv2new" />
+
+                    <ImageView
+                        android:id="@+id/hunan_baoqing_nan_nv42"
+                        android:layout_width="10dp"
+                        android:layout_height="17dp"
+                        android:layout_marginLeft="7.8dp"
+                        android:baselineAligned="false"
+                        android:contentDescription="hunan_baoqing_nan_nv42"
+                        android:src="@mipmap/nv2new" />
+
+                    <ImageView
+                        android:id="@+id/hunan_baoqing_nan_nv43"
+                        android:layout_width="10dp"
+                        android:layout_height="17dp"
+                        android:layout_marginLeft="7.8dp"
+                        android:baselineAligned="false"
+                        android:contentDescription="hunan_baoqing_nan_nv43"
+                        android:src="@mipmap/nv2new" />
+
+                    <ImageView
+                        android:id="@+id/hunan_baoqing_nan_nv44"
+                        android:layout_width="10dp"
+                        android:layout_height="17dp"
+                        android:layout_marginLeft="7.7dp"
+                        android:baselineAligned="false"
+                        android:contentDescription="hunan_baoqing_nan_nv44"
+                        android:src="@mipmap/nv2new" />
+                </LinearLayout>
+                <!--男 占空位-->
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:visibility="invisible">
+
+                    <ImageView
+                        android:layout_width="10dp"
+                        android:layout_height="17dp"
+                        android:baselineAligned="false"
+                        android:src="@mipmap/nan2new" />
+
+                    <ImageView
+                        android:layout_width="10dp"
+                        android:layout_height="17dp"
+                        android:layout_marginLeft="12dp"
+                        android:baselineAligned="false"
+                        android:src="@mipmap/nan2new" />
+
+                    <ImageView
+                        android:layout_width="10dp"
+                        android:layout_height="17dp"
+                        android:layout_marginLeft="12dp"
+                        android:baselineAligned="false"
+                        android:src="@mipmap/nan2new" />
+
+                    <ImageView
+                        android:layout_width="10dp"
+                        android:layout_height="17dp"
+                        android:layout_marginLeft="12dp"
+                        android:baselineAligned="false"
+                        android:src="@mipmap/nan2new" />
+                </LinearLayout>
+
+            </LinearLayout>
+            <!--第5排-->
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="35dp"
+                android:layout_marginLeft="35dp"
+                android:layout_marginTop="35dp">
+                <!--女-->
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content">
+
+                    <ImageView
+                        android:id="@+id/hunan_baoqing_nan_nv31"
+                        android:layout_width="10dp"
+                        android:layout_height="17dp"
+                        android:baselineAligned="false"
+                        android:contentDescription="hunan_baoqing_nan_nv31"
+                        android:src="@mipmap/nv2new" />
+
+                    <ImageView
+                        android:id="@+id/hunan_baoqing_nan_nv32"
+                        android:layout_width="10dp"
+                        android:layout_height="17dp"
+                        android:layout_marginLeft="7.9dp"
+                        android:baselineAligned="false"
+                        android:contentDescription="hunan_baoqing_nan_nv32"
+                        android:src="@mipmap/nv2new" />
+
+                    <ImageView
+                        android:id="@+id/hunan_baoqing_nan_nv33"
+                        android:layout_width="10dp"
+                        android:layout_height="17dp"
+                        android:layout_marginLeft="7.9dp"
+                        android:baselineAligned="false"
+                        android:contentDescription="hunan_baoqing_nan_nv33"
+                        android:src="@mipmap/nv2new" />
+
+                    <ImageView
+                        android:id="@+id/hunan_baoqing_nan_nv34"
+                        android:layout_width="10dp"
+                        android:layout_height="17dp"
+                        android:layout_marginLeft="7.7dp"
+                        android:baselineAligned="false"
+                        android:contentDescription="hunan_baoqing_nan_nv34"
+                        android:src="@mipmap/nv2new" />
+
+                    <ImageView
+                        android:id="@+id/hunan_baoqing_nan_nv35"
+                        android:layout_width="10dp"
+                        android:layout_height="17dp"
+                        android:layout_marginLeft="7.7dp"
+                        android:baselineAligned="false"
+                        android:contentDescription="hunan_baoqing_nan_nv35"
+                        android:src="@mipmap/nv2new" />
+
+                    <ImageView
+                        android:id="@+id/hunan_baoqing_nan_nv36"
+                        android:layout_width="10dp"
+                        android:layout_height="17dp"
+                        android:layout_marginLeft="7.8dp"
+                        android:baselineAligned="false"
+                        android:contentDescription="hunan_baoqing_nan_nv36"
+                        android:src="@mipmap/nv2new" />
+
+                    <ImageView
+                        android:id="@+id/hunan_baoqing_nan_nv37"
+                        android:layout_width="10dp"
+                        android:layout_height="17dp"
+                        android:layout_marginLeft="7.8dp"
+                        android:baselineAligned="false"
+                        android:contentDescription="hunan_baoqing_nan_nv37"
+                        android:src="@mipmap/nv2new" />
+                </LinearLayout>
+                <!--男 占空位-->
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:visibility="invisible">
+
+                    <ImageView
+                        android:layout_width="10dp"
+                        android:layout_height="17dp"
+                        android:baselineAligned="false"
+                        android:src="@mipmap/nan2new" />
+
+                    <ImageView
+                        android:layout_width="10dp"
+                        android:layout_height="17dp"
+                        android:layout_marginLeft="12dp"
+                        android:baselineAligned="false"
+                        android:src="@mipmap/nan2new" />
+
+                    <ImageView
+                        android:layout_width="10dp"
+                        android:layout_height="17dp"
+                        android:layout_marginLeft="12dp"
+                        android:baselineAligned="false"
+                        android:src="@mipmap/nan2new" />
+
+                    <ImageView
+                        android:layout_width="10dp"
+                        android:layout_height="17dp"
+                        android:layout_marginLeft="12dp"
+                        android:baselineAligned="false"
+                        android:src="@mipmap/nan2new" />
+                </LinearLayout>
+
+            </LinearLayout>
+            <!--第4排-->
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="35dp"
+                android:layout_marginLeft="35dp"
+                android:layout_marginTop="10dp">
+                <!--女-->
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content">
+
+                    <ImageView
+                        android:id="@+id/hunan_baoqing_nan_nv24"
+                        android:layout_width="10dp"
+                        android:layout_height="17dp"
+                        android:baselineAligned="false"
+                        android:contentDescription="hunan_baoqing_nan_nv24"
+                        android:src="@mipmap/nv2new" />
+
+                    <ImageView
+                        android:id="@+id/hunan_baoqing_nan_nv25"
+                        android:layout_width="10dp"
+                        android:layout_height="17dp"
+                        android:layout_marginLeft="7.9dp"
+                        android:baselineAligned="false"
+                        android:contentDescription="hunan_baoqing_nan_nv25"
+                        android:src="@mipmap/nv2new" />
+
+                    <ImageView
+                        android:id="@+id/hunan_baoqing_nan_nv26"
+                        android:layout_width="10dp"
+                        android:layout_height="17dp"
+                        android:layout_marginLeft="7.9dp"
+                        android:baselineAligned="false"
+                        android:contentDescription="hunan_baoqing_nan_nv26"
+                        android:src="@mipmap/nv2new" />
+
+                    <ImageView
+                        android:id="@+id/hunan_baoqing_nan_nv27"
+                        android:layout_width="10dp"
+                        android:layout_height="17dp"
+                        android:layout_marginLeft="7.7dp"
+                        android:baselineAligned="false"
+                        android:contentDescription="hunan_baoqing_nan_nv27"
+                        android:src="@mipmap/nv2new" />
+
+                    <ImageView
+                        android:id="@+id/hunan_baoqing_nan_nv28"
+                        android:layout_width="10dp"
+                        android:layout_height="17dp"
+                        android:layout_marginLeft="7.7dp"
+                        android:baselineAligned="false"
+                        android:contentDescription="hunan_baoqing_nan_nv28"
+                        android:src="@mipmap/nv2new" />
+
+                    <ImageView
+                        android:id="@+id/hunan_baoqing_nan_nv29"
+                        android:layout_width="10dp"
+                        android:layout_height="17dp"
+                        android:layout_marginLeft="7.8dp"
+                        android:baselineAligned="false"
+                        android:contentDescription="hunan_baoqing_nan_nv29"
+                        android:src="@mipmap/nv2new" />
+
+                    <ImageView
+                        android:id="@+id/hunan_baoqing_nan_nv30"
+                        android:layout_width="10dp"
+                        android:layout_height="17dp"
+                        android:layout_marginLeft="7.8dp"
+                        android:baselineAligned="false"
+                        android:contentDescription="hunan_baoqing_nan_nv30"
+                        android:src="@mipmap/nv2new" />
+                </LinearLayout>
+                <!--男-->
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="173dp">
+
+                    <ImageView
+                        android:id="@+id/hunan_baoqing_nan_nan05"
+                        android:layout_width="10dp"
+                        android:layout_height="17dp"
+                        android:baselineAligned="false"
+                        android:contentDescription="hunan_baoqing_nan_nan05"
+                        android:src="@mipmap/nan2new" />
+
+                    <ImageView
+                        android:id="@+id/hunan_baoqing_nan_nan04"
+                        android:layout_width="10dp"
+                        android:layout_height="17dp"
+                        android:layout_marginLeft="7dp"
+                        android:baselineAligned="false"
+                        android:contentDescription="hunan_baoqing_nan_nan04"
+                        android:src="@mipmap/nan2new" />
+
+                    <ImageView
+                        android:id="@+id/hunan_baoqing_nan_nan03"
+                        android:layout_width="10dp"
+                        android:layout_height="17dp"
+                        android:layout_marginLeft="8dp"
+                        android:baselineAligned="false"
+                        android:contentDescription="hunan_baoqing_nan_nan03"
+                        android:src="@mipmap/nan2new" />
+
+                    <ImageView
+                        android:id="@+id/hunan_baoqing_nan_nan02"
+                        android:layout_width="10dp"
+                        android:layout_height="17dp"
+                        android:layout_marginLeft="8dp"
+                        android:baselineAligned="false"
+                        android:contentDescription="hunan_baoqing_nan_nan02"
+                        android:src="@mipmap/nan2new" />
+
+                    <ImageView
+                        android:id="@+id/hunan_baoqing_nan_nan01"
+                        android:layout_width="10dp"
+                        android:layout_height="17dp"
+                        android:layout_marginLeft="8dp"
+                        android:baselineAligned="false"
+                        android:contentDescription="hunan_baoqing_nan_nan01"
+                        android:src="@mipmap/nan2new" />
+                </LinearLayout>
+
+            </LinearLayout>
+            <!--第3排-->
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="35dp"
+                android:layout_marginLeft="35dp"
+                android:layout_marginTop="35dp">
+                <!--女-->
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content">
+
+                    <ImageView
+                        android:id="@+id/hunan_baoqing_nan_nv17"
+                        android:layout_width="10dp"
+                        android:layout_height="17dp"
+                        android:baselineAligned="false"
+                        android:contentDescription="hunan_baoqing_nan_nv17"
+                        android:src="@mipmap/nv2new" />
+
+                    <ImageView
+                        android:id="@+id/hunan_baoqing_nan_nv18"
+                        android:layout_width="10dp"
+                        android:layout_height="17dp"
+                        android:layout_marginLeft="7.9dp"
+                        android:baselineAligned="false"
+                        android:contentDescription="hunan_baoqing_nan_nv18"
+                        android:src="@mipmap/nv2new" />
+
+                    <ImageView
+                        android:id="@+id/hunan_baoqing_nan_nv19"
+                        android:layout_width="10dp"
+                        android:layout_height="17dp"
+                        android:layout_marginLeft="7.9dp"
+                        android:baselineAligned="false"
+                        android:contentDescription="hunan_baoqing_nan_nv19"
+                        android:src="@mipmap/nv2new" />
+
+                    <ImageView
+                        android:id="@+id/hunan_baoqing_nan_nv20"
+                        android:layout_width="10dp"
+                        android:layout_height="17dp"
+                        android:layout_marginLeft="7.7dp"
+                        android:baselineAligned="false"
+                        android:contentDescription="hunan_baoqing_nan_nv20"
+                        android:src="@mipmap/nv2new" />
+
+                    <ImageView
+                        android:id="@+id/hunan_baoqing_nan_nv21"
+                        android:layout_width="10dp"
+                        android:layout_height="17dp"
+                        android:layout_marginLeft="7.7dp"
+                        android:baselineAligned="false"
+                        android:contentDescription="hunan_baoqing_nan_nv21"
+                        android:src="@mipmap/nv2new" />
+
+                    <ImageView
+                        android:id="@+id/hunan_baoqing_nan_nv22"
+                        android:layout_width="10dp"
+                        android:layout_height="17dp"
+                        android:layout_marginLeft="7.8dp"
+                        android:baselineAligned="false"
+                        android:contentDescription="hunan_baoqing_nan_nv22"
+                        android:src="@mipmap/nv2new" />
+
+                    <ImageView
+                        android:id="@+id/hunan_baoqing_nan_nv23"
+                        android:layout_width="10dp"
+                        android:layout_height="17dp"
+                        android:layout_marginLeft="7.8dp"
+                        android:baselineAligned="false"
+                        android:contentDescription="hunan_baoqing_nan_nv23"
+                        android:src="@mipmap/nv2new" />
+                </LinearLayout>
+                <!--男-->
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="173dp">
+
+                    <ImageView
+                        android:id="@+id/hunan_baoqing_nan_nan10"
+                        android:layout_width="10dp"
+                        android:layout_height="17dp"
+                        android:baselineAligned="false"
+                        android:contentDescription="hunan_baoqing_nan_nan10"
+                        android:src="@mipmap/nan2new" />
+
+                    <ImageView
+                        android:id="@+id/hunan_baoqing_nan_nan09"
+                        android:layout_width="10dp"
+                        android:layout_height="17dp"
+                        android:layout_marginLeft="7dp"
+                        android:baselineAligned="false"
+                        android:contentDescription="hunan_baoqing_nan_nan09"
+                        android:src="@mipmap/nan2new" />
+
+                    <ImageView
+                        android:id="@+id/hunan_baoqing_nan_nan08"
+                        android:layout_width="10dp"
+                        android:layout_height="17dp"
+                        android:layout_marginLeft="8dp"
+                        android:baselineAligned="false"
+                        android:contentDescription="hunan_baoqing_nan_nan08"
+                        android:src="@mipmap/nan2new" />
+
+                    <ImageView
+                        android:id="@+id/hunan_baoqing_nan_nan07"
+                        android:layout_width="10dp"
+                        android:layout_height="17dp"
+                        android:layout_marginLeft="8dp"
+                        android:baselineAligned="false"
+                        android:contentDescription="hunan_baoqing_nan_nan07"
+                        android:src="@mipmap/nan2new" />
+
+                    <ImageView
+                        android:id="@+id/hunan_baoqing_nan_nan06"
+                        android:layout_width="10dp"
+                        android:layout_height="17dp"
+                        android:layout_marginLeft="8dp"
+                        android:baselineAligned="false"
+                        android:contentDescription="hunan_baoqing_nan_nan06"
+                        android:src="@mipmap/nan2new" />
+                </LinearLayout>
+
+            </LinearLayout>
+            <!--第2排-->
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="35dp"
+                android:layout_marginLeft="35dp"
+                android:layout_marginTop="8dp">
+                <!--女-->
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content">
+
+                    <ImageView
+                        android:id="@+id/hunan_baoqing_nan_nv10"
+                        android:layout_width="10dp"
+                        android:layout_height="17dp"
+                        android:baselineAligned="false"
+                        android:contentDescription="hunan_baoqing_nan_nv10"
+                        android:src="@mipmap/nv2new" />
+
+                    <ImageView
+                        android:id="@+id/hunan_baoqing_nan_nv11"
+                        android:layout_width="10dp"
+                        android:layout_height="17dp"
+                        android:layout_marginLeft="7.9dp"
+                        android:baselineAligned="false"
+                        android:contentDescription="hunan_baoqing_nan_nv11"
+                        android:src="@mipmap/nv2new" />
+
+                    <ImageView
+                        android:id="@+id/hunan_baoqing_nan_nv12"
+                        android:layout_width="10dp"
+                        android:layout_height="17dp"
+                        android:layout_marginLeft="7.9dp"
+                        android:baselineAligned="false"
+                        android:contentDescription="hunan_baoqing_nan_nv12"
+                        android:src="@mipmap/nv2new" />
+
+                    <ImageView
+                        android:id="@+id/hunan_baoqing_nan_nv13"
+                        android:layout_width="10dp"
+                        android:layout_height="17dp"
+                        android:layout_marginLeft="7.7dp"
+                        android:baselineAligned="false"
+                        android:contentDescription="hunan_baoqing_nan_nv13"
+                        android:src="@mipmap/nv2new" />
+
+                    <ImageView
+                        android:id="@+id/hunan_baoqing_nan_nv14"
+                        android:layout_width="10dp"
+                        android:layout_height="17dp"
+                        android:layout_marginLeft="7.7dp"
+                        android:baselineAligned="false"
+                        android:contentDescription="hunan_baoqing_nan_nv14"
+                        android:src="@mipmap/nv2new" />
+
+                    <ImageView
+                        android:id="@+id/hunan_baoqing_nan_nv15"
+                        android:layout_width="10dp"
+                        android:layout_height="17dp"
+                        android:layout_marginLeft="7.8dp"
+                        android:baselineAligned="false"
+                        android:contentDescription="hunan_baoqing_nan_nv15"
+                        android:src="@mipmap/nv2new" />
+
+                    <ImageView
+                        android:id="@+id/hunan_baoqing_nan_nv16"
+                        android:layout_width="10dp"
+                        android:layout_height="17dp"
+                        android:layout_marginLeft="7.8dp"
+                        android:baselineAligned="false"
+                        android:contentDescription="hunan_baoqing_nan_nv16"
+                        android:src="@mipmap/nv2new" />
+                </LinearLayout>
+                <!--男-->
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="173dp">
+
+                    <ImageView
+                        android:id="@+id/hunan_baoqing_nan_nan15"
+                        android:layout_width="10dp"
+                        android:layout_height="17dp"
+                        android:baselineAligned="false"
+                        android:contentDescription="hunan_baoqing_nan_nan15"
+                        android:src="@mipmap/nan2new" />
+
+                    <ImageView
+                        android:id="@+id/hunan_baoqing_nan_nan14"
+                        android:layout_width="10dp"
+                        android:layout_height="17dp"
+                        android:layout_marginLeft="7dp"
+                        android:baselineAligned="false"
+                        android:contentDescription="hunan_baoqing_nan_nan14"
+                        android:src="@mipmap/nan2new" />
+
+                    <ImageView
+                        android:id="@+id/hunan_baoqing_nan_nan13"
+                        android:layout_width="10dp"
+                        android:layout_height="17dp"
+                        android:layout_marginLeft="8dp"
+                        android:baselineAligned="false"
+                        android:contentDescription="hunan_baoqing_nan_nan13"
+                        android:src="@mipmap/nan2new" />
+
+                    <ImageView
+                        android:id="@+id/hunan_baoqing_nan_nan12"
+                        android:layout_width="10dp"
+                        android:layout_height="17dp"
+                        android:layout_marginLeft="8dp"
+                        android:baselineAligned="false"
+                        android:contentDescription="hunan_baoqing_nan_nan12"
+                        android:src="@mipmap/nan2new" />
+
+                    <ImageView
+                        android:id="@+id/hunan_baoqing_nan_nan11"
+                        android:layout_width="10dp"
+                        android:layout_height="17dp"
+                        android:layout_marginLeft="8dp"
+                        android:baselineAligned="false"
+                        android:contentDescription="hunan_baoqing_nan_nan11"
+                        android:src="@mipmap/nan2new" />
+                </LinearLayout>
+            </LinearLayout>
+            <!--第1排-->
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="35dp"
+                android:layout_marginLeft="35dp"
+                android:layout_marginTop="35dp">
+                <!--女-->
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content">
+
+                    <ImageView
+                        android:id="@+id/hunan_baoqing_nan_nv01"
+                        android:layout_width="10dp"
+                        android:layout_height="17dp"
+                        android:baselineAligned="false"
+                        android:contentDescription="hunan_baoqing_nan_nv01"
+                        android:src="@mipmap/nv2new" />
+
+                    <ImageView
+                        android:id="@+id/hunan_baoqing_nan_nv02"
+                        android:layout_width="10dp"
+                        android:layout_height="17dp"
+                        android:layout_marginLeft="7.9dp"
+                        android:baselineAligned="false"
+                        android:contentDescription="hunan_baoqing_nan_nv02"
+                        android:src="@mipmap/nv2new" />
+
+                    <ImageView
+                        android:id="@+id/hunan_baoqing_nan_nv03"
+                        android:layout_width="10dp"
+                        android:layout_height="17dp"
+                        android:layout_marginLeft="7.9dp"
+                        android:baselineAligned="false"
+                        android:contentDescription="hunan_baoqing_nan_nv03"
+                        android:src="@mipmap/nv2new" />
+
+                    <ImageView
+                        android:id="@+id/hunan_baoqing_nan_nv04"
+                        android:layout_width="10dp"
+                        android:layout_height="17dp"
+                        android:layout_marginLeft="7.7dp"
+                        android:baselineAligned="false"
+                        android:contentDescription="hunan_baoqing_nan_nv04"
+                        android:src="@mipmap/nv2new" />
+
+                    <ImageView
+                        android:id="@+id/hunan_baoqing_nan_nv05"
+                        android:layout_width="10dp"
+                        android:layout_height="17dp"
+                        android:layout_marginLeft="7.7dp"
+                        android:baselineAligned="false"
+                        android:contentDescription="hunan_baoqing_nan_nv05"
+                        android:src="@mipmap/nv2new" />
+
+                    <ImageView
+                        android:id="@+id/hunan_baoqing_nan_nv06"
+                        android:layout_width="10dp"
+                        android:layout_height="17dp"
+                        android:layout_marginLeft="7.8dp"
+                        android:baselineAligned="false"
+                        android:contentDescription="hunan_baoqing_nan_nv06"
+                        android:src="@mipmap/nv2new" />
+
+                    <ImageView
+                        android:id="@+id/hunan_baoqing_nan_nv07"
+                        android:layout_width="10dp"
+                        android:layout_height="17dp"
+                        android:layout_marginLeft="7.8dp"
+                        android:baselineAligned="false"
+                        android:contentDescription="hunan_baoqing_nan_nv07"
+                        android:src="@mipmap/nv2new" />
+
+                    <ImageView
+                        android:id="@+id/hunan_baoqing_nan_nv08"
+                        android:layout_width="10dp"
+                        android:layout_height="17dp"
+                        android:layout_marginLeft="7.3dp"
+                        android:baselineAligned="false"
+                        android:contentDescription="hunan_baoqing_nan_nv08"
+                        android:src="@mipmap/nv2new" />
+
+                    <ImageView
+                        android:id="@+id/hunan_baoqing_nan_nv09"
+                        android:layout_width="10dp"
+                        android:layout_height="17dp"
+                        android:layout_marginLeft="7.3dp"
+                        android:baselineAligned="false"
+                        android:contentDescription="hunan_baoqing_nan_nv09"
+                        android:src="@mipmap/nv2new" />
+                </LinearLayout>
+                <!--男-->
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="104dp">
+
+                    <ImageView
+                        android:id="@+id/hunan_baoqing_nan_nan19"
+                        android:layout_width="10dp"
+                        android:layout_height="17dp"
+                        android:baselineAligned="false"
+                        android:contentDescription="hunan_baoqing_nan_nan19"
+                        android:src="@mipmap/nan2new" />
+
+                    <ImageView
+                        android:id="@+id/hunan_baoqing_nan_nan18"
+                        android:layout_width="10dp"
+                        android:layout_height="17dp"
+                        android:layout_marginLeft="12dp"
+                        android:baselineAligned="false"
+                        android:contentDescription="hunan_baoqing_nan_nan18"
+                        android:src="@mipmap/nan2new" />
+
+                    <ImageView
+                        android:id="@+id/hunan_baoqing_nan_nan17"
+                        android:layout_width="10dp"
+                        android:layout_height="17dp"
+                        android:layout_marginLeft="12dp"
+                        android:baselineAligned="false"
+                        android:contentDescription="hunan_baoqing_nan_nan17"
+                        android:src="@mipmap/nan2new" />
+
+                    <ImageView
+                        android:id="@+id/hunan_baoqing_nan_nan16"
+                        android:layout_width="10dp"
+                        android:layout_height="17dp"
+                        android:layout_marginLeft="12dp"
+                        android:baselineAligned="false"
+                        android:contentDescription="hunan_baoqing_nan_nan16"
+                        android:src="@mipmap/nan2new" />
+                </LinearLayout>
+
+            </LinearLayout>
             <!--时间-->
             <LinearLayout
                 android:layout_width="match_parent"
