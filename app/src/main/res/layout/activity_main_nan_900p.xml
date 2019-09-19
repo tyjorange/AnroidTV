@@ -55,7 +55,8 @@
                 android:layout_marginEnd="25dp"
                 android:layout_marginRight="25dp"
                 android:text="当前使用：*/*"
-                android:textColor="@color/white" />
+                android:textColor="@color/white"
+                android:textSize="14sp" />
         </LinearLayout>
 
         <LinearLayout
@@ -919,7 +920,8 @@
                     android:layout_marginLeft="110dp"
                     android:layout_marginTop="110dp"
                     android:text="2019年09月08日     星期日   14:08:31"
-                    android:textColor="@color/white" />
+                    android:textColor="@color/white"
+                    android:textSize="14sp" />
             </LinearLayout>
         </LinearLayout>
 
@@ -978,5 +980,6 @@
         android:layout_gravity="bottom"
         android:background="#90111111"
         android:stackFromBottom="true"
-        android:transcriptMode="alwaysScroll" />
+        android:transcriptMode="alwaysScroll"
+        android:visibility="visible" />
 </FrameLayout>

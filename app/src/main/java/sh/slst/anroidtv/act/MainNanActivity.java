@@ -3,13 +3,17 @@ package sh.slst.anroidtv.act;
 import android.content.Intent;
 
 import sh.slst.anroidtv.R;
-import sh.slst.anroidtv.utils.DunViewHelper;
 
 public class MainNanActivity extends BaseActivity {
 
     @Override
     public int getContentViewID() {
-        return R.layout.activity_main_nan;
+        if (getHeightPixel() == 900) {
+            return R.layout.activity_main_nan_900p;
+        } else if (getHeightPixel() == 1080) {
+            return R.layout.activity_main_nan_1080p;
+        }
+        return R.layout.activity_main_nan_1080p;
     }
 
     @Override

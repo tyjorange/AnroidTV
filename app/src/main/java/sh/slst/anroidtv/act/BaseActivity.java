@@ -11,6 +11,7 @@ import android.os.Handler;
 import android.os.Message;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -304,6 +305,42 @@ public abstract class BaseActivity extends AppCompatActivity implements MqttCall
                 e.printStackTrace();
             }
         }
+        getDensity();
+    }
+
+    private void getDensity() {
+        DisplayMetrics outMetrics = new DisplayMetrics();
+        getWindowManager().getDefaultDisplay().getRealMetrics(outMetrics);
+        int widthPixel = outMetrics.widthPixels;
+        int heightPixel = outMetrics.heightPixels;
+        float densityDpi = outMetrics.densityDpi;
+        String s1 = utils.getSystemLanguage();
+        String s2 = utils.getSystemVersion();
+        String s3 = utils.getDeviceBrand();
+        String s4 = utils.getSystemModel();
+        String s5 = outMetrics.toString();
+        String s6 = "widthPixel = " + widthPixel + ",heightPixel = " + heightPixel;
+        String s7 = "densityDpi = " + densityDpi;
+        Log.w(TAG, s1);
+        Log.w(TAG, s2);
+        Log.w(TAG, s3);
+        Log.w(TAG, s4);
+        Log.w(TAG, s5);
+        Log.w(TAG, s6);
+        Log.w(TAG, s7);
+        postDebug(" ", s1);
+        postDebug(" ", s2);
+        postDebug(" ", s3);
+        postDebug(" ", s4);
+        postDebug(" ", s5);
+        postDebug(" ", s6);
+        postDebug(" ", s7);
+    }
+
+    int getHeightPixel() {
+        DisplayMetrics outMetrics = new DisplayMetrics();
+        getWindowManager().getDefaultDisplay().getRealMetrics(outMetrics);
+        return outMetrics.heightPixels;
     }
 
     /**
