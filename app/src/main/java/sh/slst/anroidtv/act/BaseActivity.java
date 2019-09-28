@@ -3,6 +3,7 @@ package sh.slst.anroidtv.act;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -51,20 +52,24 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 import sh.slst.anroidtv.DebugMessageAdapter;
-import sh.slst.anroidtv.ISubscibeConnectMessage;
+import sh.slst.anroidtv.MainActivity;
+import sh.slst.anroidtv.mqtt.ISubscibeConnectMessage;
 import sh.slst.anroidtv.R;
-import sh.slst.anroidtv.SubscribeClient;
+import sh.slst.anroidtv.mqtt.SubscribeClient;
 import sh.slst.anroidtv.bean.DeviceSignalInfo;
 import sh.slst.anroidtv.bean.MQTTConfig;
 import sh.slst.anroidtv.bean.MessageBean;
+import sh.slst.anroidtv.service.IGetMessageCallBack;
+import sh.slst.anroidtv.service.MQTTService;
+import sh.slst.anroidtv.service.MyServiceConnection;
 import sh.slst.anroidtv.utils.DunViewHelper;
 import sh.slst.anroidtv.utils.FileUtils;
 import sh.slst.anroidtv.utils.utils;
 
-public abstract class BaseActivity extends AppCompatActivity implements MqttCallback, ISubscibeConnectMessage {
+public abstract class BaseActivity extends AppCompatActivity implements IGetMessageCallBack {
     private String TAG = getClass().getSimpleName();
     //    private FloorMapView floorMapView;
-    private SubscribeClient mClient;
+//    private SubscribeClient mClient;
     //    private MQTTConfig mqttConfig;
     private List<DeviceSignalInfo> listDeviceFloorMaps;
 
@@ -122,6 +127,9 @@ public abstract class BaseActivity extends AppCompatActivity implements MqttCall
     private String mqttIP;
     private Integer mqttPort;
     private String mqttTopic;
+
+    private MyServiceConnection serviceConnection;
+
     // 实例化一个MyHandler对象
     private BaseActivity.MyHandler handler = new BaseActivity.MyHandler(this);
 
@@ -146,29 +154,29 @@ public abstract class BaseActivity extends AppCompatActivity implements MqttCall
                     theActivity.flushStatus();
                     break;
                 case cMqtt:
-                    theActivity.initMqtt();
+//                    theActivity.initMqtt();
                     break;
             }
         }
     }
 
-    private void initMqtt() {
-        if (mClient == null) {
-            doConnect();
-        } else {
-            if (mClient.isConnected()) {
-                mClient.disconnect();
-            }
-            doConnect();
-        }
-        listDebug.setVisibility(View.VISIBLE);
-    }
+//    private void initMqtt() {
+//        if (mClient == null) {
+//            doConnect();
+//        } else {
+//            if (mClient.isConnected()) {
+//                mClient.disconnect();
+//            }
+//            doConnect();
+//        }
+//        listDebug.setVisibility(View.VISIBLE);
+//    }
 
     private void doConnect() {
-        mClient = new SubscribeClient(mqttIP, mqttPort);
-        mClient.setMessageNotify(this);
+//        mClient = new SubscribeClient(mqttIP, mqttPort);
+//        mClient.setMessageNotify(this);
 //        theActivity.topic = "/" + theActivity.mqttConfig.dev.fsu_code + "/" + theActivity.mqttConfig.dev.dev_code;
-        mClient.subscribe(mqttTopic, mqttTopic + "*_*", this, null);
+//        mClient.subscribe(mqttTopic, mqttTopic + "*_*", this, null);
     }
 
     @Override
@@ -306,8 +314,16 @@ public abstract class BaseActivity extends AppCompatActivity implements MqttCall
             }
         }
         getDensity();
+
+        serviceConnection = new MyServiceConnection();
+        serviceConnection.setIGetMessageCallBack(BaseActivity.this);
+        Intent intent = new Intent(this, MQTTService.class);
+        bindService(intent, serviceConnection, Context.BIND_AUTO_CREATE);
     }
 
+    /**
+     * 获取屏幕尺寸
+     */
     private void getDensity() {
         DisplayMetrics outMetrics = new DisplayMetrics();
         getWindowManager().getDefaultDisplay().getRealMetrics(outMetrics);
@@ -321,13 +337,13 @@ public abstract class BaseActivity extends AppCompatActivity implements MqttCall
         String s5 = outMetrics.toString();
         String s6 = "widthPixel = " + widthPixel + ",heightPixel = " + heightPixel;
         String s7 = "densityDpi = " + densityDpi;
-        Log.w(TAG, s1);
-        Log.w(TAG, s2);
-        Log.w(TAG, s3);
-        Log.w(TAG, s4);
-        Log.w(TAG, s5);
-        Log.w(TAG, s6);
-        Log.w(TAG, s7);
+        Log.i(TAG, s1);
+        Log.i(TAG, s2);
+        Log.i(TAG, s3);
+        Log.i(TAG, s4);
+        Log.i(TAG, s5);
+        Log.i(TAG, s6);
+        Log.i(TAG, s7);
         postDebug(" ", s1);
         postDebug(" ", s2);
         postDebug(" ", s3);
@@ -497,9 +513,9 @@ public abstract class BaseActivity extends AppCompatActivity implements MqttCall
 //                        dbDeviceFloorMap.state = state;
 //                    }
 //                    updataLog();
-                    postDebug(" AlertDialog :", (topic + "#" + jsonContent));
+                    postDebug(" publish:", (topic + " # " + jsonContent));
                     //发送消息
-                    mClient.publish(topic, jsonContent);
+                    MQTTService.publish(jsonContent);
                 }
             }
         });
@@ -575,9 +591,9 @@ public abstract class BaseActivity extends AppCompatActivity implements MqttCall
         }
     }
 
+    private SimpleDateFormat shortDateFormat = new SimpleDateFormat("yyyy年MM月dd日-HH:mm:ss", Locale.getDefault());
 
     private void initTime() {
-        SimpleDateFormat shortDateFormat = new SimpleDateFormat("yyyy年MM月dd日-HH:mm:ss", new Locale("zh"));
         String sDate = shortDateFormat.format(new Date(System.currentTimeMillis()));
         String[] split = sDate.split("-");
         Calendar calendar = Calendar.getInstance();
@@ -649,35 +665,25 @@ public abstract class BaseActivity extends AppCompatActivity implements MqttCall
         }
     }
 
-    @Override
-    public void connectionLost(Throwable throwable) {
-        throwable.printStackTrace();
-        //失去连接
-        Log.e(TAG, "connectionLost " + throwable.getMessage());
-        onMessage("connectionLost " + throwable.getCause());
-        mClient.startReconnect();
-    }
+//    @Override
+//    public void connectionLost(Throwable throwable) {
+//        throwable.printStackTrace();
+//        //失去连接
+//        Log.e(TAG, "connectionLost " + throwable.getMessage());
+//        onMessage("connectionLost " + throwable.getCause());
+////        mClient.startReconnect();
+//    }
 
     private List<MessageBean.Closet> mCloset;
     private MessageBean.Traffic mTraffic;
 
-    /**
-     * @param topic
-     * @param mqttMessage System.out.println("接收消息主题:" + topic + " Qos:" + message.getQos());
-     *                    System.out.println("接收消息内容:" + new String(message.getPayload()));
-     * @Override public void connectionLost(Throwable throwable) {
-     * //失去连接
-     * Log.e(TAG, "connectionLost " + throwable.getMessage());
-     * onMessage("connectionLost" + throwable.getCause());
-     * mClient.startReconnect();
-     * }
-     * {"signal":"6001", "visitors":1192}  访问人数统计 一分钟一次
-     * <p>
-     * {"signal":"6000", "code":"80DFA114004B1200", "state":0} 蹲位状态 实时 1有人 0离开
-     */
+    //    @Override
+//    public void messageArrived(String topic, final MqttMessage mqttMessage) {
+//        final String msgEntity = new String(mqttMessage.getPayload());
+//        updataLog(msgEntity);
+//    }
     @Override
-    public void messageArrived(String topic, final MqttMessage mqttMessage) {
-        final String msgEntity = new String(mqttMessage.getPayload());
+    public void setMessage(String msgEntity) {
         if (msgEntity.startsWith("{") & msgEntity.endsWith("}")) {
             Gson gson = new Gson();
             MessageBean messageBean = gson.fromJson(msgEntity, MessageBean.class);
@@ -716,7 +722,6 @@ public abstract class BaseActivity extends AppCompatActivity implements MqttCall
             }
         }
         postDebug(" messageArrived :", msgEntity);
-//        updataLog(msgEntity);
     }
 
     /**
@@ -769,10 +774,10 @@ public abstract class BaseActivity extends AppCompatActivity implements MqttCall
         });
     }
 
-    @Override
-    public void deliveryComplete(IMqttDeliveryToken iMqttDeliveryToken) {
-        Log.d(TAG, "deliveryComplete");
-    }
+//    @Override
+//    public void deliveryComplete(IMqttDeliveryToken iMqttDeliveryToken) {
+//        Log.d(TAG, "deliveryComplete");
+//    }
 
     public int getUseratio() {
         int position = 0;
@@ -813,17 +818,17 @@ public abstract class BaseActivity extends AppCompatActivity implements MqttCall
 //        });
 //    }
 
-    @Override
-    public void onMessage(final String message) {
-        postDebug(" onMessage :", message);
-    }
+//    @Override
+//    public void onMessage(final String message) {
+//        postDebug(" onMessage :", message);
+//    }
 
     @Override
     protected void onPause() {
         super.onPause();
-        if (mClient != null) {
-            mClient.disconnect();
-        }
+//        if (mClient != null) {
+//            mClient.disconnect();
+//        }
         if (timer != null) {
             timer.cancel();
             timer = null;
@@ -833,9 +838,10 @@ public abstract class BaseActivity extends AppCompatActivity implements MqttCall
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        if (mClient != null) {
-            mClient.disconnect();
-        }
+        unbindService(serviceConnection);
+//        if (mClient != null) {
+//            mClient.disconnect();
+//        }
         if (timer != null) {
             timer.cancel();
             timer = null;

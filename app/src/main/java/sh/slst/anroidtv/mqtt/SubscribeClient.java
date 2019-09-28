@@ -1,4 +1,4 @@
-package sh.slst.anroidtv;
+package sh.slst.anroidtv.mqtt;
 
 import android.util.Log;
 
@@ -12,6 +12,8 @@ import org.eclipse.paho.client.mqttv3.MqttSecurityException;
 import org.eclipse.paho.client.mqttv3.persist.MemoryPersistence;
 
 import java.util.logging.Logger;
+
+import sh.slst.anroidtv.mqtt.ISubscibeConnectMessage;
 
 /*
         订阅  /0101002/E1  FSU号+设备号
@@ -36,6 +38,7 @@ import java.util.logging.Logger;
 //		String clientid2 = "GnssPub01";
 //		client_2.start(topic2, clientid2);
 //	}
+@Deprecated
 public class SubscribeClient {
 
     private String HOST = "tcp://192.168.0.1:1883";  //192.168.0.1

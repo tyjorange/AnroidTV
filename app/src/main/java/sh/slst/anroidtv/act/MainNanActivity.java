@@ -31,5 +31,4 @@ public class MainNanActivity extends BaseActivity {
         startActivity(new Intent(MainNanActivity.this, MainNvActivity.class));
         finish();
     }
-
 }

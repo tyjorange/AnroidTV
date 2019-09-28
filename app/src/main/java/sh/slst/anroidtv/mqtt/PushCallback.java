@@ -1,4 +1,4 @@
-package sh.slst.anroidtv;
+package sh.slst.anroidtv.mqtt;
 
 import org.eclipse.paho.client.mqttv3.IMqttDeliveryToken;
 import org.eclipse.paho.client.mqttv3.MqttCallback;
@@ -19,6 +19,7 @@ import org.eclipse.paho.client.mqttv3.MqttMessage;
  * 消息的传递令牌时调用。 ◦由 MqttClient.connect 激活此回调。
  * 
  */
+@Deprecated
 public class PushCallback implements MqttCallback {
 
 	private boolean DEBUG = false;
