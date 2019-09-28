@@ -35,7 +35,7 @@ public class DunViewHelper {
     }
 
     private DunViewHelper(BaseActivity baseActivity) {
-        sPreferences = baseActivity.getSharedPreferences("STATE", Context.MODE_PRIVATE);
+        sPreferences = baseActivity.getSharedPreferences("STATE", Context.MODE_MULTI_PROCESS);
         // sPreferences.edit().clear().apply();
         WeakReference<BaseActivity> activityWeakReference = new WeakReference<>(baseActivity);
         activity = activityWeakReference.get();

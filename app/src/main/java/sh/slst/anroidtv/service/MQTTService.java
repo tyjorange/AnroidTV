@@ -3,6 +3,7 @@ package sh.slst.anroidtv.service;
 import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Binder;
@@ -20,31 +21,36 @@ import org.eclipse.paho.client.mqttv3.persist.MemoryPersistence;
 
 public class MQTTService extends Service {
     public static final String TAG = MQTTService.class.getSimpleName();
+    private static Context context;
     private static MqttClient client;
-    private MqttConnectOptions conOpt;
+    private static MqttConnectOptions conOpt;
 
-    private String ip = "192.168.3.9";
-    private int port = 1883;
-    private String host = "tcp://" + ip + ":" + port;
-    private static String myTopic = "/TOILET";      //要订阅的主题
-    private String clientId = Thread.currentThread().getId() + myTopic;//客户端标识
-    private IGetMessageCallBack iGetMessageCallBack;
+    private static String ip;
+    private static int port;
+    private static String myTopic;
+    private static String clientId = System.currentTimeMillis() + myTopic;//客户端标识
+    private static IGetMessageCallBack iGetMessageCallBack;
 
     @Override
     public IBinder onBind(Intent intent) {
         Log.w(TAG, "onBind");
-        try {
-            init();
-        } catch (MqttException e) {
-            e.printStackTrace();
-        }
         return new CustomBinder();
     }
 
     @Override
     public void onCreate() {
         super.onCreate();
+        context = this;
         Log.w(TAG, "onCreate");
+        try {
+            SharedPreferences sPreferences = getSharedPreferences("STATE", Context.MODE_MULTI_PROCESS);
+            ip = sPreferences.getString("mqttIP", "192.168.0.1");
+            port = sPreferences.getInt("mqttPort", 1883);
+            myTopic = sPreferences.getString("mqttTopic", "/TOILET");
+            init();
+        } catch (MqttException e) {
+            e.printStackTrace();
+        }
     }
 
     public static void publish(String msg) {
@@ -59,7 +65,8 @@ public class MQTTService extends Service {
         }
     }
 
-    private void init() throws MqttException {
+    private static void init() throws MqttException {
+        String host = "tcp://" + ip + ":" + port;
         // 服务器地址（协议+地址+端口号）
         client = new MqttClient(host, clientId, new MemoryPersistence());
 
@@ -98,24 +105,57 @@ public class MQTTService extends Service {
 //        }
 
 //        if (doConnect) {
-        doClientConnection();
+//        doClientConnection();
 //        }
 
     }
 
     /**
+     * 重定向地址
+     *
+     * @param ip
+     * @param port
+     * @param topic
+     */
+    public static void reLocate(String ip, int port, String topic) {
+        if (client.isConnected()) {
+            try {
+                client.disconnect();
+            } catch (MqttException e) {
+                e.printStackTrace();
+            }
+        }
+        try {
+            MQTTService.ip = ip;
+            MQTTService.port = port;
+            MQTTService.myTopic = topic;
+            init();
+            doClientConnection(ip, port, topic);
+        } catch (MqttException e) {
+            e.printStackTrace();
+        }
+    }
+
+    /**
      * 连接MQTT服务器
      */
-    private void doClientConnection() {
+    public static void doClientConnection(String ip, int port, String topic) {
+        String host = "tcp://" + ip + ":" + port;
         if (!client.isConnected() && isConnectIsNormal()) {
             try {
                 client.connect(conOpt);
                 if (client.isConnected()) {
-                    Log.i("isConnected to host", host);
-                    subscribe();
+                    Log.i("isConnected to host ", host);
+                    if (iGetMessageCallBack != null) {
+                        iGetMessageCallBack.setMessage("isConnected to host " + host);
+                    }
+                    subscribe(topic);
                 }
             } catch (MqttException e) {
                 e.printStackTrace();
+                if (iGetMessageCallBack != null) {
+                    iGetMessageCallBack.setMessage(e.getCause() + "");
+                }
             }
         }
 
@@ -124,13 +164,13 @@ public class MQTTService extends Service {
     /**
      * 订阅
      */
-    private void subscribe() {
+    private static void subscribe(String topic) {
         try {
-            String[] arr = {myTopic};
+            String[] arr = {topic};
             client.subscribe(arr);
-            Log.i("subscribe Topic ", myTopic);
+            Log.i("subscribe Topic ", topic);
             if (iGetMessageCallBack != null) {
-                iGetMessageCallBack.setMessage("subscribe Topic " + myTopic);
+                iGetMessageCallBack.setMessage("subscribe Topic " + topic);
             }
         } catch (MqttException e) {
             e.printStackTrace();
@@ -141,8 +181,8 @@ public class MQTTService extends Service {
     /**
      * 判断网络是否连接
      */
-    private boolean isConnectIsNormal() {
-        ConnectivityManager connectivityManager = (ConnectivityManager) this.getApplicationContext().getSystemService(Context.CONNECTIVITY_SERVICE);
+    private static boolean isConnectIsNormal() {
+        ConnectivityManager connectivityManager = (ConnectivityManager) context.getApplicationContext().getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo info = null;
         if (connectivityManager != null) {
             info = connectivityManager.getActiveNetworkInfo();
@@ -180,7 +220,7 @@ public class MQTTService extends Service {
 //        }
 //    };
     // MQTT监听并且接受消息
-    private MqttCallback mqttCallback = new MqttCallback() {
+    private static MqttCallback mqttCallback = new MqttCallback() {
 
         @Override
         public void messageArrived(String topic, MqttMessage message) {
@@ -207,7 +247,7 @@ public class MQTTService extends Service {
     };
 
     public void setIGetMessageCallBack(IGetMessageCallBack iGetMessageCallBack) {
-        this.iGetMessageCallBack = iGetMessageCallBack;
+        MQTTService.iGetMessageCallBack = iGetMessageCallBack;
     }
 
     class CustomBinder extends Binder {
@@ -216,7 +256,7 @@ public class MQTTService extends Service {
         }
     }
 
-    private boolean isExit = false;
+    private static boolean isExit = false;
 
     /**
      * 断开链接
@@ -239,7 +279,7 @@ public class MQTTService extends Service {
     /**
      * 重新链接
      */
-    public void startReconnect() {
+    public static void startReconnect() {
         new Thread() {
             @Override
             public void run() {
@@ -254,7 +294,8 @@ public class MQTTService extends Service {
                             iGetMessageCallBack.setMessage("重连中。。。");
                             client.connect(conOpt);
                             iGetMessageCallBack.setMessage("重连成功");
-                            subscribe();
+//                            isExit = false;
+                            subscribe(myTopic);
                             break;
                         } catch (MqttSecurityException e) {
                             e.printStackTrace();

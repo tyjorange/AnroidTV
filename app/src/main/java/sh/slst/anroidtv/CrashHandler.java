@@ -43,7 +43,7 @@ public class CrashHandler implements Thread.UncaughtExceptionHandler {
 
     public void init(Context context) {
         mcontext = context;
-        sPreferences = mcontext.getSharedPreferences("STATE", mcontext.MODE_PRIVATE);
+        sPreferences = mcontext.getSharedPreferences("STATE", Context.MODE_MULTI_PROCESS);
         mDefaultHandler = Thread.getDefaultUncaughtExceptionHandler();
         Thread.setDefaultUncaughtExceptionHandler(this);
     }

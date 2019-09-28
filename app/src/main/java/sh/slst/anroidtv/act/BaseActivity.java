@@ -28,9 +28,6 @@ import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.google.gson.stream.JsonReader;
 
-import org.eclipse.paho.client.mqttv3.IMqttDeliveryToken;
-import org.eclipse.paho.client.mqttv3.MqttCallback;
-import org.eclipse.paho.client.mqttv3.MqttMessage;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -52,10 +49,7 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 import sh.slst.anroidtv.DebugMessageAdapter;
-import sh.slst.anroidtv.MainActivity;
-import sh.slst.anroidtv.mqtt.ISubscibeConnectMessage;
 import sh.slst.anroidtv.R;
-import sh.slst.anroidtv.mqtt.SubscribeClient;
 import sh.slst.anroidtv.bean.DeviceSignalInfo;
 import sh.slst.anroidtv.bean.MQTTConfig;
 import sh.slst.anroidtv.bean.MessageBean;
@@ -123,7 +117,7 @@ public abstract class BaseActivity extends AppCompatActivity implements IGetMess
     private static final int fTime = 1;//刷新时钟
     private static final int fCount = 2;//更新累计人数
     private static final int fUse = 3;//更新蹲位使用情况
-    private static final int cMqtt = 4;//启动时连接MQTT & 订阅消息
+    //    private static final int cMqtt = 4;//启动时连接MQTT & 订阅消息
     private String mqttIP;
     private Integer mqttPort;
     private String mqttTopic;
@@ -153,9 +147,9 @@ public abstract class BaseActivity extends AppCompatActivity implements IGetMess
                     theActivity.changeDun();
                     theActivity.flushStatus();
                     break;
-                case cMqtt:
-//                    theActivity.initMqtt();
-                    break;
+//                case cMqtt:
+////                    theActivity.initMqtt();
+//                    break;
             }
         }
     }
@@ -172,12 +166,12 @@ public abstract class BaseActivity extends AppCompatActivity implements IGetMess
 //        listDebug.setVisibility(View.VISIBLE);
 //    }
 
-    private void doConnect() {
+//    private void doConnect() {
 //        mClient = new SubscribeClient(mqttIP, mqttPort);
 //        mClient.setMessageNotify(this);
 //        theActivity.topic = "/" + theActivity.mqttConfig.dev.fsu_code + "/" + theActivity.mqttConfig.dev.dev_code;
 //        mClient.subscribe(mqttTopic, mqttTopic + "*_*", this, null);
-    }
+//    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -187,7 +181,7 @@ public abstract class BaseActivity extends AppCompatActivity implements IGetMess
 //        getWindow().clearFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN); //显示状态栏
         setContentView(getContentViewID());
 
-        sPreferences = BaseActivity.this.getSharedPreferences("STATE", MODE_PRIVATE);
+        sPreferences = BaseActivity.this.getSharedPreferences("STATE", MODE_MULTI_PROCESS);
         mqttIP = sPreferences.getString("mqttIP", "192.168.0.1");
         mqttPort = sPreferences.getInt("mqttPort", 1883);
         mqttTopic = sPreferences.getString("mqttTopic", "/TOILET");
@@ -260,9 +254,9 @@ public abstract class BaseActivity extends AppCompatActivity implements IGetMess
 //            }
 //        });
 
-        Message message = new Message();
-        message.what = cMqtt;
-        handler.sendMessage(message);
+//        Message message = new Message();
+//        message.what = cMqtt;
+//        handler.sendMessage(message);
         if (listDeviceFloorMaps == null) {
             listDeviceFloorMaps = new ArrayList<>();
         }
@@ -446,14 +440,15 @@ public abstract class BaseActivity extends AppCompatActivity implements IGetMess
                 }
                 mqttTopic = et_topic.getText().toString();
                 SharedPreferences.Editor editor = sPreferences.edit();
-                editor.putString("mqttIP", mqttIP.toString()).apply();
+                editor.putString("mqttIP", mqttIP).apply();
                 editor.putInt("mqttPort", mqttPort).apply();
-                editor.putString("mqttTopic", mqttTopic.toString()).apply();
+                editor.putString("mqttTopic", mqttTopic).apply();
 
 //                Toast.makeText(context, "修改配置成功", Toast.LENGTH_LONG).show();
-                Message message = new Message();
-                message.what = cMqtt;
-                handler.sendMessage(message);
+//                Message message = new Message();
+//                message.what = cMqtt;
+//                handler.sendMessage(message);
+                MQTTService.reLocate(mqttIP, mqttPort, mqttTopic);
                 dialog.dismiss();
             }
         });
